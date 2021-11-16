@@ -6,10 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch ServerApplication",
+            "name": "Launch MyHomeServerApplication",
             "request": "launch",
-            "mainClass": "fr.myhome.server.ServerApplication",
-            "projectName": "server"
+            "mainClass": "fr.myhome.server.MyHomeServerApplication",
+            "projectName": "myhome-server"
         }
     ]
 }

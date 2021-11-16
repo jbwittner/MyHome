@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>fr.myhome</groupId>
+		<artifactId>myhome-parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>myhome-frontend</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>${application.name} - ${application.service}</name>
+	<properties>
+		<java.version>17</java.version>
+		<application.name>MyHome</application.name>
+		<application.service>Frontend</application.service>
+	</properties>
+	<dependencies />
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>node_modules</directory>
+						</fileset>
+						<fileset>
+							<directory>build</directory>
+						</fileset>
+						<fileset>
+							<directory>coverage</directory>
+						</fileset>
+						<fileset>
+							<directory>target</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<?m2e execute onConfiguration,onIncremental?>
+						<id>npm ci</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>ci</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<?m2e execute onConfiguration,onIncremental?>
+						<id>check version</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>check-version</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<?m2e execute onConfiguration,onIncremental?>
+						<id>npm build</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<?m2e execute onConfiguration,onIncremental?>
+						<id>npm test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>test:coverage</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<environmentVariables>
+						<!-- The following parameters create an NPM sandbox for CI -->
+						<CI>true</CI>
+					</environmentVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

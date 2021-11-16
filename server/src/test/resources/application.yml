@@ -1,0 +1,21 @@
+logging:
+  level:
+    fr.myhome.server:
+      MyHomeServerApplication: INFO
+    org:
+      apache: INFO
+      springframework:
+        data: INFO
+        web: INFO
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+  datasource:
+    url: jdbc:h2:mem:${application.db-param.db-name};DB_CLOSE_DELAY=false;DB_CLOSE_ON_EXIT=false;DATABASE_TO_UPPER=false
+    driverClassName: org.h2.Driver
