@@ -1,0 +1,40 @@
+version: '3'
+
+volumes:
+  myhome_db:
+
+services:
+
+  MySQL:
+    image: mysql:8.0.20
+    ports:
+      - '6000:3306'
+    volumes:
+      - myhome_db:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: MyHomeRootPass2020
+      MYSQL_DATABASE: myhome
+      MYSQL_USER: myhome_user
+      MYSQL_PASSWORD: MyHomePass2020
+    networks:
+      - default
+
+  phpMyAdmin:
+    depends_on:
+      - MySQL
+    image: phpmyadmin/phpmyadmin:5.0.2
+    ports:
+      - '6100:80'
+    environment:
+      PMA_HOST: MySQL
+      MYSQL_ROOT_PASSWORD: MyHomeRootPass2020
+    networks:
+      - default
+
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    ports :
+      - '6200:8080'
+    networks:
+      - default

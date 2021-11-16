@@ -1,0 +1,38 @@
+application:
+  version: '@project.version@'
+  port: 6080
+  db-param:
+    host: localhost
+    port: 6000
+    db-name: myhome
+    user: myhome_user
+    password: MyHomePass2020
+
+logging:
+  level:
+    fr.myhome.server:
+      MyHomeServerApplication: INFO
+    org:
+      apache: INFO
+      springframework:
+        data: INFO
+        web: INFO
+
+server:
+  port : ${application.port}
+
+spring:
+  jpa:
+    show-sql: false
+    database-platform : org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+
+  datasource:
+    url: jdbc:mysql://${application.db-param.host}:${application.db-param.port}/${application.db-param.db-name}
+    username: ${application.db-param.user}
+    password: ${application.db-param.password}
+    driverClassName: com.mysql.cj.jdbc.Driver
