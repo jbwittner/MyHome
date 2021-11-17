@@ -1,0 +1,89 @@
+name: Pull request CI
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+jobs:
+  check-build-test-backend:
+    runs-on: ubuntu-20.04
+    env:
+      CI: true
+    if: '${{ github.actor != ''dependabot[bot]'' }}'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup-Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: zulu
+      - name: Cache
+        uses: actions/cache@v2.0.0
+        with:
+          path: ~/.m2/repository
+          key: '${{ runner.os }}-maven-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Build java part
+        run: >-
+          mvn -B compile -pl server -am
+          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: Test java part
+        run: >-
+          mvn -B test -pl server -am
+          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: Coverage
+        uses: codecov/codecov-action@v1
+  check-build-test-frontend:
+    runs-on: ubuntu-20.04
+    env:
+      CI: true
+    if: '${{ github.actor != ''dependabot[bot]'' }}'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: v16.13.0
+      - name: Install
+        run: npm ci
+        working-directory: frontend
+      - name: Check version
+        run: npm run check-version
+        working-directory: frontend
+      - name: Build
+        run: npm run build
+        working-directory: frontend
+      - name: Test
+        run: npm run test:coverage
+        working-directory: frontend
+      - name: Coverage
+        uses: codecov/codecov-action@v1
+  package-application:
+    needs:
+      - check-build-test-backend
+      - check-build-test-frontend
+    runs-on: ubuntu-20.04
+    if: '${{ github.actor != ''dependabot[bot]'' }}q'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup-Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: zulu
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: v16.13.0
+      - name: Cache
+        uses: actions/cache@v2.0.0
+        with:
+          path: ~/.m2/repository
+          key: '${{ runner.os }}-maven-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Package application
+        run: >-
+          mvn -B package -DskipTests --file pom.xml
+          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn

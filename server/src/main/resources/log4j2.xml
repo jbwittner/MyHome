@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <RollingFile name="RollingFile" fileName="logs/myhome.log"
+                     filePattern="logs/$${date:yyyy-MM}/myhome_%d{MM-dd-yyyy}_%d{HH-mm}_%i.log">
+            <PatternLayout pattern="%d{dd MM yyyy}\t%d{HH:mm:ss.SSS}\t%tid\t%-5level\t%logger{1.}\t%msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="2 MB"/>
+            </Policies>
+        </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%d{dd MM yyyy} - %d{HH:mm:ss.SSS} - %tid - %-5level - %logger{1.} - %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=blue, DEBUG=green bold, TRACE=Magenta}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root>
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
