@@ -6,7 +6,7 @@ on:
       - develop
 jobs:
   package-application:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       CI: true
     if: '${{ github.actor != ''dependabot[bot]'' }}'
