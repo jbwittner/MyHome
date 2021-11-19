@@ -1,0 +1,31 @@
+openapi: '3.0.1'
+info:
+  title: Swagger for MyHome
+  description: This is openapi specification for MyHome application.
+  contact:
+    email: jeanbaptiste.wittner@outlook.com
+  license:
+    name: GPL-3.0 License
+    url: 'https://www.gnu.org/licenses/gpl-3.0.html'
+  version: 0.1.0  
+externalDocs:
+  description: Find out more about Swagger
+  url: 'https://swagger.io'
+servers:
+  - url: 'http://localhost:9080'
+security:
+  - JwtAuth: []
+tags:
+  - name: authentication
+    description: Management of authentication
+paths:
+  /authentication/login:
+    get:
+      tags:
+        - authentication
+      summary: Login
+      operationId: login
+      security: []
+      responses:
+        '200':
+          description: successful operation
