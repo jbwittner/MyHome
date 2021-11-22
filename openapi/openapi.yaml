@@ -1,4 +1,4 @@
-openapi: '3.0.3'
+openapi: 3.0.3
 info:
   title: Swagger for MyHome
   description: This is openapi specification for MyHome application.
@@ -7,45 +7,58 @@ info:
   license:
     name: GPL-3.0 License
     url: 'https://www.gnu.org/licenses/gpl-3.0.html'
-  version: 0.1.0  
+  version: 0.1.0
 externalDocs:
   description: Find out more about Swagger
   url: 'https://swagger.io'
 servers:
   - url: 'http://localhost:9080'
-security:
-  - JwtAuth: []
 tags:
   - name: security
     description: Management of security
 paths:
   /authentication/login:
-    get:
+    post:
       tags:
         - security
       summary: Login
       operationId: login
       security: []
+      requestBody:
+        description: Object that need to be authenticated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginParameter'
       responses:
         '200':
           description: successful operation
   /authentication/registration:
-    get:
+    put:
       tags:
         - security
-      summary: Registration
-      operationId: registration
+      summary: Register a new user account
+      operationId: userRegistration
       security: []
+      requestBody:
+        description: Object that needs to register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationParameter'
       responses:
-        '200':
+        '201':
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
 components:
   schemas:
-#  ----- PARAMETERS  ----------------------------------------
     LoginParameter:
       type: object
       properties:
-        userName:
+        username:
           type: string
         password:
           type: string
@@ -57,7 +70,7 @@ components:
     UserRegistrationParameter:
       type: object
       properties:
-        userName:
+        username:
           type: string
         email:
           type: string
