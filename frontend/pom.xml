@@ -46,7 +46,6 @@
 				<version>3.0.0</version>
 				<executions>
 					<execution>
-						<?m2e execute onConfiguration,onIncremental?>
 						<id>npm ci</id>
 						<phase>initialize</phase>
 						<goals>
@@ -60,7 +59,6 @@
 						</configuration>
 					</execution>
 					<execution>
-						<?m2e execute onConfiguration,onIncremental?>
 						<id>check version</id>
 						<phase>process-sources</phase>
 						<goals>
@@ -75,7 +73,6 @@
 						</configuration>
 					</execution>
 					<execution>
-						<?m2e execute onConfiguration,onIncremental?>
 						<id>npm build</id>
 						<phase>compile</phase>
 						<goals>
@@ -90,7 +87,6 @@
 						</configuration>
 					</execution>
 					<execution>
-						<?m2e execute onConfiguration,onIncremental?>
 						<id>npm test</id>
 						<phase>test</phase>
 						<goals>
