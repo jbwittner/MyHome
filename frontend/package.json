@@ -2,18 +2,24 @@
   "name": "myhome",
   "private": true,
   "dependencies": {
+    "axios": "^0.24.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
+    "start:eslint": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage",
     "eject": "react-scripts eject",
     "check-version": "check-node-version --node 16.13 --npm 8.1",
-    "clean": "rimraf build"
+    "clean": "rimraf build",
+    "lint": "eslint src/**/*.{ts,tsx,js,jsx}",
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx,js,jsx}",
+    "prettier:write": "prettier --write src/**/*.{ts,tsx,js,jsx}",
+    "prettier:check": "prettier --check src/**/*.{ts,tsx,js,jsx}"
   },
   "eslintConfig": {
     "extends": [
@@ -43,8 +49,16 @@
     "@types/node": "^16.11.7",
     "@types/react": "^17.0.35",
     "@types/react-dom": "^17.0.11",
+    "@typescript-eslint/parser": "^5.4.0",
     "check-node-version": "^4.2.1",
-    "react-scripts": "4.0.3",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "^2.4.1",
+    "react-scripts": "^4.0.3",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
