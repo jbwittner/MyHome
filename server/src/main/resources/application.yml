@@ -12,6 +12,10 @@ logging:
   level:
     fr.myhome.server:
       MyHomeServerApplication: INFO
+      aop.interceptor: 
+        RepositoryInterceptor: INFO
+        ServiceInterceptor: INFO
+        ControllerInterceptor: INFO
     org:
       apache: INFO
       springframework:
@@ -26,7 +30,7 @@ spring:
     show-sql: false
     database-platform : org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
