@@ -24,6 +24,37 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface ExceptionDTO
+ */
+export interface ExceptionDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    'details': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    'exception': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    'message': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    'timestamp': string;
+}
+/**
+ * 
+ * @export
  * @interface LoginParameter
  */
 export interface LoginParameter {
@@ -173,7 +204,7 @@ export const SecurityApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userRegistration: async (userRegistrationParameter?: UserRegistrationParameter, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        registration: async (userRegistrationParameter?: UserRegistrationParameter, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/authentication/registration`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -228,8 +259,8 @@ export const SecurityApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userRegistration(userRegistrationParameter?: UserRegistrationParameter, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userRegistration(userRegistrationParameter, options);
+        async registration(userRegistrationParameter?: UserRegistrationParameter, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.registration(userRegistrationParameter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -259,8 +290,8 @@ export const SecurityApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userRegistration(userRegistrationParameter?: UserRegistrationParameter, options?: any): AxiosPromise<UserDTO> {
-            return localVarFp.userRegistration(userRegistrationParameter, options).then((request) => request(axios, basePath));
+        registration(userRegistrationParameter?: UserRegistrationParameter, options?: any): AxiosPromise<void> {
+            return localVarFp.registration(userRegistrationParameter, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -292,8 +323,8 @@ export class SecurityApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SecurityApi
      */
-    public userRegistration(userRegistrationParameter?: UserRegistrationParameter, options?: AxiosRequestConfig) {
-        return SecurityApiFp(this.configuration).userRegistration(userRegistrationParameter, options).then((request) => request(this.axios, this.basePath));
+    public registration(userRegistrationParameter?: UserRegistrationParameter, options?: AxiosRequestConfig) {
+        return SecurityApiFp(this.configuration).registration(userRegistrationParameter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

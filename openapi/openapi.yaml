@@ -12,11 +12,13 @@ externalDocs:
   description: Find out more about Swagger
   url: 'https://swagger.io'
 servers:
-  - url: 'http://localhost:9080'
+  - url: 'http://localhost:6080'
 tags:
   - name: security
     description: Management of security
 paths:
+#  ----- PATHS  ---------------------------------------------
+#  ----- AUTHENTICATION  ------------------------------------
   /authentication/login:
     post:
       tags:
@@ -38,7 +40,7 @@ paths:
       tags:
         - security
       summary: Register a new user account
-      operationId: userRegistration
+      operationId: registration
       security: []
       requestBody:
         description: Object that needs to register a new user
@@ -47,14 +49,29 @@ paths:
             schema:
               $ref: '#/components/schemas/UserRegistrationParameter'
       responses:
-        '201':
+        '200':
           description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDTO'
+#  ----- AUTHENTICATION  ------------------------------------
 components:
   schemas:
+    ExceptionDTO:
+      type: object
+      properties:
+        details:
+          type: string
+        exception:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - details
+        - exception
+        - message
+        - timestamp
+#  ----- PARAMETERS  ----------------------------------------
     LoginParameter:
       type: object
       properties:
