@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 public class User extends MotherPersistent {
 
     @Column(name = "USER_NAME", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
@@ -48,7 +48,7 @@ public class User extends MotherPersistent {
 
     @Override
     public String toString() {
-        return "User [id=" + this.id + ", userName=" + userName + "]";
+        return "User [id=" + this.id + ", userName=" + username + "]";
     }
     
 }
