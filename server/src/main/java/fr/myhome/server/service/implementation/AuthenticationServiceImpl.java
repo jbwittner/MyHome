@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserDTO registration(UserRegistrationParameter userRegistrationParameter) {
+    public UserDTO registration(final UserRegistrationParameter userRegistrationParameter) {
 
         if (this.userRepository.existsByEmail(userRegistrationParameter.getEmail())) {
             throw new UserEmailAlreadyExistException(userRegistrationParameter.getEmail());
@@ -80,7 +80,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void login(LoginParameter loginParameter) {
+    public void login(final LoginParameter loginParameter) {
         
         final UsernamePasswordAuthenticationToken loginCredentials =
                 new UsernamePasswordAuthenticationToken(
