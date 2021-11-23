@@ -2,12 +2,15 @@ logging:
   level:
     fr.myhome.server:
       MyHomeServerApplication: INFO
+      aop.interceptor: 
+        RepositoryInterceptor: ERROR
+        ServiceInterceptor: ERROR
+        ControllerInterceptor: ERROR
     org:
       apache: INFO
       springframework:
         data: INFO
         web: INFO
-
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect

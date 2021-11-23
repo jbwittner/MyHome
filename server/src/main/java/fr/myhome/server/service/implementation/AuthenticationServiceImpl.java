@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final UserDTOBuilder USER_DTO_BUILDER = new UserDTOBuilder();
 
     @Autowired
-    public AuthenticationServiceImpl(final AuthenticationManager authenticationManager, final UserRepository userRepository, final PasswordEncoder passwordEncoder){
+    public AuthenticationServiceImpl(final AuthenticationManager authenticationManager, final PasswordEncoder passwordEncoder, final UserRepository userRepository ){
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
