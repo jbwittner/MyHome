@@ -46,6 +46,12 @@ public class User extends MotherPersistent {
     @Column(name = "ROLES")
     private List<Role> roles;
 
+    @Column(name = "IS_LOCKED", nullable = false)
+    private Boolean isLocked = false;
+
+    @Column(name = "IS_ENABLED", nullable = false)
+    private Boolean isEnabled = true;
+
     @Override
     public String toString() {
         return "User [id=" + this.id + ", userName=" + username + "]";
