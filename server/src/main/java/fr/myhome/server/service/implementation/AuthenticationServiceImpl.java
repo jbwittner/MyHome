@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import fr.myhome.server.dto.UserDTOBuilder;
 import fr.myhome.server.exception.LoginException;
 import fr.myhome.server.exception.UserEmailAlreadyExistException;
-import fr.myhome.server.exception.UserNameAlreadyExistException;
+import fr.myhome.server.exception.UsernameAlreadyExistException;
 import fr.myhome.server.generated.model.LoginParameter;
 import fr.myhome.server.generated.model.UserDTO;
 import fr.myhome.server.generated.model.UserRegistrationParameter;
@@ -49,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (this.userRepository.existsByEmail(userRegistrationParameter.getEmail())) {
             throw new UserEmailAlreadyExistException(userRegistrationParameter.getEmail());
         } else if (this.userRepository.existsByUsername(userRegistrationParameter.getUsername())) {
-            throw new UserNameAlreadyExistException(userRegistrationParameter.getUsername());
+            throw new UsernameAlreadyExistException(userRegistrationParameter.getUsername());
         }
 
         final User user = new User();

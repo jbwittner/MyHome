@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import fr.myhome.server.exception.UserEmailAlreadyExistException;
+import fr.myhome.server.exception.UsernameAlreadyExistException;
 import fr.myhome.server.generated.model.UserRegistrationParameter;
 import fr.myhome.server.model.User;
 import fr.myhome.server.model.enumerate.Role;
@@ -78,8 +80,98 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
 
         Assertions.assertTrue(user.getRoles().contains(Role.ADMIN));
         Assertions.assertTrue(user.getRoles().contains(Role.USER));
-
         
+    }
+
+    @Test
+    protected void testRegistrationNthUserOk(){
+        final UserRegistrationParameter userRegistrationParameter = new UserRegistrationParameter();
+        
+        this.testFactory.getUser();
+        this.testFactory.getUser();
+        this.testFactory.getUser();
+
+        final Name name = this.testFactory.name();
+        
+        final String username = name.username();
+        final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
+        
+        userRegistrationParameter.setUsername(username);
+        userRegistrationParameter.setFirstName(name.firstName().toUpperCase());
+        userRegistrationParameter.setLastName(name.lastName());
+        userRegistrationParameter.setPassword(nonEncodedPassword);
+        userRegistrationParameter.setEmail(this.testFactory.internet().emailAddress());
+
+        this.authenticationServiceImpl.registration(userRegistrationParameter);
+
+        final List<User> allUsers = this.userRepository.findAll();
+
+        Assertions.assertEquals(4, allUsers.size());
+
+        final Optional<User> optionalUser = this.userRepository.findByUsername(username);
+
+        Assertions.assertTrue(optionalUser.isPresent());
+
+        final User user = optionalUser.get();
+
+        final Boolean passwordMatch = passwordEncoder.matches(userRegistrationParameter.getPassword(), user.getPassword());
+
+        Assertions.assertEquals(userRegistrationParameter.getEmail(), user.getEmail());
+
+        final String CapitalizedFirstName = StringUtils.capitalize(userRegistrationParameter.getFirstName().toLowerCase());
+        Assertions.assertEquals(CapitalizedFirstName, user.getFirstName());
+
+        Assertions.assertEquals(userRegistrationParameter.getLastName().toUpperCase(), user.getLastName());
+        Assertions.assertEquals(userRegistrationParameter.getUsername(), user.getUsername());
+        Assertions.assertTrue(passwordMatch);
+
+        Assertions.assertFalse(user.getRoles().contains(Role.ADMIN));
+        Assertions.assertTrue(user.getRoles().contains(Role.USER));
+        
+    }
+
+    @Test
+    protected void testUsernameAlreadyUsedNok(){
+        final UserRegistrationParameter userRegistrationParameter = new UserRegistrationParameter();
+
+        final User user = this.testFactory.getUser();
+
+        final Name name = this.testFactory.name();
+        
+        final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
+        
+        userRegistrationParameter.setUsername(user.getUsername());
+        userRegistrationParameter.setFirstName(name.firstName().toUpperCase());
+        userRegistrationParameter.setLastName(name.lastName());
+        userRegistrationParameter.setPassword(nonEncodedPassword);
+        userRegistrationParameter.setEmail(this.testFactory.internet().emailAddress());
+
+        Assertions.assertThrows(UsernameAlreadyExistException.class, () -> {
+            this.authenticationServiceImpl.registration(userRegistrationParameter);
+        });
+
+    }
+
+    @Test
+    protected void testEmailAlreadyUsedNok(){
+        final UserRegistrationParameter userRegistrationParameter = new UserRegistrationParameter();
+
+        final User user = this.testFactory.getUser();
+
+        final Name name = this.testFactory.name();
+        
+        final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
+        
+        userRegistrationParameter.setUsername(name.username());
+        userRegistrationParameter.setFirstName(name.firstName().toUpperCase());
+        userRegistrationParameter.setLastName(name.lastName());
+        userRegistrationParameter.setPassword(nonEncodedPassword);
+        userRegistrationParameter.setEmail(user.getEmail());
+
+        Assertions.assertThrows(UserEmailAlreadyExistException.class, () -> {
+            this.authenticationServiceImpl.registration(userRegistrationParameter);
+        });
+
     }
     
 }
