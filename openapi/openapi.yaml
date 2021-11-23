@@ -82,7 +82,7 @@ components:
           format: password
           writeOnly: true
       required:
-        - userName
+        - username
         - password
     UserRegistrationParameter:
       type: object
@@ -102,7 +102,7 @@ components:
           type: string
           pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$'
       required:
-        - userName
+        - username
         - email
         - firstName
         - lastName
@@ -112,7 +112,7 @@ components:
     UserDTO:
       type: object
       properties:
-        userName:
+        username:
           type: string
         email:
           type: string
@@ -126,7 +126,7 @@ components:
           items:
             $ref: '#/components/schemas/UserRoleEnum'
       required:
-        - userName
+        - username
         - email
         - firstName
         - lastName

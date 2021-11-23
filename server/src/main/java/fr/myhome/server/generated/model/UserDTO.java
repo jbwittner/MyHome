@@ -17,8 +17,8 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class UserDTO   {
-  @JsonProperty("userName")
-  private String userName;
+  @JsonProperty("username")
+  private String username;
 
   @JsonProperty("email")
   private String email;
@@ -33,25 +33,25 @@ public class UserDTO   {
   @Valid
   private List<UserRoleEnum> roles = new ArrayList<UserRoleEnum>();
 
-  public UserDTO userName(String userName) {
-    this.userName = userName;
+  public UserDTO username(String username) {
+    this.username = username;
     return this;
   }
 
   /**
-   * Get userName
-   * @return userName
+   * Get username
+   * @return username
   */
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public UserDTO email(String email) {
@@ -154,7 +154,7 @@ public class UserDTO   {
       return false;
     }
     UserDTO userDTO = (UserDTO) o;
-    return Objects.equals(this.userName, userDTO.userName) &&
+    return Objects.equals(this.username, userDTO.username) &&
         Objects.equals(this.email, userDTO.email) &&
         Objects.equals(this.firstName, userDTO.firstName) &&
         Objects.equals(this.lastName, userDTO.lastName) &&
@@ -163,7 +163,7 @@ public class UserDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(userName, email, firstName, lastName, roles);
+    return Objects.hash(username, email, firstName, lastName, roles);
   }
 
   @Override
@@ -171,7 +171,7 @@ public class UserDTO   {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserDTO {\n");
     
-    sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
+    sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");

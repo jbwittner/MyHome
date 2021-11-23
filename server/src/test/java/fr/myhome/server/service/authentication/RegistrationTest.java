@@ -14,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.myhome.server.exception.UserEmailAlreadyExistException;
 import fr.myhome.server.exception.UsernameAlreadyExistException;
+import fr.myhome.server.generated.model.UserDTO;
 import fr.myhome.server.generated.model.UserRegistrationParameter;
+import fr.myhome.server.generated.model.UserRoleEnum;
 import fr.myhome.server.model.User;
 import fr.myhome.server.model.enumerate.Role;
 import fr.myhome.server.repository.UserRepository;
@@ -55,7 +57,7 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
         userRegistrationParameter.setPassword(nonEncodedPassword);
         userRegistrationParameter.setEmail(this.testFactory.internet().emailAddress());
 
-        this.authenticationServiceImpl.registration(userRegistrationParameter);
+        final UserDTO userDto = this.authenticationServiceImpl.registration(userRegistrationParameter);
 
         final List<User> allUsers = this.userRepository.findAll();
 
@@ -80,7 +82,16 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
 
         Assertions.assertTrue(user.getRoles().contains(Role.ADMIN));
         Assertions.assertTrue(user.getRoles().contains(Role.USER));
-        
+
+        Assertions.assertEquals(user.getEmail(), userDto.getEmail());
+        Assertions.assertEquals(user.getLastName(), userDto.getLastName());
+        Assertions.assertEquals(user.getFirstName(), userDto.getFirstName());
+        Assertions.assertEquals(user.getUsername(), userDto.getUsername());
+        Assertions.assertEquals(user.getRoles().size(), userDto.getRoles().size());
+
+        Assertions.assertTrue(userDto.getRoles().contains(UserRoleEnum.ADMIN));
+        Assertions.assertTrue(userDto.getRoles().contains(UserRoleEnum.USER));
+
     }
 
     @Test
@@ -102,7 +113,7 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
         userRegistrationParameter.setPassword(nonEncodedPassword);
         userRegistrationParameter.setEmail(this.testFactory.internet().emailAddress());
 
-        this.authenticationServiceImpl.registration(userRegistrationParameter);
+        final UserDTO userDto = this.authenticationServiceImpl.registration(userRegistrationParameter);
 
         final List<User> allUsers = this.userRepository.findAll();
 
@@ -127,6 +138,15 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
 
         Assertions.assertFalse(user.getRoles().contains(Role.ADMIN));
         Assertions.assertTrue(user.getRoles().contains(Role.USER));
+
+        Assertions.assertEquals(user.getEmail(), userDto.getEmail());
+        Assertions.assertEquals(user.getLastName(), userDto.getLastName());
+        Assertions.assertEquals(user.getFirstName(), userDto.getFirstName());
+        Assertions.assertEquals(user.getUsername(), userDto.getUsername());
+        Assertions.assertEquals(user.getRoles().size(), userDto.getRoles().size());
+
+        Assertions.assertFalse(userDto.getRoles().contains(UserRoleEnum.ADMIN));
+        Assertions.assertTrue(userDto.getRoles().contains(UserRoleEnum.USER));
         
     }
 

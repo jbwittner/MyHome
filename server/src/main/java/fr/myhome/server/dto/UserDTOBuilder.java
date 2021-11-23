@@ -13,7 +13,7 @@ public class UserDTOBuilder extends Transformer<User, UserDTO> {
     public UserDTO transform(final User input){
         final UserDTO userDTO = new UserDTO();
 
-        userDTO.setUserName(input.getUsername());
+        userDTO.setUsername(input.getUsername());
         userDTO.setEmail(input.getEmail());
         userDTO.setFirstName(input.getFirstName());
         userDTO.setLastName(input.getLastName());

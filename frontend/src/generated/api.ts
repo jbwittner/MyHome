@@ -63,7 +63,7 @@ export interface LoginParameter {
      * @type {string}
      * @memberof LoginParameter
      */
-    'username'?: string;
+    'username': string;
     /**
      * 
      * @type {string}
@@ -82,7 +82,7 @@ export interface UserDTO {
      * @type {string}
      * @memberof UserDTO
      */
-    'userName': string;
+    'username': string;
     /**
      * 
      * @type {string}
@@ -119,7 +119,7 @@ export interface UserRegistrationParameter {
      * @type {string}
      * @memberof UserRegistrationParameter
      */
-    'username'?: string;
+    'username': string;
     /**
      * 
      * @type {string}
