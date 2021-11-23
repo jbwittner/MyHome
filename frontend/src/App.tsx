@@ -3,6 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+    const toto = () => {
+        console.log('qaaaaa');
+    };
+
     return (
         <div className="App">
             <header className="App-header">
@@ -10,6 +14,7 @@ function App() {
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
+                P
                 <a
                     className="App-link"
                     href="https://reactjs.org"
@@ -18,6 +23,7 @@ function App() {
                 >
                     Learn React
                 </a>
+                <button onClick={toto}>aaaa</button>
             </header>
         </div>
     );

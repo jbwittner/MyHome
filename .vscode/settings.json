@@ -2,4 +2,7 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "debug.terminal.clearBeforeReusing": true,
     "java.debug.settings.console": "internalConsole",
+    "editor.tabSize": 4,
+    "prettier.configPath": "frontend/.prettierrc",
+    "prettier.ignorePath": "frontend/.prettierignore",
 }
