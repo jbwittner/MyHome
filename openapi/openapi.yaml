@@ -1,4 +1,4 @@
-openapi: '3.0.1'
+openapi: 3.0.3
 info:
   title: Swagger for MyHome
   description: This is openapi specification for MyHome application.
@@ -7,25 +7,118 @@ info:
   license:
     name: GPL-3.0 License
     url: 'https://www.gnu.org/licenses/gpl-3.0.html'
-  version: 0.1.0  
+  version: 0.1.0
 externalDocs:
   description: Find out more about Swagger
   url: 'https://swagger.io'
 servers:
   - url: 'http://localhost:9080'
-security:
-  - JwtAuth: []
 tags:
-  - name: authentication
-    description: Management of authentication
+  - name: security
+    description: Management of security
 paths:
   /authentication/login:
-    get:
+    post:
       tags:
-        - authentication
+        - security
       summary: Login
       operationId: login
       security: []
+      requestBody:
+        description: Object that need to be authenticated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginParameter'
       responses:
         '200':
           description: successful operation
+  /authentication/registration:
+    put:
+      tags:
+        - security
+      summary: Register a new user account
+      operationId: userRegistration
+      security: []
+      requestBody:
+        description: Object that needs to register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationParameter'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+components:
+  schemas:
+    LoginParameter:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+          writeOnly: true
+      required:
+        - userName
+        - password
+    UserRegistrationParameter:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+          pattern: >-
+            ^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
+        firstName:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+          pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$'
+      required:
+        - userName
+        - email
+        - firstName
+        - lastName
+        - password
+#  ----- PARAMETERS  ----------------------------------------
+#  ----- DTO  -----------------------------------------------
+    UserDTO:
+      type: object
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRoleEnum'
+      required:
+        - userName
+        - email
+        - firstName
+        - lastName
+        - roles
+#  ----- DTO  -----------------------------------------------
+#  ----- Enum -----------------------------------------------
+    UserRoleEnum:
+      type: string
+      enum:
+        - ADMIN
+        - USER
+#  ----- Enum -----------------------------------------------

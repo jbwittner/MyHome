@@ -95,7 +95,78 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+
+		<!--OpenApi-->
+      <dependency>
+         <groupId>io.swagger.core.v3</groupId>
+         <artifactId>swagger-annotations</artifactId>
+         <version>2.1.11</version>
+      </dependency>
+      <dependency>
+         <groupId>io.swagger.codegen.v3</groupId>
+         <artifactId>swagger-codegen-maven-plugin</artifactId>
+         <version>3.0.29</version>
+         <exclusions>
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-ext</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>ch.qos.logback</groupId>
+               <artifactId>logback-classic</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>ch.qos.logback</groupId>
+               <artifactId>logback-core</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.jaxrs</groupId>
+         <artifactId>jackson-jaxrs-base</artifactId>
+         <version>2.13.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-core</artifactId>
+         <version>2.13.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-annotations</artifactId>
+         <version>2.13.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-databind</artifactId>
+         <version>2.13.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.jaxrs</groupId>
+         <artifactId>jackson-jaxrs-json-provider</artifactId>
+         <version>2.13.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.openapitools</groupId>
+         <artifactId>jackson-databind-nullable</artifactId>
+         <version>0.2.1</version>
+      </dependency>
+      <!--SpringFox dependencies -->
+      <dependency>
+         <groupId>io.springfox</groupId>
+         <artifactId>springfox-swagger2</artifactId>
+         <version>3.0.0</version>
+      </dependency>
+      <dependency>
+         <groupId>io.springfox</groupId>
+         <artifactId>springfox-swagger-ui</artifactId>
+         <version>3.0.0</version>
+      </dependency>
+	  <!--OpenApi-->
+
+
+
+ </dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -129,22 +200,28 @@
 						<configuration>
 							<excludes>
 								<exclude>fr/myhome/server/generated/**/*.class</exclude>
-								<exclude>fr/myhome/server/model/*.class</exclude>
-								<exclude>fr/myhome/server/model/*/*.class</exclude>
-								<exclude>fr/myhome/server/parameter/*.class</exclude>
-								<exclude>fr/myhome/server/parameter/*/*.class</exclude>
-								<exclude>fr/myhome/server/dto/*.class</exclude>
-								<exclude>fr/myhome/server/controller/*.class</exclude>
-								<exclude>fr/myhome/server/ServerApplication.class</exclude>
-								<exclude>fr/myhome/server/tools/handler/ErrorDetails.class</exclude>
-								<exclude>fr/myhome/server/security/SecurityConfiguration.class</exclude>
-								<exclude>fr/myhome/server/security/AuthTokenFilter.class</exclude>
-								<exclude>fr/myhome/server/aop/interceptor/ControllerInterceptor.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.15.0</version>
+            <configuration>
+               <rulesets>
+                  <ruleset>rulesetPMD.xml</ruleset>
+               </rulesets>
+               <sourceEncoding>utf-8</sourceEncoding>
+               <minimumTokens>100</minimumTokens>
+               <targetJdk>${java.version}</targetJdk>
+               <renderProcessingErrors>false</renderProcessingErrors>
+               <compileSourceRoots>
+                  <compileSourceRoot>${basedir}/src</compileSourceRoot>
+               </compileSourceRoots>
+            </configuration>
+         </plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.2.0</version>

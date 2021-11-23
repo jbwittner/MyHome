@@ -24,6 +24,10 @@ jobs:
           key: '${{ runner.os }}-maven-${{ hashFiles(''**/pom.xml'') }}'
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Check PMD report
+        run: >-
+          mvn -B pmd:check -pl server -am
+          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: Build java part
         run: >-
           mvn -B compile -pl server -am
@@ -50,6 +54,12 @@ jobs:
         working-directory: frontend
       - name: Check version
         run: npm run check-version
+        working-directory: frontend
+      - name: Check linter
+        run: npm run lint
+        working-directory: frontend
+      - name: Check prettier
+        run: npm run prettier:check
         working-directory: frontend
       - name: Build
         run: npm run build
