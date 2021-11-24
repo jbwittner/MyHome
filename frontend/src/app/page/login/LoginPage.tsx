@@ -9,8 +9,6 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { useNavigate } from 'react-router';
-import { PATH } from '../../router/Router';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 export const LoginPage = () => {
@@ -38,7 +36,6 @@ export const LoginPage = () => {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    autoFocus
                 />
                 <TextField
                     margin="normal"
