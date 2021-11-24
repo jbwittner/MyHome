@@ -12,14 +12,14 @@ function App() {
             <header className="App-header">
                 <ThemeProvider theme={AppTheme}>
                     <CssBaseline />
-                        <LoginContext.Provider
-                            value={{
-                                isAuthenticated,
-                                setIsAuthenticated
-                            }}
-                        >
-                            <LoginContext.Consumer>{() => <MainRouter />}</LoginContext.Consumer>
-                        </LoginContext.Provider>
+                    <LoginContext.Provider
+                        value={{
+                            isAuthenticated,
+                            setIsAuthenticated
+                        }}
+                    >
+                        <LoginContext.Consumer>{() => <MainRouter />}</LoginContext.Consumer>
+                    </LoginContext.Provider>
                 </ThemeProvider>
             </header>
         </div>

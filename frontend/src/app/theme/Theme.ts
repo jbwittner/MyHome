@@ -14,7 +14,6 @@ const fontType = [
     'Risque'
 ].join(',');
 
-
 export const AppTheme = createTheme({
     typography: {
         fontFamily: fontType
@@ -22,13 +21,13 @@ export const AppTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-          main: '#2d526d',
+            main: '#2d526d'
         },
         secondary: {
-          main: '#ec407a',
-        },
-      },
-    shape: {
-        borderRadius: 20,
+            main: '#ec407a'
+        }
     },
+    shape: {
+        borderRadius: 20
+    }
 });
