@@ -10,8 +10,10 @@ import {
 import { Box } from '@mui/system';
 import React from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { PATH } from '../../router/Router';
 
 export const LoginPage = () => {
+
     return (
         <Box
             sx={{
@@ -54,7 +56,7 @@ export const LoginPage = () => {
                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                     Sign In
                 </Button>
-                <Link href="#" variant="body2">
+                <Link href={PATH.REGISTRATION_PATH} variant="body2">
                     {"Don't have an account? Sign Up"}
                 </Link>
             </Box>

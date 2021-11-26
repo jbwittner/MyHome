@@ -1,7 +1,8 @@
 import React from 'react';
-import { Route, Navigate, RouteProps, Routes, HashRouter, useNavigate } from 'react-router-dom';
+import { Route, Navigate, RouteProps, Routes, BrowserRouter } from 'react-router-dom';
 import { LoginContext } from '../context/Context';
 import { LoginPage } from '../page/login/LoginPage';
+import { RegistrationPage } from '../page/registration/RegistrationPage';
 
 /* eslint-disable no-unused-vars */
 export enum PATH {
@@ -22,19 +23,15 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
     return isAuthenticated ? children : <Navigate to={PATH.LOGIN_PATH} />;
 };
 
-export function nextPath(path: PATH) {
-    const navigate = useNavigate();
-    navigate(path);
-}
-
 export function MainRouter() {
     const { isAuthenticated } = React.useContext(LoginContext);
 
     return (
-        <HashRouter>
+        <BrowserRouter>
             {isAuthenticated}
             <Routes>
                 <Route path={PATH.LOGIN_PATH} element={<LoginPage />} />
+                <Route path={PATH.REGISTRATION_PATH} element={<RegistrationPage />} />
                 <Route
                     path={PATH.HOME_PATH}
                     element={
@@ -44,7 +41,7 @@ export function MainRouter() {
                     }
                 />
             </Routes>
-        </HashRouter>
+        </BrowserRouter>
     );
 }
 
