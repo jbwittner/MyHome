@@ -11,7 +11,7 @@ import fr.myhome.server.generated.model.UserRegistrationParameter;
 import fr.myhome.server.service.AuthenticationService;
 
 @RestController
-public class AuthenticationController implements AuthenticationApi {
+public class AuthenticationController extends BaseRestController implements AuthenticationApi {
 
     private AuthenticationService authenticationService;
 

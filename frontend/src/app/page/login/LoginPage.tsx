@@ -11,8 +11,63 @@ import { Box } from '@mui/system';
 import React from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
+import { LoginParameter, SecurityApi } from '../../../generated';
+import { API_CONFIGURATION } from '../../config/ApiConfig';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+
+interface IFormInputs {
+    userName: string;
+    password: string;
+}
+
+const schema = yup
+    .object({
+        userName: yup.string().required(),
+        password: yup.string().required()
+    })
+    .required();
+
 
 export const LoginPage = () => {
+
+    const {
+        control,
+        formState: { errors },
+        handleSubmit
+    } = useForm<IFormInputs>({
+        resolver: yupResolver(schema)
+    });
+
+    console.log(errors);
+
+    const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+        const parameter: LoginParameter = {
+            username: data.userName,
+            password: data.password
+        }
+        apiRegistration.login(parameter).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
+    };
+
+    const apiRegistration = new SecurityApi(API_CONFIGURATION);
+
+    const onClicklll = () => {
+        const parameter: LoginParameter = {
+            username: 'toto',
+            password: 'tata'
+        }
+        apiRegistration.login(parameter).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
     return (
         <Box
@@ -29,31 +84,42 @@ export const LoginPage = () => {
             <Typography component="h1" variant="h5">
                 Sign in
             </Typography>
-            <Box sx={{ mt: 1, maxWidth: '500px' }}>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
+            <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, width: '500px' }}>
+            <Controller
+                    name="userName"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            fullWidth
+                            label="User Name*"
+                            autoComplete="userName"
+                            sx={{ mt: 2 }}
+                            error={errors.userName !== undefined}
+                        />
+                    )}
                 />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
+                <Controller
                     name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            fullWidth
+                            label="Password*"
+                            autoComplete="password"
+                            sx={{ mt: 2 }}
+                            error={errors.password !== undefined}
+                        />
+                    )}
                 />
                 <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
                     label="Remember me"
                 />
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <Button type="submit" onClick={onClicklll} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                     Sign In
                 </Button>
                 <Link href={PATH.REGISTRATION_PATH} variant="body2">

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Route, Navigate, RouteProps, Routes, BrowserRouter } from 'react-router-dom';
+import { Route, Navigate, RouteProps, Routes, BrowserRouter as Router, Outlet } from 'react-router-dom';
 import { LoginContext } from '../context/Context';
 import { LoginPage } from '../page/login/LoginPage';
 import { RegistrationPage } from '../page/registration/RegistrationPage';
 
 /* eslint-disable no-unused-vars */
 export enum PATH {
-    LOGIN_PATH = '/',
+    LOGIN_PATH = '/login',
     REGISTRATION_PATH = '/registration',
     HOME_PATH = '/home'
 }
@@ -27,22 +27,27 @@ export function MainRouter() {
     const { isAuthenticated } = React.useContext(LoginContext);
 
     return (
-        <BrowserRouter>
+        <Router>
             {isAuthenticated}
             <Routes>
-                <Route path={PATH.LOGIN_PATH} element={<LoginPage />} />
-                <Route path={PATH.REGISTRATION_PATH} element={<RegistrationPage />} />
-                <Route
-                    path={PATH.HOME_PATH}
-                    element={
-                        <PrivateRoute>
-                            <Privateaaa />
-                        </PrivateRoute>
-                    }
-                />
+                <Route path="/" element={<Privateaaadqsdqsd />}>
+                    <Route index element={<LoginPage />} />
+                    <Route path={PATH.REGISTRATION_PATH} element={<RegistrationPage />} />
+                    <Route
+                        path={PATH.HOME_PATH}
+                        element={
+                            <PrivateRoute>
+                                <Privateaaa />
+                            </PrivateRoute>
+                        }
+                    />
+                </Route>
             </Routes>
-        </BrowserRouter>
+        </Router>
     );
 }
 
 const Privateaaa = () => <div>private</div>;
+
+const Privateaaadqsdqsd = () => <div><h1>Bookkeeper</h1><Outlet /></div>;
+

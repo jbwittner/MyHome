@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_ENDPOINTS = new String[] {
         "/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png",
-        "/static/**", "/*.svg", "/*.jpg", "/authentication/registration", "/authentication/login"};
+        "/static/**", "/*.svg", "/*.jpg", "/api/authentication/registration", "/api/authentication/login", "/registration"};
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
