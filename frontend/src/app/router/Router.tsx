@@ -49,5 +49,5 @@ export function MainRouter() {
 
 const Privateaaa = () => <div>private</div>;
 
-const Privateaaadqsdqsd = () => <div><h1>Bookkeeper</h1><Outlet /></div>;
+const Privateaaadqsdqsd = () => <div><Outlet /></div>;
 

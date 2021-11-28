@@ -3,7 +3,6 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
-    Link,
     TextField,
     Typography
 } from '@mui/material';
@@ -16,6 +15,7 @@ import { API_CONFIGURATION } from '../../config/ApiConfig';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { Link } from "react-router-dom";
 
 
 interface IFormInputs {
@@ -122,7 +122,7 @@ export const LoginPage = () => {
                 <Button type="submit" onClick={onClicklll} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                     Sign In
                 </Button>
-                <Link href={PATH.REGISTRATION_PATH} variant="body2">
+                <Link to={PATH.REGISTRATION_PATH}>
                     {"Don't have an account? Sign Up"}
                 </Link>
             </Box>

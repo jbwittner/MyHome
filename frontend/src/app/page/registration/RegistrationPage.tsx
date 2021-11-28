@@ -1,17 +1,11 @@
 import { PersonAddAltRounded } from '@mui/icons-material';
-import {
-    Avatar,
-    Button,
-    Link,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Avatar, Button, Link, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { PATH } from '../../router/Router';
+import { TextFieldController } from '../../components/form/TextFieldController';
 
 interface IFormInputs {
     firstName: string;
@@ -126,25 +120,20 @@ export const RegistrationPage = () => {
                         />
                     )}
                 />
-                <Controller
+                <TextFieldController
                     name="password"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="Password*"
-                            autoComplete="password"
-                            sx={{ mt: 2 }}
-                            error={errors.password !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    label="Password*"
+                    autoComplete="password"
+                    sx={{ mt: 2 }}
+                    error={errors.password !== undefined}
                 />
                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                     Registration
                 </Button>
-                <Link href={"/"} variant="body2">
+                <Link href={'/'} variant="body2">
                     {"Don't have an account? Sign Up"}
                 </Link>
             </Box>
