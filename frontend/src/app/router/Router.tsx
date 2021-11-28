@@ -6,7 +6,7 @@ import { RegistrationPage } from '../page/registration/RegistrationPage';
 
 /* eslint-disable no-unused-vars */
 export enum PATH {
-    LOGIN_PATH = '/login',
+    LOGIN_PATH = '/',
     REGISTRATION_PATH = '/registration',
     HOME_PATH = '/home'
 }

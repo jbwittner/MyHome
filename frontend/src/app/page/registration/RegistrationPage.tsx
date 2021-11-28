@@ -5,12 +5,15 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TextFieldController } from '../../components/form/TextFieldController';
+import { useNavigate } from 'react-router';
+import { PATH } from '../../router/Router';
+import { SecurityApi, UserRegistrationParameter } from '../../../generated';
+import { API_CONFIGURATION } from '../../config/ApiConfig';
 
 interface IFormInputs {
     firstName: string;
     lastName: string;
-    userName: string;
+    username: string;
     email: string;
     password: string;
 }
@@ -19,7 +22,7 @@ const schema = yup
     .object({
         firstName: yup.string().required(),
         lastName: yup.string().required(),
-        userName: yup.string().required(),
+        username: yup.string().required(),
         email: yup
             .string()
             .matches(
@@ -30,6 +33,9 @@ const schema = yup
     .required();
 
 export const RegistrationPage = () => {
+    const navigate = useNavigate();
+    const securityApi = new SecurityApi(API_CONFIGURATION);
+
     const {
         control,
         formState: { errors },
@@ -38,10 +44,30 @@ export const RegistrationPage = () => {
         resolver: yupResolver(schema)
     });
 
-    console.log(errors);
+    const onCancel = () => {
+        navigate(PATH.LOGIN_PATH);
+    };
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        console.log(data);
+        const userRegistrationParameter: UserRegistrationParameter = {
+            username: data.username,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: data.password
+        };
+
+        securityApi
+            .registration(userRegistrationParameter)
+            .then(() => {
+                console.log('registration ok');
+                navigate(PATH.LOGIN_PATH);
+            })
+            .catch((error) => {
+                console.log('regitration error 1');
+                console.log(error);
+                console.log('regitration error 2');
+            });
     };
 
     return (
@@ -69,7 +95,7 @@ export const RegistrationPage = () => {
                             {...field}
                             fullWidth
                             label="First Name*"
-                            autoComplete="firstname"
+                            autoComplete="given-name"
                             sx={{ mt: 2 }}
                             error={errors.firstName !== undefined}
                         />
@@ -84,14 +110,14 @@ export const RegistrationPage = () => {
                             {...field}
                             fullWidth
                             label="Last Name*"
-                            autoComplete="lastName"
+                            autoComplete="family-name"
                             sx={{ mt: 2 }}
                             error={errors.lastName !== undefined}
                         />
                     )}
                 />
                 <Controller
-                    name="userName"
+                    name="username"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
@@ -99,9 +125,9 @@ export const RegistrationPage = () => {
                             {...field}
                             fullWidth
                             label="User Name*"
-                            autoComplete="userName"
+                            autoComplete="username"
                             sx={{ mt: 2 }}
-                            error={errors.userName !== undefined}
+                            error={errors.username !== undefined}
                         />
                     )}
                 />
@@ -120,22 +146,28 @@ export const RegistrationPage = () => {
                         />
                     )}
                 />
-                <TextFieldController
+                <Controller
                     name="password"
                     control={control}
                     defaultValue=""
-                    fullWidth
-                    label="Password*"
-                    autoComplete="password"
-                    sx={{ mt: 2 }}
-                    error={errors.password !== undefined}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            fullWidth
+                            label="Password*"
+                            autoComplete="current-password"
+                            type="password"
+                            sx={{ mt: 2 }}
+                            error={errors.password !== undefined}
+                        />
+                    )}
                 />
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
                     Registration
                 </Button>
-                <Link href={'/'} variant="body2">
-                    {"Don't have an account? Sign Up"}
-                </Link>
+                <Button onClick={onCancel} fullWidth variant="contained" sx={{ mt: 3 }}>
+                    Cancel
+                </Button>
             </Box>
         </Box>
     );

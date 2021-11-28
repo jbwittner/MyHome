@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { useNavigate } from 'react-router';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { LoginParameter, SecurityApi } from '../../../generated';
@@ -33,6 +34,8 @@ const schema = yup
 
 export const LoginPage = () => {
 
+    const navigate = useNavigate();
+
     const {
         control,
         formState: { errors },
@@ -40,8 +43,6 @@ export const LoginPage = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema)
     });
-
-    console.log(errors);
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         const parameter: LoginParameter = {
