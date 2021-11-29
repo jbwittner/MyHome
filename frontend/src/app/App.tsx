@@ -1,8 +1,10 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { LoginContext } from './context/Context';
 import { MainRouter } from './router/Router';
 import { AppTheme } from './theme/Theme';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -12,6 +14,7 @@ function App() {
             <header className="App-header">
                 <ThemeProvider theme={AppTheme}>
                     <CssBaseline />
+                    <ToastContainer />
                     <LoginContext.Provider
                         value={{
                             isAuthenticated,

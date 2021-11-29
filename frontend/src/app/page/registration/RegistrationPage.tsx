@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router';
 import { PATH } from '../../router/Router';
 import { SecurityApi, UserRegistrationParameter } from '../../../generated';
 import { API_CONFIGURATION } from '../../config/ApiConfig';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 interface IFormInputs {
     firstName: string;
@@ -34,6 +35,7 @@ const schema = yup
 
 export const RegistrationPage = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = React.useState(false);
     const securityApi = new SecurityApi(API_CONFIGURATION);
 
     const {
@@ -49,6 +51,8 @@ export const RegistrationPage = () => {
     };
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+        setLoading(true);
+
         const userRegistrationParameter: UserRegistrationParameter = {
             username: data.username,
             firstName: data.firstName,
@@ -67,6 +71,9 @@ export const RegistrationPage = () => {
                 console.log('regitration error 1');
                 console.log(error);
                 console.log('regitration error 2');
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -162,9 +169,15 @@ export const RegistrationPage = () => {
                         />
                     )}
                 />
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+                <LoadingButton
+                    loading={loading}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3 }}
+                >
                     Registration
-                </Button>
+                </LoadingButton>
                 <Button onClick={onCancel} fullWidth variant="contained" sx={{ mt: 3 }}>
                     Cancel
                 </Button>

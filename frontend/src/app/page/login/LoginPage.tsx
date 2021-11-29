@@ -3,9 +3,11 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
+    LinearProgress,
     TextField,
     Typography
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useNavigate } from 'react-router';
@@ -16,8 +18,8 @@ import { API_CONFIGURATION } from '../../config/ApiConfig';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from "react-router-dom";
-
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface IFormInputs {
     userName: string;
@@ -31,9 +33,8 @@ const schema = yup
     })
     .required();
 
-
 export const LoginPage = () => {
-
+    const [loading, setLoading] = React.useState(false);
     const navigate = useNavigate();
 
     const {
@@ -45,15 +46,23 @@ export const LoginPage = () => {
     });
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+        toast("Wow so easy !");
+        setLoading(true);
         const parameter: LoginParameter = {
             username: data.userName,
             password: data.password
-        }
-        apiRegistration.login(parameter).then((response) => {
-            console.log(response)
-        }).catch((error) => {
-            console.log(error)
-        })
+        };
+        apiRegistration
+            .login(parameter)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                setLoading(true);
+            });
     };
 
     const apiRegistration = new SecurityApi(API_CONFIGURATION);
@@ -62,13 +71,16 @@ export const LoginPage = () => {
         const parameter: LoginParameter = {
             username: 'toto',
             password: 'tata'
-        }
-        apiRegistration.login(parameter).then((response) => {
-            console.log(response)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
+        };
+        apiRegistration
+            .login(parameter)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     return (
         <Box
@@ -86,7 +98,7 @@ export const LoginPage = () => {
                 Sign in
             </Typography>
             <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, width: '500px' }}>
-            <Controller
+                <Controller
                     name="userName"
                     control={control}
                     defaultValue=""
@@ -120,12 +132,17 @@ export const LoginPage = () => {
                     control={<Checkbox value="remember" color="primary" />}
                     label="Remember me"
                 />
-                <Button type="submit" onClick={onClicklll} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <LoadingButton
+                    loading={loading}
+                    type="submit"
+                    onClick={onClicklll}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                >
                     Sign In
-                </Button>
-                <Link to={PATH.REGISTRATION_PATH}>
-                    {"Don't have an account? Sign Up"}
-                </Link>
+                </LoadingButton>
+                <Link to={PATH.REGISTRATION_PATH}>{"Don't have an account? Sign Up"}</Link>
             </Box>
         </Box>
     );
