@@ -5,4 +5,7 @@
     "editor.tabSize": 4,
     "prettier.configPath": "frontend/.prettierrc",
     "prettier.ignorePath": "frontend/.prettierignore",
+    "prettier.jsxSingleQuote": true,
+    "prettier.jsxBracketSameLine": true,
+    "prettier.tabWidth": 4,
 }

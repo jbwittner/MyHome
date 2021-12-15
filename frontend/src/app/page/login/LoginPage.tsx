@@ -1,16 +1,13 @@
 import {
     Avatar,
-    Button,
     Checkbox,
     FormControlLabel,
-    LinearProgress,
     TextField,
     Typography
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
 import React from 'react';
-import { useNavigate } from 'react-router';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { LoginParameter, SecurityApi } from '../../../generated';
@@ -20,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { TestCompo } from '../../components/Forms';
 
 interface IFormInputs {
     userName: string;
@@ -35,7 +33,6 @@ const schema = yup
 
 export const LoginPage = () => {
     const [loading, setLoading] = React.useState(false);
-    const navigate = useNavigate();
 
     const {
         control,
@@ -112,6 +109,16 @@ export const LoginPage = () => {
                             error={errors.userName !== undefined}
                         />
                     )}
+                />
+                <TestCompo
+                    name="userName"
+                    control={control}
+                    defaultValue=""
+                    fullWidth
+                    label="User Name*"
+                    autoComplete="userName"
+                    sx={{ mt: 2 }}
+                    error={errors.userName !== undefined}
                 />
                 <Controller
                     name="password"

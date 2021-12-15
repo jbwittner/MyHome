@@ -12,6 +12,8 @@ logging:
   level:
     fr.myhome.server:
       MyHomeServerApplication: INFO
+      tools.handler:
+        GlobalExceptionHandler: INFO
       aop.interceptor: 
         RepositoryInterceptor: INFO
         ServiceInterceptor: INFO
@@ -19,8 +21,8 @@ logging:
     org:
       apache: INFO
       springframework:
-        data: INFO
-        web: INFO
+        data: ERROR
+        web: ERROR
 
 server:
   port : ${application.port}

@@ -21,6 +21,7 @@
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "start:eslint": "react-scripts start",
     "build": "react-scripts build",
+    "build:eslint": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage",
     "eject": "react-scripts eject",

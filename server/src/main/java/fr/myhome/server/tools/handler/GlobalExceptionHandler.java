@@ -37,14 +37,14 @@ public class GlobalExceptionHandler {
 
         if(ex instanceof FunctionalException){
             
-            this.logger.info("HANDLING - FunctionalException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
+            this.logger.warn("HANDLING - FunctionalException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
 
             exceptionDTO.setException(ex.getClass().getSimpleName());
             exceptionDTO.setMessage(ex.getMessage());
 
         } else if (ex instanceof MethodArgumentNotValidException){
 
-            this.logger.info("HANDLING - MethodArgumentNotValidException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
+            this.logger.warn("HANDLING - MethodArgumentNotValidException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
 
             exceptionDTO.setException(ex.getClass().getSimpleName());
             exceptionDTO.setMessage(ex.getMessage());
@@ -56,19 +56,19 @@ public class GlobalExceptionHandler {
             final Throwable throwable = undeclaredThrowableException.getUndeclaredThrowable();
 
             if(throwable instanceof FunctionalException){
-                this.logger.info("HANDLING - UndeclaredThrowableException / FunctionalException : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
+                this.logger.warn("HANDLING - UndeclaredThrowableException / FunctionalException : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
 
                 exceptionDTO.setException(throwable.getClass().getSimpleName());
                 exceptionDTO.setMessage(throwable.getMessage());
 
             } else if(throwable instanceof MethodArgumentNotValidException){
-                this.logger.info("HANDLING - UndeclaredThrowableException / MethodArgumentNotValidException : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
+                this.logger.warn("HANDLING - UndeclaredThrowableException / MethodArgumentNotValidException : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
 
                 exceptionDTO.setException(throwable.getClass().getSimpleName());
                 exceptionDTO.setMessage(throwable.getMessage());
 
             } else {
-                this.logger.info("HANDLING - UnknownException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
+                this.logger.error("HANDLING - UnknownException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
                 throw ex;
             }
             
