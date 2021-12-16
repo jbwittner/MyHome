@@ -1,20 +1,30 @@
 import { TextField, Theme } from '@mui/material';
 import { SxProps } from '@mui/system';
 import React from 'react';
-import { Controller, FieldPath, FieldPathValue, FieldValues, UnpackNestedValue } from 'react-hook-form';
+import {
+    Controller,
+    FieldPath,
+    FieldPathValue,
+    FieldValues,
+    UnpackNestedValue
+} from 'react-hook-form';
 
-export interface testInput<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> {
-    control: any
-    label?: React.ReactNode
-    autoComplete?: string
-    error?: boolean
-    fullWidth?: boolean
-    sx?: SxProps<Theme>
+export interface testInput<
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> {
+    control: any;
+    label?: React.ReactNode;
+    autoComplete?: string;
+    error?: boolean;
+    fullWidth?: boolean;
+    sx?: SxProps<Theme>;
     defaultValue?: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
+    type?: React.InputHTMLAttributes<unknown>['type'];
     name: TName;
 }
 
-export const TestCompo = (props: testInput) => {
+export const TextFieldController = (props: testInput) => {
     return (
         <Controller
             name={props.name}
@@ -26,6 +36,7 @@ export const TestCompo = (props: testInput) => {
                     fullWidth={props.fullWidth}
                     label={props.label}
                     autoComplete={props.autoComplete}
+                    type={props.type}
                     sx={props.sx}
                     error={props.error}
                 />

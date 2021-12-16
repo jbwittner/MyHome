@@ -1,7 +1,9 @@
 logging:
   level:
     fr.myhome.server:
-      MyHomeServerApplication: INFO
+      MyHomeServerApplication: ERROR
+      tools.handler:
+        GlobalExceptionHandler: OFF
       aop.interceptor: 
         RepositoryInterceptor: ERROR
         ServiceInterceptor: ERROR
@@ -9,8 +11,8 @@ logging:
     org:
       apache: INFO
       springframework:
-        data: INFO
-        web: INFO
+        data: ERROR
+        web: ERROR
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect

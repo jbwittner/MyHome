@@ -1,5 +1,12 @@
 import React from 'react';
-import { Route, Navigate, RouteProps, Routes, BrowserRouter as Router, Outlet } from 'react-router-dom';
+import {
+    Route,
+    Navigate,
+    RouteProps,
+    Routes,
+    BrowserRouter as Router,
+    Outlet
+} from 'react-router-dom';
 import { LoginContext } from '../context/Context';
 import { LoginPage } from '../page/login/LoginPage';
 import { RegistrationPage } from '../page/registration/RegistrationPage';
@@ -49,5 +56,8 @@ export function MainRouter() {
 
 const Privateaaa = () => <div>private</div>;
 
-const Privateaaadqsdqsd = () => <div><Outlet /></div>;
-
+const Privateaaadqsdqsd = () => (
+    <div>
+        <Outlet />
+    </div>
+);

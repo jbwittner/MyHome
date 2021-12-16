@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router';
 import { PATH } from '../../router/Router';
 import { SecurityApi, UserRegistrationParameter } from '../../../generated';
-import { API_CONFIGURATION } from '../../config/ApiConfig';
+import { API_CONFIGURATION } from '../../api/server/ApiConfig';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 interface IFormInputs {

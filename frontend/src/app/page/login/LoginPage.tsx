@@ -1,23 +1,18 @@
-import {
-    Avatar,
-    Checkbox,
-    FormControlLabel,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Avatar, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
 import React from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { LoginParameter, SecurityApi } from '../../../generated';
-import { API_CONFIGURATION } from '../../config/ApiConfig';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { API_CONFIGURATION } from '../../api/server/ApiConfig';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { TestCompo } from '../../components/Forms';
+import { TextFieldController } from '../../components/Forms';
+import { AxiosError } from 'axios';
 
 interface IFormInputs {
     userName: string;
@@ -34,6 +29,8 @@ const schema = yup
 export const LoginPage = () => {
     const [loading, setLoading] = React.useState(false);
 
+    const apiRegistration = new SecurityApi(API_CONFIGURATION);
+
     const {
         control,
         formState: { errors },
@@ -43,7 +40,7 @@ export const LoginPage = () => {
     });
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        toast("Wow so easy !");
+        toast('Wow so easy !');
         setLoading(true);
         const parameter: LoginParameter = {
             username: data.userName,
@@ -58,24 +55,7 @@ export const LoginPage = () => {
                 console.log(error);
             })
             .finally(() => {
-                setLoading(true);
-            });
-    };
-
-    const apiRegistration = new SecurityApi(API_CONFIGURATION);
-
-    const onClicklll = () => {
-        const parameter: LoginParameter = {
-            username: 'toto',
-            password: 'tata'
-        };
-        apiRegistration
-            .login(parameter)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
+                setLoading(false);
             });
     };
 
@@ -95,22 +75,7 @@ export const LoginPage = () => {
                 Sign in
             </Typography>
             <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, width: '500px' }}>
-                <Controller
-                    name="userName"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="User Name*"
-                            autoComplete="userName"
-                            sx={{ mt: 2 }}
-                            error={errors.userName !== undefined}
-                        />
-                    )}
-                />
-                <TestCompo
+                <TextFieldController
                     name="userName"
                     control={control}
                     defaultValue=""
@@ -120,20 +85,16 @@ export const LoginPage = () => {
                     sx={{ mt: 2 }}
                     error={errors.userName !== undefined}
                 />
-                <Controller
+                <TextFieldController
                     name="password"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="Password*"
-                            autoComplete="password"
-                            sx={{ mt: 2 }}
-                            error={errors.password !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    type="password"
+                    label="Password*"
+                    autoComplete="password"
+                    sx={{ mt: 2 }}
+                    error={errors.password !== undefined}
                 />
                 <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
@@ -142,7 +103,6 @@ export const LoginPage = () => {
                 <LoadingButton
                     loading={loading}
                     type="submit"
-                    onClick={onClicklll}
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
