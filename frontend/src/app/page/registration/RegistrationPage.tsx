@@ -1,15 +1,16 @@
 import { PersonAddAltRounded } from '@mui/icons-material';
 import { Avatar, Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router';
 import { PATH } from '../../router/Router';
-import { SecurityApi, UserRegistrationParameter } from '../../../generated';
-import { API_CONFIGURATION } from '../../api/server/ApiConfig';
+import { UserRegistrationParameter } from '../../../generated';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { useRegistration } from '../../api/server/SecurityApiHook';
+import { toast } from 'react-toastify';
 
 interface IFormInputs {
     firstName: string;
@@ -35,8 +36,6 @@ const schema = yup
 
 export const RegistrationPage = () => {
     const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
-    const securityApi = new SecurityApi(API_CONFIGURATION);
 
     const {
         control,
@@ -46,13 +45,16 @@ export const RegistrationPage = () => {
         resolver: yupResolver(schema)
     });
 
-    const onCancel = () => {
+    const onCancel = useCallback(() => navigate(PATH.LOGIN_PATH), []);
+
+    const onSuccess = useCallback(() => {
         navigate(PATH.LOGIN_PATH);
-    };
+        toast.success('Registration sucessfull');
+    }, [navigate, toast]);
+
+    const { isLoading, callRegistration } = useRegistration({ onSuccess: onSuccess });
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        setLoading(true);
-
         const userRegistrationParameter: UserRegistrationParameter = {
             username: data.username,
             firstName: data.firstName,
@@ -61,20 +63,7 @@ export const RegistrationPage = () => {
             password: data.password
         };
 
-        securityApi
-            .registration(userRegistrationParameter)
-            .then(() => {
-                console.log('registration ok');
-                navigate(PATH.LOGIN_PATH);
-            })
-            .catch((error) => {
-                console.log('regitration error 1');
-                console.log(error);
-                console.log('regitration error 2');
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        callRegistration(userRegistrationParameter);
     };
 
     return (
@@ -170,7 +159,7 @@ export const RegistrationPage = () => {
                     )}
                 />
                 <LoadingButton
-                    loading={loading}
+                    loading={isLoading}
                     type="submit"
                     fullWidth
                     variant="contained"

@@ -1,18 +1,15 @@
-import { Avatar, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
+import { Avatar, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useCallback } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
-import { LoginParameter, SecurityApi } from '../../../generated';
-import { API_CONFIGURATION } from '../../api/server/ApiConfig';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextFieldController } from '../../components/Forms';
-import { AxiosError } from 'axios';
+import { useLogin } from '../../api/server/SecurityApiHook';
 
 interface IFormInputs {
     userName: string;
@@ -27,9 +24,11 @@ const schema = yup
     .required();
 
 export const LoginPage = () => {
-    const [loading, setLoading] = React.useState(false);
+    const navigate = useNavigate();
 
-    const apiRegistration = new SecurityApi(API_CONFIGURATION);
+    const onSuccess = useCallback(() => navigate(PATH.HOME_PATH), []);
+
+    const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
 
     const {
         control,
@@ -40,23 +39,10 @@ export const LoginPage = () => {
     });
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        toast('Wow so easy !');
-        setLoading(true);
-        const parameter: LoginParameter = {
+        callLogin({
             username: data.userName,
             password: data.password
-        };
-        apiRegistration
-            .login(parameter)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        });
     };
 
     return (
@@ -101,7 +87,7 @@ export const LoginPage = () => {
                     label="Remember me"
                 />
                 <LoadingButton
-                    loading={loading}
+                    loading={isLoading}
                     type="submit"
                     fullWidth
                     variant="contained"
