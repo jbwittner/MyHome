@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextFieldController } from '../../components/Forms';
 import { useLogin } from '../../api/server/SecurityApiHook';
+import { LoginContext } from '../../context/Context';
 
 interface IFormInputs {
     userName: string;
@@ -25,8 +26,12 @@ const schema = yup
 
 export const LoginPage = () => {
     const navigate = useNavigate();
+    const { setIsAuthenticated } = React.useContext(LoginContext);
 
-    const onSuccess = useCallback(() => navigate(PATH.HOME_PATH), []);
+    const onSuccess = useCallback(() => {
+        setIsAuthenticated(true);
+        navigate(PATH.HOME_PATH);
+    }, [navigate, setIsAuthenticated]);
 
     const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
 

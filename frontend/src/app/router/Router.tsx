@@ -37,27 +37,20 @@ export function MainRouter() {
         <Router>
             {isAuthenticated}
             <Routes>
-                <Route path="/" element={<Privateaaadqsdqsd />}>
-                    <Route index element={<LoginPage />} />
-                    <Route path={PATH.REGISTRATION_PATH} element={<RegistrationPage />} />
-                    <Route
-                        path={PATH.HOME_PATH}
-                        element={
-                            <PrivateRoute>
-                                <Privateaaa />
-                            </PrivateRoute>
-                        }
-                    />
+                <Route index element={<LoginPage />} />
+                <Route path={PATH.REGISTRATION_PATH} element={<RegistrationPage />} />
+                <Route path="/" element={<AuthenticatedPages />}>
+                    <Route path={PATH.HOME_PATH} element={<Privateaaa />} />
                 </Route>
             </Routes>
         </Router>
     );
 }
 
-const Privateaaa = () => <div>private</div>;
-
-const Privateaaadqsdqsd = () => (
-    <div>
+const AuthenticatedPages = () => (
+    <React.Fragment>
         <Outlet />
-    </div>
+    </React.Fragment>
 );
+
+const Privateaaa = () => <div>private</div>;

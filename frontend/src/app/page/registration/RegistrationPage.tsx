@@ -1,7 +1,7 @@
 import { PersonAddAltRounded } from '@mui/icons-material';
 import { Avatar, Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,7 @@ import { UserRegistrationParameter } from '../../../generated';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useRegistration } from '../../api/server/SecurityApiHook';
 import { toast } from 'react-toastify';
+import { EMAIL_REGEX, PASSWORD_REGEX } from '../../api/server/ApiConfig';
 
 interface IFormInputs {
     firstName: string;
@@ -25,12 +26,8 @@ const schema = yup
         firstName: yup.string().required(),
         lastName: yup.string().required(),
         username: yup.string().required(),
-        email: yup
-            .string()
-            .matches(
-                /(^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/
-            ),
-        password: yup.string().matches(/(^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$)/)
+        email: yup.string().matches(EMAIL_REGEX),
+        password: yup.string().matches(PASSWORD_REGEX)
     })
     .required();
 
@@ -44,6 +41,30 @@ export const RegistrationPage = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema)
     });
+
+    useEffect(() => {
+        if (errors.firstName) {
+            toast.error(errors.firstName.message);
+        }
+
+        if (errors.lastName) {
+            toast.error(errors.lastName.message);
+        }
+
+        if (errors.username) {
+            toast.error(errors.username.message);
+        }
+
+        if (errors.email) {
+            toast.error(errors.email.message);
+        }
+
+        if (errors.password) {
+            toast.error(errors.password.message);
+        }
+    }, [errors]);
+
+    console.log(errors);
 
     const onCancel = useCallback(() => navigate(PATH.LOGIN_PATH), []);
 
