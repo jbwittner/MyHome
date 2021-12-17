@@ -31,5 +31,10 @@ public class AuthenticationController extends BaseRestController implements Auth
         this.authenticationService.registration(userRegistrationParameter);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> connectionTest() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     
 }

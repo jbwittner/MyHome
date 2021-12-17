@@ -1,7 +1,7 @@
 import { Avatar, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,9 +9,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextFieldController } from '../../components/Forms';
-import { useLogin } from '../../api/server/SecurityApiHook';
+import { useConnectionTest, useLogin } from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
-import { LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
+import { clearLocalStorage, LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
 
 interface IFormInputs {
     userName: string;
@@ -43,7 +43,17 @@ export const LoginPage = () => {
         navigate(PATH.HOME_PATH);
     }, [navigate, setIsAuthenticated, rememberMe]);
 
+    const onFailureConnectionText = useCallback(() => {
+        clearLocalStorage()
+        setIsAuthenticated(false);
+    }, [setIsAuthenticated]);
+
     const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
+    const { callConnectionTest } = useConnectionTest({ onSuccess: onSuccess, onError: onFailureConnectionText });
+
+    useEffect(() => {
+        callConnectionTest();
+    }, [])
     
     const handleChangeRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRememeberMe(event.target.checked);

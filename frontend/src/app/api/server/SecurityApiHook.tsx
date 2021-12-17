@@ -66,3 +66,22 @@ export const useRegistration = (props: RequestProps<void>) => {
 
     return { isLoading, callRegistration };
 };
+
+export const useConnectionTest = (props: RequestProps<void>) => {
+    const callConnectionTest = useCallback(() => {
+        apiTest
+            .connectionTest()
+            .then((response) => {
+                if (props.onSuccess) {
+                    props.onSuccess(response.data);
+                }
+            })
+            .catch(() => {
+                if (props.onError) {
+                    props.onError();
+                }
+            });
+    }, [props.onSuccess, props.onError]);
+
+    return { callConnectionTest };
+};

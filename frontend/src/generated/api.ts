@@ -165,6 +165,36 @@ export const SecurityApiAxiosParamCreator = function (configuration?: Configurat
     return {
         /**
          * 
+         * @summary Check if the user are connected
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        connectionTest: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/authentication/connectionTest`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Login
          * @param {LoginParameter} [loginParameter] Object that need to be authenticated
          * @param {*} [options] Override http request option.
@@ -243,6 +273,16 @@ export const SecurityApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Check if the user are connected
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async connectionTest(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.connectionTest(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Login
          * @param {LoginParameter} [loginParameter] Object that need to be authenticated
          * @param {*} [options] Override http request option.
@@ -275,6 +315,15 @@ export const SecurityApiFactory = function (configuration?: Configuration, baseP
     return {
         /**
          * 
+         * @summary Check if the user are connected
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        connectionTest(options?: any): AxiosPromise<void> {
+            return localVarFp.connectionTest(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Login
          * @param {LoginParameter} [loginParameter] Object that need to be authenticated
          * @param {*} [options] Override http request option.
@@ -303,6 +352,17 @@ export const SecurityApiFactory = function (configuration?: Configuration, baseP
  * @extends {BaseAPI}
  */
 export class SecurityApi extends BaseAPI {
+    /**
+     * 
+     * @summary Check if the user are connected
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SecurityApi
+     */
+    public connectionTest(options?: AxiosRequestConfig) {
+        return SecurityApiFp(this.configuration).connectionTest(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Login
