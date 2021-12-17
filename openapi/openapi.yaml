@@ -56,7 +56,7 @@ paths:
       tags:
         - security
       summary: Check if the user are connected
-      operationId: registration
+      operationId: connectionTest
       security: []
       responses:
         '200':
