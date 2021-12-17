@@ -1,8 +1,8 @@
 import { PersonAddAltRounded } from '@mui/icons-material';
-import { Avatar, Button, TextField, Typography } from '@mui/material';
+import { Avatar, Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useCallback, useEffect } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router';
@@ -12,6 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useRegistration } from '../../api/server/SecurityApiHook';
 import { toast } from 'react-toastify';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../api/server/ApiConfig';
+import { TextFieldController } from '../../components/Forms';
 
 interface IFormInputs {
     firstName: string;
@@ -103,81 +104,60 @@ export const RegistrationPage = () => {
                 Registration
             </Typography>
             <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, width: '500px' }}>
-                <Controller
+                <TextFieldController
                     name="firstName"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="First Name*"
-                            autoComplete="given-name"
-                            sx={{ mt: 2 }}
-                            error={errors.firstName !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    required
+                    label="First Name"
+                    autoComplete="given-name"
+                    sx={{ mt: 2 }}
+                    error={errors.firstName !== undefined}
                 />
-                <Controller
+                <TextFieldController
                     name="lastName"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="Last Name*"
-                            autoComplete="family-name"
-                            sx={{ mt: 2 }}
-                            error={errors.lastName !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    required
+                    label="Last Name"
+                    autoComplete="family-name"
+                    sx={{ mt: 2 }}
+                    error={errors.lastName !== undefined}
                 />
-                <Controller
+                <TextFieldController
                     name="username"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="User Name*"
-                            autoComplete="username"
-                            sx={{ mt: 2 }}
-                            error={errors.username !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    required
+                    label="User Name"
+                    autoComplete="username"
+                    sx={{ mt: 2 }}
+                    error={errors.username !== undefined}
                 />
-                <Controller
+                <TextFieldController
                     name="email"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="Email*"
-                            autoComplete="email"
-                            sx={{ mt: 2 }}
-                            error={errors.email !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    required
+                    label="Email"
+                    autoComplete="email"
+                    sx={{ mt: 2 }}
+                    error={errors.email !== undefined}
                 />
-                <Controller
+                <TextFieldController
                     name="password"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            fullWidth
-                            label="Password*"
-                            autoComplete="current-password"
-                            type="password"
-                            sx={{ mt: 2 }}
-                            error={errors.password !== undefined}
-                        />
-                    )}
+                    fullWidth
+                    required
+                    label="Password"
+                    autoComplete="current-password"
+                    sx={{ mt: 2 }}
+                    error={errors.password !== undefined}
                 />
                 <LoadingButton
                     loading={isLoading}

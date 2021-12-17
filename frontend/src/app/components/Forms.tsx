@@ -18,6 +18,7 @@ export interface testInput<
     autoComplete?: string;
     error?: boolean;
     fullWidth?: boolean;
+    required?: boolean;
     sx?: SxProps<Theme>;
     defaultValue?: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
     type?: React.InputHTMLAttributes<unknown>['type'];
@@ -34,6 +35,7 @@ export const TextFieldController = (props: testInput) => {
                 <TextField
                     {...field}
                     fullWidth={props.fullWidth}
+                    required={props.required}
                     label={props.label}
                     autoComplete={props.autoComplete}
                     type={props.type}

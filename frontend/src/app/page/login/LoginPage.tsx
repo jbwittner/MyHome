@@ -71,7 +71,7 @@ export const LoginPage = () => {
                     control={control}
                     defaultValue=""
                     fullWidth
-                    label="User Name*"
+                    label="User Name"
                     autoComplete="userName"
                     sx={{ mt: 2 }}
                     error={errors.userName !== undefined}
@@ -82,7 +82,7 @@ export const LoginPage = () => {
                     defaultValue=""
                     fullWidth
                     type="password"
-                    label="Password*"
+                    label="Password"
                     autoComplete="password"
                     sx={{ mt: 2 }}
                     error={errors.password !== undefined}

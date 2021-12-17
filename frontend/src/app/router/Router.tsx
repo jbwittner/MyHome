@@ -8,6 +8,8 @@ import {
     Outlet
 } from 'react-router-dom';
 import { LoginContext } from '../context/Context';
+import { NotFoundPage } from '../page/error/NotFoundPage';
+import { HomePage } from '../page/home/HomePage';
 import { LoginPage } from '../page/login/LoginPage';
 import { RegistrationPage } from '../page/registration/RegistrationPage';
 
@@ -22,35 +24,25 @@ interface PrivateRouteProps extends RouteProps {
     children: JSX.Element;
 }
 
-const PrivateRoute = ({ children }: PrivateRouteProps) => {
+const PrivateOutlet = () => {
     const { isAuthenticated } = React.useContext(LoginContext);
 
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to / page
-    return isAuthenticated ? children : <Navigate to={PATH.LOGIN_PATH} />;
+    return isAuthenticated ? <Outlet /> : <Navigate to={PATH.LOGIN_PATH} />;
 };
 
 export function MainRouter() {
-    const { isAuthenticated } = React.useContext(LoginContext);
-
     return (
         <Router>
-            {isAuthenticated}
             <Routes>
                 <Route index element={<LoginPage />} />
                 <Route path={PATH.REGISTRATION_PATH} element={<RegistrationPage />} />
-                <Route path="/" element={<AuthenticatedPages />}>
-                    <Route path={PATH.HOME_PATH} element={<Privateaaa />} />
+                <Route path="/" element={<PrivateOutlet />}>
+                    <Route path={PATH.HOME_PATH} element={<HomePage />} />
                 </Route>
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
 }
-
-const AuthenticatedPages = () => (
-    <React.Fragment>
-        <Outlet />
-    </React.Fragment>
-);
-
-const Privateaaa = () => <div>private</div>;
