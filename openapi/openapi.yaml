@@ -51,6 +51,16 @@ paths:
       responses:
         '200':
           description: successful operation
+  /authentication/connectionTest:
+    get:
+      tags:
+        - security
+      summary: Check if the user are connected
+      operationId: registration
+      security: []
+      responses:
+        '200':
+          description: successful operation
 #  ----- AUTHENTICATION  ------------------------------------
 components:
   schemas:

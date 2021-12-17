@@ -65,8 +65,6 @@ export const RegistrationPage = () => {
         }
     }, [errors]);
 
-    console.log(errors);
-
     const onCancel = useCallback(() => navigate(PATH.LOGIN_PATH), []);
 
     const onSuccess = useCallback(() => {

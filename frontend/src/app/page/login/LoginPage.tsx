@@ -1,7 +1,7 @@
 import { Avatar, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { TextFieldController } from '../../components/Forms';
 import { useLogin } from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
+import { LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
 
 interface IFormInputs {
     userName: string;
@@ -26,15 +27,8 @@ const schema = yup
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { setIsAuthenticated } = React.useContext(LoginContext);
-
-    const onSuccess = useCallback(() => {
-        setIsAuthenticated(true);
-        navigate(PATH.HOME_PATH);
-    }, [navigate, setIsAuthenticated]);
-
-    const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
-
+    const { setIsAuthenticated } = useContext(LoginContext);
+    const [rememberMe, setRememeberMe] = useState(false);
     const {
         control,
         formState: { errors },
@@ -42,6 +36,18 @@ export const LoginPage = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema)
     });
+
+    const onSuccess = useCallback(() => {
+        setLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME, rememberMe);
+        setIsAuthenticated(true);
+        navigate(PATH.HOME_PATH);
+    }, [navigate, setIsAuthenticated, rememberMe]);
+
+    const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
+    
+    const handleChangeRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRememeberMe(event.target.checked);
+    };
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         callLogin({
@@ -88,7 +94,14 @@ export const LoginPage = () => {
                     error={errors.password !== undefined}
                 />
                 <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
+                    control={
+                        <Checkbox
+                            value="remember"
+                            color="primary"
+                            checked={rememberMe}
+                            onChange={handleChangeRememberMe}
+                        />
+                    }
                     label="Remember me"
                 />
                 <LoadingButton

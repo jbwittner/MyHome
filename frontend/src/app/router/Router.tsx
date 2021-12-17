@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Route,
     Navigate,
-    RouteProps,
     Routes,
     BrowserRouter as Router,
     Outlet
@@ -12,6 +11,7 @@ import { NotFoundPage } from '../page/error/NotFoundPage';
 import { HomePage } from '../page/home/HomePage';
 import { LoginPage } from '../page/login/LoginPage';
 import { RegistrationPage } from '../page/registration/RegistrationPage';
+import { clearLocalStorage } from '../storage/LocalStorage';
 
 /* eslint-disable no-unused-vars */
 export enum PATH {
@@ -20,12 +20,15 @@ export enum PATH {
     HOME_PATH = '/home'
 }
 
-interface PrivateRouteProps extends RouteProps {
-    children: JSX.Element;
-}
-
 const PrivateOutlet = () => {
     const { isAuthenticated } = React.useContext(LoginContext);
+
+    useEffect(() => {
+        console.log("Check isAuthenticated")
+        if(isAuthenticated !== true){
+            clearLocalStorage();
+        }
+    }, [isAuthenticated])
 
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to / page
