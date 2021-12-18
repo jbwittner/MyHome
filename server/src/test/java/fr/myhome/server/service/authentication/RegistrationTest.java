@@ -34,7 +34,6 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     protected AuthenticationServiceImpl authenticationServiceImpl;
 
     @Override

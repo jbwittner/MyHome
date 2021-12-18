@@ -1,11 +1,5 @@
 package fr.myhome.server.service.authentication;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.github.javafaker.Name;
-
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +7,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.myhome.server.exception.LoginException;
-import fr.myhome.server.exception.UserEmailAlreadyExistException;
-import fr.myhome.server.exception.UsernameAlreadyExistException;
 import fr.myhome.server.generated.model.LoginParameter;
-import fr.myhome.server.generated.model.UserRegistrationParameter;
 import fr.myhome.server.model.User;
-import fr.myhome.server.model.enumerate.Role;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.implementation.AuthenticationServiceImpl;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;

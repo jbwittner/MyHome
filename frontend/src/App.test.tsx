@@ -1,9 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './app/App';
+import { RegistrationPage } from './app/page/registration/RegistrationPage';
+import { MemoryRouter } from 'react-router-dom';
 
-test('renders learn react link', () => {
-    render(<App />);
-    const linkElement = screen.getByText(/Sign in/);
-    expect(linkElement).toBeInTheDocument();
+test('test', () => {
+    const {queryByLabelText, getByLabelText} = render(
+        <MemoryRouter>
+            <RegistrationPage />
+        </MemoryRouter>
+    );
 });
