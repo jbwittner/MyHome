@@ -1,11 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './app/App';
+import { render } from '@testing-library/react';
 import { RegistrationPage } from './app/page/registration/RegistrationPage';
 import { MemoryRouter } from 'react-router-dom';
 
 test('test', () => {
-    const {queryByLabelText, getByLabelText} = render(
+    render(
         <MemoryRouter>
             <RegistrationPage />
         </MemoryRouter>
