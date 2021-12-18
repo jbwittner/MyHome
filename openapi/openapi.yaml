@@ -12,11 +12,13 @@ externalDocs:
   description: Find out more about Swagger
   url: 'https://swagger.io'
 servers:
-  - url: 'http://localhost:9080'
+  - url: 'http://localhost:6080/api'
 tags:
   - name: security
     description: Management of security
 paths:
+#  ----- PATHS  ---------------------------------------------
+#  ----- AUTHENTICATION  ------------------------------------
   /authentication/login:
     post:
       tags:
@@ -38,7 +40,7 @@ paths:
       tags:
         - security
       summary: Register a new user account
-      operationId: userRegistration
+      operationId: registration
       security: []
       requestBody:
         description: Object that needs to register a new user
@@ -47,14 +49,39 @@ paths:
             schema:
               $ref: '#/components/schemas/UserRegistrationParameter'
       responses:
-        '201':
+        '200':
           description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDTO'
+  /authentication/connectionTest:
+    get:
+      tags:
+        - security
+      summary: Check if the user are connected
+      operationId: connectionTest
+      security: []
+      responses:
+        '200':
+          description: successful operation
+#  ----- AUTHENTICATION  ------------------------------------
 components:
   schemas:
+    ExceptionDTO:
+      type: object
+      properties:
+        details:
+          type: string
+        exception:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - details
+        - exception
+        - message
+        - timestamp
+#  ----- PARAMETERS  ----------------------------------------
     LoginParameter:
       type: object
       properties:
@@ -65,7 +92,7 @@ components:
           format: password
           writeOnly: true
       required:
-        - userName
+        - username
         - password
     UserRegistrationParameter:
       type: object
@@ -85,7 +112,7 @@ components:
           type: string
           pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$'
       required:
-        - userName
+        - username
         - email
         - firstName
         - lastName
@@ -95,7 +122,7 @@ components:
     UserDTO:
       type: object
       properties:
-        userName:
+        username:
           type: string
         email:
           type: string
@@ -109,7 +136,7 @@ components:
           items:
             $ref: '#/components/schemas/UserRoleEnum'
       required:
-        - userName
+        - username
         - email
         - firstName
         - lastName

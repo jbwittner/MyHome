@@ -6,7 +6,6 @@
 package fr.myhome.server.generated.api;
 
 import fr.myhome.server.generated.model.LoginParameter;
-import fr.myhome.server.generated.model.UserDTO;
 import fr.myhome.server.generated.model.UserRegistrationParameter;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -32,6 +31,24 @@ public interface AuthenticationApi {
     }
 
     /**
+     * GET /authentication/connectionTest : Check if the user are connected
+     *
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "Check if the user are connected", nickname = "connectionTest", notes = "", tags={ "security", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation") })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/authentication/connectionTest"
+    )
+    default ResponseEntity<Void> connectionTest() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * POST /authentication/login : Login
      *
      * @param loginParameter Object that need to be authenticated (optional)
@@ -55,27 +72,17 @@ public interface AuthenticationApi {
      * PUT /authentication/registration : Register a new user account
      *
      * @param userRegistrationParameter Object that needs to register a new user (optional)
-     * @return successful operation (status code 201)
+     * @return successful operation (status code 200)
      */
-    @ApiOperation(value = "Register a new user account", nickname = "userRegistration", notes = "", response = UserDTO.class, tags={ "security", })
+    @ApiOperation(value = "Register a new user account", nickname = "registration", notes = "", tags={ "security", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "successful operation", response = UserDTO.class) })
+        @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/authentication/registration",
-        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<UserDTO> userRegistration(@ApiParam(value = "Object that needs to register a new user") @Valid @RequestBody(required = false) UserRegistrationParameter userRegistrationParameter) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userName\" : \"userName\", \"email\" : \"email\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
+    default ResponseEntity<Void> registration(@ApiParam(value = "Object that needs to register a new user") @Valid @RequestBody(required = false) UserRegistrationParameter userRegistrationParameter) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

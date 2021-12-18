@@ -38,7 +38,8 @@ public class UserRegistrationParameter   {
    * Get username
    * @return username
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getUsername() {
