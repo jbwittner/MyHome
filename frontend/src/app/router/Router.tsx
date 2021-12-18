@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-    Route,
-    Navigate,
-    Routes,
-    BrowserRouter as Router,
-    Outlet
-} from 'react-router-dom';
+import { Route, Navigate, Routes, BrowserRouter as Router, Outlet } from 'react-router-dom';
 import { LoginContext } from '../context/Context';
 import { NotFoundPage } from '../page/error/NotFoundPage';
 import { HomePage } from '../page/home/HomePage';
@@ -24,11 +18,10 @@ const PrivateOutlet = () => {
     const { isAuthenticated } = React.useContext(LoginContext);
 
     useEffect(() => {
-        console.log("Check isAuthenticated")
-        if(isAuthenticated !== true){
+        if (isAuthenticated !== true) {
             clearLocalStorage();
         }
-    }, [isAuthenticated])
+    }, [isAuthenticated]);
 
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to / page

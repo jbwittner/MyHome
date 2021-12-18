@@ -44,17 +44,20 @@ export const LoginPage = () => {
     }, [navigate, setIsAuthenticated, rememberMe]);
 
     const onFailureConnectionText = useCallback(() => {
-        clearLocalStorage()
+        clearLocalStorage();
         setIsAuthenticated(false);
     }, [setIsAuthenticated]);
 
     const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
-    const { callConnectionTest } = useConnectionTest({ onSuccess: onSuccess, onError: onFailureConnectionText });
+    const { callConnectionTest } = useConnectionTest({
+        onSuccess: onSuccess,
+        onError: onFailureConnectionText
+    });
 
     useEffect(() => {
         callConnectionTest();
-    }, [])
-    
+    }, []);
+
     const handleChangeRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRememeberMe(event.target.checked);
     };
