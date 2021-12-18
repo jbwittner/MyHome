@@ -17,6 +17,7 @@ public class AuthenticationController extends BaseRestController implements Auth
 
     @Autowired
     AuthenticationController(final AuthenticationService authenticationService){
+        super();
         this.authenticationService = authenticationService;
     }
 
