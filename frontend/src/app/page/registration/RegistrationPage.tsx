@@ -152,6 +152,7 @@ export const RegistrationPage = () => {
                     defaultValue=""
                     fullWidth
                     required
+                    type="password"
                     label="Password"
                     autoComplete="current-password"
                     sx={{ mt: 2 }}

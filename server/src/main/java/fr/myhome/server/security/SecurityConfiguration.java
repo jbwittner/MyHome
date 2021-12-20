@@ -13,6 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import fr.myhome.server.tools.JwtTokenUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -21,9 +24,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     public static final String[] PUBLIC_ENDPOINTS = new String[] {
-        "/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png",
-        "/static/**", "/*.svg", "/*.jpg", "/api/authentication/registration", "/api/authentication/login", "/registration"};
+        "/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js",
+        "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg",
+        "/api/authentication/registration",
+        "/api/authentication/login",
+        "/api/authentication/refreshAccessToken"};
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -54,6 +63,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatcher("/**").authorizeRequests()
             .antMatchers(PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated();
+
+        final AuthTokenFilter authTokenFilter = new AuthTokenFilter(this.userDetailsService, this.jwtTokenUtil);
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 

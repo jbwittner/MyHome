@@ -12,6 +12,8 @@ import fr.myhome.server.model.User;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.implementation.AuthenticationServiceImpl;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;
+import fr.myhome.server.tools.CookieUtil;
+import fr.myhome.server.tools.JwtTokenUtil;
 
 public class LoginTest extends AbstractMotherIntegrationTest {
 
@@ -24,12 +26,17 @@ public class LoginTest extends AbstractMotherIntegrationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private CookieUtil cookieUtil;
 
     protected AuthenticationServiceImpl authenticationServiceImpl;
 
     @Override
     protected void initDataBeforeEach() {
-        this.authenticationServiceImpl = new AuthenticationServiceImpl(authenticationManager, passwordEncoder, userRepository);
+        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository);
     }
 
     @Test

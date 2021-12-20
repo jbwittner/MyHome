@@ -1,9 +1,14 @@
+application:
+
+
 logging:
   level:
     fr.myhome.server:
       MyHomeServerApplication: ERROR
-      tools.handler:
-        GlobalExceptionHandler: OFF
+      tools:
+        JwtTokenUtil: ERROR
+        handler:
+          GlobalExceptionHandler: OFF
       aop.interceptor: 
         RepositoryInterceptor: ERROR
         ServiceInterceptor: ERROR

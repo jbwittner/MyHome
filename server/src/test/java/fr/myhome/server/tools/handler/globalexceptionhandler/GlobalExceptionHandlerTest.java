@@ -1,6 +1,7 @@
 package fr.myhome.server.tools.handler.globalexceptionhandler;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.security.Principal;
@@ -11,7 +12,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.WebRequest;
@@ -36,7 +36,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final Exception exception = new Exception();
 
         Assertions.assertThrows(Exception.class,
-            () -> globalExceptionHandler.globuleExceptionHandler(exception, fakeWebRequest));
+            () -> globalExceptionHandler.globaleExceptionHandler(exception, fakeWebRequest));
         
     }
 
@@ -50,7 +50,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final UndeclaredThrowableException undeclaredThrowableException = new UndeclaredThrowableException(exception);
 
         Assertions.assertThrows(Exception.class,
-            () -> globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest));
+            () -> globalExceptionHandler.globaleExceptionHandler(undeclaredThrowableException, fakeWebRequest));
         
     }
 
@@ -61,13 +61,13 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
 
         final MethodArgumentNotValidException methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
-        Mockito.when(methodArgumentNotValidException.getMessage()).thenReturn(this.testFactory.getRandomAlphanumericString());
+        when(methodArgumentNotValidException.getMessage()).thenReturn(this.testFactory.getRandomAlphanumericString());
 
         final Date dateBefore = new Date();
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(methodArgumentNotValidException, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globaleExceptionHandler(methodArgumentNotValidException, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -78,7 +78,9 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
-        Assertions.assertEquals(MethodArgumentNotValidException.class.getSimpleName(), errorDetails.getException());
+        final String[] words = errorDetails.getException().split("[$]");
+
+        Assertions.assertEquals(MethodArgumentNotValidException.class.getSimpleName(), words[0]);
         Assertions.assertEquals(methodArgumentNotValidException.getMessage(), errorDetails.getMessage());
         Assertions.assertEquals(fakeWebRequest.getDescription(false), errorDetails.getDetails());
         Assertions.assertTrue(dateBefore.before(dateException));
@@ -93,14 +95,14 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
 
         final MethodArgumentNotValidException methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
-        Mockito.when(methodArgumentNotValidException.getMessage()).thenReturn(this.testFactory.getRandomAlphanumericString());
+        when(methodArgumentNotValidException.getMessage()).thenReturn(this.testFactory.getRandomAlphanumericString());
         final UndeclaredThrowableException undeclaredThrowableException = new UndeclaredThrowableException(methodArgumentNotValidException);
 
         final Date dateBefore = new Date();
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globaleExceptionHandler(undeclaredThrowableException, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -111,7 +113,9 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
-        Assertions.assertEquals(MethodArgumentNotValidException.class.getSimpleName(), errorDetails.getException());
+        final String[] words = errorDetails.getException().split("[$]");
+
+        Assertions.assertEquals(MethodArgumentNotValidException.class.getSimpleName(), words[0]);
         Assertions.assertEquals(methodArgumentNotValidException.getMessage(), errorDetails.getMessage());
         Assertions.assertEquals(fakeWebRequest.getDescription(false), errorDetails.getDetails());
         Assertions.assertTrue(dateBefore.before(dateException));
@@ -132,7 +136,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globaleExceptionHandler(undeclaredThrowableException, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -143,7 +147,9 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
-        Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), errorDetails.getException());
+        final String[] words = errorDetails.getException().split("[$]");
+
+        Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), words[0]);
         Assertions.assertEquals(exception.getMessage(), errorDetails.getMessage());
         Assertions.assertEquals(fakeWebRequest.getDescription(false), errorDetails.getDetails());
         Assertions.assertTrue(dateBefore.before(dateException));
@@ -163,7 +169,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(exception, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globaleExceptionHandler(exception, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -174,7 +180,9 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
-        Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), errorDetails.getException());
+        final String[] words = errorDetails.getException().split("[$]");
+
+        Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), words[0]);
         Assertions.assertEquals(exception.getMessage(), errorDetails.getMessage());
         Assertions.assertEquals(fakeWebRequest.getDescription(false), errorDetails.getDetails());
         Assertions.assertTrue(dateBefore.before(dateException), "dateBefore");

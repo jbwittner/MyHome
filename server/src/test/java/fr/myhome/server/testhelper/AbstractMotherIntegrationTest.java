@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
@@ -19,6 +20,7 @@ public abstract class AbstractMotherIntegrationTest {
      */
     @BeforeEach
     public void beforeEach() {
+        SecurityContextHolder.clearContext();
         this.testFactory.resetAllList();
         this.initDataBeforeEach();
     }
@@ -28,6 +30,7 @@ public abstract class AbstractMotherIntegrationTest {
      */
     @AfterEach
     public void afterEach(){
+        SecurityContextHolder.clearContext();
         this.testFactory.resetAllList();
     }
 

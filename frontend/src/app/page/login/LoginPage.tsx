@@ -1,4 +1,4 @@
-import { Avatar, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Avatar, Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { TextFieldController } from '../../components/Forms';
 import { useConnectionTest, useLogin } from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
-import { clearLocalStorage, LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
+import { clearLocalStorage, getLocalStorage, LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
 
 interface IFormInputs {
     userName: string;
@@ -55,8 +55,17 @@ export const LoginPage = () => {
     });
 
     useEffect(() => {
-        callConnectionTest();
+        const rememberMe: Boolean = getLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME);
+        if(rememberMe === true){
+            callConnectionTest();
+        } else {
+            clearLocalStorage();
+        }
     }, []);
+
+    const onClickdd = () => {
+        callConnectionTest();
+    }
 
     const handleChangeRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRememeberMe(event.target.checked);
@@ -127,6 +136,7 @@ export const LoginPage = () => {
                     Sign In
                 </LoadingButton>
                 <Link to={PATH.REGISTRATION_PATH}>{"Don't have an account? Sign Up"}</Link>
+                <Button onClick={onClickdd}>TEST</Button>
             </Box>
         </Box>
     );

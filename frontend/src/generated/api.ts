@@ -74,6 +74,42 @@ export interface LoginParameter {
 /**
  * 
  * @export
+ * @interface TokenDTO
+ */
+export interface TokenDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenDTO
+     */
+    'jwt': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TokenDTO
+     */
+    'duration': number;
+    /**
+     * 
+     * @type {TokenTypeEnum}
+     * @memberof TokenDTO
+     */
+    'type': TokenTypeEnum;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export enum TokenTypeEnum {
+    AccessToken = 'ACCESS_TOKEN',
+    RefreshToken = 'REFRESH_TOKEN'
+}
+
+/**
+ * 
+ * @export
  * @interface UserDTO
  */
 export interface UserDTO {
@@ -182,6 +218,10 @@ export const SecurityApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JwtAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -221,6 +261,40 @@ export const SecurityApiAxiosParamCreator = function (configuration?: Configurat
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(loginParameter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Refresh access token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshAccessToken: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/authentication/refreshAccessToken`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JwtAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -294,6 +368,16 @@ export const SecurityApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Refresh access token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refreshAccessToken(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshAccessToken(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Register a new user account
          * @param {UserRegistrationParameter} [userRegistrationParameter] Object that needs to register a new user
          * @param {*} [options] Override http request option.
@@ -331,6 +415,15 @@ export const SecurityApiFactory = function (configuration?: Configuration, baseP
          */
         login(loginParameter?: LoginParameter, options?: any): AxiosPromise<void> {
             return localVarFp.login(loginParameter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Refresh access token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshAccessToken(options?: any): AxiosPromise<void> {
+            return localVarFp.refreshAccessToken(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -373,6 +466,17 @@ export class SecurityApi extends BaseAPI {
      */
     public login(loginParameter?: LoginParameter, options?: AxiosRequestConfig) {
         return SecurityApiFp(this.configuration).login(loginParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Refresh access token
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SecurityApi
+     */
+    public refreshAccessToken(options?: AxiosRequestConfig) {
+        return SecurityApiFp(this.configuration).refreshAccessToken(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

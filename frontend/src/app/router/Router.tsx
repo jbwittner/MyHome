@@ -17,12 +17,6 @@ export enum PATH {
 const PrivateOutlet = () => {
     const { isAuthenticated } = React.useContext(LoginContext);
 
-    useEffect(() => {
-        if (isAuthenticated !== true) {
-            clearLocalStorage();
-        }
-    }, [isAuthenticated]);
-
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to / page
     return isAuthenticated ? <Outlet /> : <Navigate to={PATH.LOGIN_PATH} />;
