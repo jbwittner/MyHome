@@ -113,7 +113,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(loginParameter.getUsername());
         final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(loginParameter.getUsername());
 
-        Long accessRefreshTokenCookie = loginParameter.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
+        final Long accessRefreshTokenCookie = loginParameter.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
 
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());
@@ -130,7 +130,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
     }
 
     @Override
-    public HttpHeaders refreshAccessToken(Cookie[] cookies){
+    public HttpHeaders refreshAccessToken(final Cookie[] cookies){
 
         if(cookies == null) {
             throw new NoRefreshTokenCookie();
@@ -153,7 +153,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
         final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(userName);
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(userName);
 
-        Long accessRefreshTokenCookie = user.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
+        final Long accessRefreshTokenCookie = user.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
 
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());
