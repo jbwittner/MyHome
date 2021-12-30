@@ -13,6 +13,8 @@ externalDocs:
   url: 'https://swagger.io'
 servers:
   - url: 'http://localhost:6080/api'
+security:
+  - JwtAuth: []
 tags:
   - name: security
     description: Management of security
@@ -57,12 +59,26 @@ paths:
         - security
       summary: Check if the user are connected
       operationId: connectionTest
-      security: []
+      responses:
+        '200':
+          description: successful operation
+  /authentication/refreshAccessToken:
+    post:
+      tags:
+        - security
+      summary: Refresh access token
+      operationId: refreshAccessToken
       responses:
         '200':
           description: successful operation
 #  ----- AUTHENTICATION  ------------------------------------
 components:
+  securitySchemes:
+    JwtAuth:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     ExceptionDTO:
       type: object
@@ -91,9 +107,12 @@ components:
           type: string
           format: password
           writeOnly: true
+        rememberMe:
+          type: boolean
       required:
         - username
         - password
+        - rememberMe
     UserRegistrationParameter:
       type: object
       properties:
@@ -143,9 +162,27 @@ components:
         - roles
 #  ----- DTO  -----------------------------------------------
 #  ----- Enum -----------------------------------------------
+    TokenDTO:
+      type: object
+      properties:
+        jwt:
+          type: string
+        duration:
+          type: integer
+          format: int64
+        type:
+          $ref: '#/components/schemas/TokenTypeEnum'
+      required:
+        - jwt
+        - duration
+        - type
     UserRoleEnum:
       type: string
       enum:
         - ADMIN
         - USER
-#  ----- Enum -----------------------------------------------
+    TokenTypeEnum:
+      type: string
+      enum:
+        - ACCESS_TOKEN
+        - REFRESH_TOKEN

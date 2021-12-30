@@ -1,21 +1,21 @@
-import { Avatar, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
-import { TextFieldController } from '../../components/Forms';
+import { CheckboxController, TextFieldController } from '../../components/Forms';
 import { useConnectionTest, useLogin } from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
-import { clearLocalStorage, LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
 
 interface IFormInputs {
     userName: string;
     password: string;
+    rememberMe: boolean;
 }
 
 const schema = yup
@@ -28,7 +28,6 @@ const schema = yup
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { setIsAuthenticated } = useContext(LoginContext);
-    const [rememberMe, setRememeberMe] = useState(false);
     const {
         control,
         formState: { errors },
@@ -38,13 +37,11 @@ export const LoginPage = () => {
     });
 
     const onSuccess = useCallback(() => {
-        setLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME, rememberMe);
         setIsAuthenticated(true);
         navigate(PATH.HOME_PATH);
-    }, [navigate, setIsAuthenticated, rememberMe]);
+    }, [navigate, setIsAuthenticated]);
 
     const onFailureConnectionText = useCallback(() => {
-        clearLocalStorage();
         setIsAuthenticated(false);
     }, [setIsAuthenticated]);
 
@@ -58,14 +55,11 @@ export const LoginPage = () => {
         callConnectionTest();
     }, []);
 
-    const handleChangeRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRememeberMe(event.target.checked);
-    };
-
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
         callLogin({
             username: data.userName,
-            password: data.password
+            password: data.password,
+            rememberMe: data.rememberMe
         });
     };
 
@@ -106,16 +100,12 @@ export const LoginPage = () => {
                     sx={{ mt: 2 }}
                     error={errors.password !== undefined}
                 />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            value="remember"
-                            color="primary"
-                            checked={rememberMe}
-                            onChange={handleChangeRememberMe}
-                        />
-                    }
+                <CheckboxController
+                    name="rememberMe"
+                    control={control}
                     label="Remember me"
+                    color="primary"
+                    defaultValue={false}
                 />
                 <LoadingButton
                     loading={isLoading}

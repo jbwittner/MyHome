@@ -7,15 +7,25 @@ application:
     db-name: myhome
     user: myhome_user
     password: MyHomePass2020
+  jwt:
+    secret: MySuperSecretPassPhraseForApplication
+    audience: MyHomeDev
+    accessTokenExpirationSec: 3 600 #1 h
+    refreshTokenExpirationSec: 604 800 #7 days
 
 logging:
   level:
     fr.myhome.server:
       MyHomeServerApplication: INFO
-      tools.handler:
-        GlobalExceptionHandler: INFO
+      service.implementation.MotherServiceImpl : INFO
+      security:
+        AuthTokenFilter: INFO
+      tools:
+        JwtTokenUtil: INFO
+        handler:
+          GlobalExceptionHandler: INFO
       aop.interceptor: 
-        RepositoryInterceptor: INFO
+        RepositoryInterceptor: ERROR
         ServiceInterceptor: INFO
         ControllerInterceptor: INFO
     org:

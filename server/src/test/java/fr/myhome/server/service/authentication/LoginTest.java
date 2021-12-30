@@ -3,6 +3,7 @@ package fr.myhome.server.service.authentication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -12,6 +13,8 @@ import fr.myhome.server.model.User;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.implementation.AuthenticationServiceImpl;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;
+import fr.myhome.server.tools.CookieUtil;
+import fr.myhome.server.tools.JwtTokenUtil;
 
 public class LoginTest extends AbstractMotherIntegrationTest {
 
@@ -24,25 +27,55 @@ public class LoginTest extends AbstractMotherIntegrationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private CookieUtil cookieUtil;
 
     protected AuthenticationServiceImpl authenticationServiceImpl;
 
     @Override
     protected void initDataBeforeEach() {
-        this.authenticationServiceImpl = new AuthenticationServiceImpl(authenticationManager, passwordEncoder, userRepository);
+        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository);
     }
 
     @Test
-    protected void testLoginOk() {
-        final User user = this.testFactory.getUser();
+    protected void testLoginOkNotRememberMe() {
+        User user = this.testFactory.getUser();
         final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
         user.setPassword(passwordEncoder.encode(nonEncodedPassword));
 
         final LoginParameter loginParameter = new LoginParameter();
         loginParameter.setPassword(nonEncodedPassword);
         loginParameter.setUsername(user.getUsername());
+        loginParameter.setRememberMe(false);
 
         this.authenticationServiceImpl.login(loginParameter);
+
+        user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
+
+        Assertions.assertFalse(user.getRememberMe());
+
+    }
+
+    @Test
+    protected void testLoginOkRememberMe() {
+        User user = this.testFactory.getUser();
+        final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
+        user.setPassword(passwordEncoder.encode(nonEncodedPassword));
+
+        final LoginParameter loginParameter = new LoginParameter();
+        loginParameter.setPassword(nonEncodedPassword);
+        loginParameter.setUsername(user.getUsername());
+        loginParameter.setRememberMe(true);
+
+        this.authenticationServiceImpl.login(loginParameter);
+
+        user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
+
+        Assertions.assertTrue(user.getRememberMe());
+
     }
 
     @Test

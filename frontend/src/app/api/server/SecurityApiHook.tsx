@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { LoginParameter, SecurityApi, UserRegistrationParameter } from '../../../generated';
 import { API_CONFIGURATION, showError } from './ApiConfig';
 
-const apiTest = new SecurityApi(API_CONFIGURATION);
+const securityApi = new SecurityApi(API_CONFIGURATION);
 
 interface RequestProps<T> {
     onSuccess?: (data: T) => void;
@@ -15,7 +15,7 @@ export const useLogin = (props: RequestProps<void>) => {
     const callLogin = useCallback(
         (loginParameter: LoginParameter) => {
             setIsLoading(true);
-            apiTest
+            securityApi
                 .login(loginParameter)
                 .then((response) => {
                     if (props.onSuccess) {
@@ -44,7 +44,7 @@ export const useRegistration = (props: RequestProps<void>) => {
     const callRegistration = useCallback(
         (userRegistrationParameter: UserRegistrationParameter) => {
             setIsLoading(true);
-            apiTest
+            securityApi
                 .registration(userRegistrationParameter)
                 .then((response) => {
                     if (props.onSuccess) {
@@ -69,7 +69,7 @@ export const useRegistration = (props: RequestProps<void>) => {
 
 export const useConnectionTest = (props: RequestProps<void>) => {
     const callConnectionTest = useCallback(() => {
-        apiTest
+        securityApi
             .connectionTest()
             .then((response) => {
                 if (props.onSuccess) {

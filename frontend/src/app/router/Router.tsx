@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Navigate, Routes, BrowserRouter as Router, Outlet } from 'react-router-dom';
 import { LoginContext } from '../context/Context';
 import { NotFoundPage } from '../page/error/NotFoundPage';
 import { HomePage } from '../page/home/HomePage';
 import { LoginPage } from '../page/login/LoginPage';
 import { RegistrationPage } from '../page/registration/RegistrationPage';
-import { clearLocalStorage } from '../storage/LocalStorage';
 
 /* eslint-disable no-unused-vars */
 export enum PATH {
@@ -16,12 +15,6 @@ export enum PATH {
 
 const PrivateOutlet = () => {
     const { isAuthenticated } = React.useContext(LoginContext);
-
-    useEffect(() => {
-        if (isAuthenticated !== true) {
-            clearLocalStorage();
-        }
-    }, [isAuthenticated]);
 
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to / page

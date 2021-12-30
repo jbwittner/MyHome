@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
      * the information with the answer of the REST request
      */
     @ExceptionHandler({FunctionalException.class, MethodArgumentNotValidException.class})
-    public ResponseEntity<?> globuleExceptionHandler(final Exception ex, final WebRequest request) throws Exception {
+    public ResponseEntity<?> globaleExceptionHandler(final Exception ex, final WebRequest request) throws Exception {
 
         final ExceptionDTO exceptionDTO = new ExceptionDTO();
         exceptionDTO.setDetails(request.getDescription(false));

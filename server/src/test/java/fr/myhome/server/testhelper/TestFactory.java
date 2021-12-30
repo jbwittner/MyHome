@@ -148,6 +148,7 @@ public class TestFactory extends Faker {
         user.setLastName(this.name().lastName().toUpperCase());
         user.setUsername(this.name().username().toLowerCase());
         user.setPassword(this.passwordEncoder.encode(this.getRandomAlphanumericString()));
+        user.setRememberMe(false);
         
         final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);

@@ -35,7 +35,10 @@ public interface AuthenticationApi {
      *
      * @return successful operation (status code 200)
      */
-    @ApiOperation(value = "Check if the user are connected", nickname = "connectionTest", notes = "", tags={ "security", })
+    @ApiOperation(value = "Check if the user are connected", nickname = "connectionTest", notes = "", authorizations = {
+        
+        @Authorization(value = "JwtAuth")
+         }, tags={ "security", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(
@@ -63,6 +66,27 @@ public interface AuthenticationApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<Void> login(@ApiParam(value = "Object that need to be authenticated") @Valid @RequestBody(required = false) LoginParameter loginParameter) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /authentication/refreshAccessToken : Refresh access token
+     *
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "Refresh access token", nickname = "refreshAccessToken", notes = "", authorizations = {
+        
+        @Authorization(value = "JwtAuth")
+         }, tags={ "security", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation") })
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/authentication/refreshAccessToken"
+    )
+    default ResponseEntity<Void> refreshAccessToken() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

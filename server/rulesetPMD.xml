@@ -126,7 +126,6 @@
    <!-- Code Style -->
    <!-- Design -->
    <rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod" />
-   <rule ref="category/java/design.xml/AvoidCatchingGenericException" />
    <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
       <properties>
          <property name="problemDepth" value="3" />
