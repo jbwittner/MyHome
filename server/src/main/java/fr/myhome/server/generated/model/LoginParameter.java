@@ -20,6 +20,9 @@ public class LoginParameter   {
   @JsonProperty("password")
   private String password;
 
+  @JsonProperty("rememberMe")
+  private Boolean rememberMe;
+
   public LoginParameter username(String username) {
     this.username = username;
     return this;
@@ -62,6 +65,27 @@ public class LoginParameter   {
     this.password = password;
   }
 
+  public LoginParameter rememberMe(Boolean rememberMe) {
+    this.rememberMe = rememberMe;
+    return this;
+  }
+
+  /**
+   * Get rememberMe
+   * @return rememberMe
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+
+  public Boolean getRememberMe() {
+    return rememberMe;
+  }
+
+  public void setRememberMe(Boolean rememberMe) {
+    this.rememberMe = rememberMe;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -73,12 +97,13 @@ public class LoginParameter   {
     }
     LoginParameter loginParameter = (LoginParameter) o;
     return Objects.equals(this.username, loginParameter.username) &&
-        Objects.equals(this.password, loginParameter.password);
+        Objects.equals(this.password, loginParameter.password) &&
+        Objects.equals(this.rememberMe, loginParameter.rememberMe);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, password);
+    return Objects.hash(username, password, rememberMe);
   }
 
   @Override
@@ -88,6 +113,7 @@ public class LoginParameter   {
     
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    rememberMe: ").append(toIndentedString(rememberMe)).append("\n");
     sb.append("}");
     return sb.toString();
   }

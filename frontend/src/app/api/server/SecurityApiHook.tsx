@@ -72,17 +72,11 @@ export const useConnectionTest = (props: RequestProps<void>) => {
         securityApi
             .connectionTest()
             .then((response) => {
-                console.log("SUUUUCEEEEEEEEEEEEEEEEEEEEEEEEEEEES")
-                console.log(props.onSuccess)
-                console.log("SUUUUCEEEEEEEEEEEEEEEEEEEEEEEEEEEES")
                 if (props.onSuccess) {
                     props.onSuccess(response.data);
                 }
             })
             .catch(() => {
-                console.log("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR")
-                console.log(props.onError)
-                console.log("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR")
                 if (props.onError) {
                     props.onError();
                 }

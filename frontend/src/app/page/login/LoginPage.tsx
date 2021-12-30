@@ -8,14 +8,20 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
-import { TextFieldController } from '../../components/Forms';
+import { CheckboxController, TextFieldController } from '../../components/Forms';
 import { useConnectionTest, useLogin } from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
-import { clearLocalStorage, getLocalStorage, LOCAL_STORAGE_KEY, setLocalStorage } from '../../storage/LocalStorage';
+import {
+    clearLocalStorage,
+    getLocalStorage,
+    LOCAL_STORAGE_KEY,
+    setLocalStorage
+} from '../../storage/LocalStorage';
 
 interface IFormInputs {
     userName: string;
     password: string;
+    rememberMe: boolean;
 }
 
 const schema = yup
@@ -55,26 +61,21 @@ export const LoginPage = () => {
     });
 
     useEffect(() => {
-        const rememberMe: Boolean = getLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME);
-        if(rememberMe === true){
-            callConnectionTest();
-        } else {
-            clearLocalStorage();
-        }
+        callConnectionTest();
     }, []);
 
     const onClickdd = () => {
         callConnectionTest();
-    }
-
-    const handleChangeRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRememeberMe(event.target.checked);
     };
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+        if (rememberMe !== data.rememberMe) {
+            setRememeberMe(data.rememberMe);
+        }
         callLogin({
             username: data.userName,
-            password: data.password
+            password: data.password,
+            rememberMe: data.rememberMe
         });
     };
 
@@ -115,16 +116,12 @@ export const LoginPage = () => {
                     sx={{ mt: 2 }}
                     error={errors.password !== undefined}
                 />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            value="remember"
-                            color="primary"
-                            checked={rememberMe}
-                            onChange={handleChangeRememberMe}
-                        />
-                    }
+                <CheckboxController
+                    name="rememberMe"
+                    control={control}
                     label="Remember me"
+                    color="primary"
+                    defaultValue={false}
                 />
                 <LoadingButton
                     loading={isLoading}

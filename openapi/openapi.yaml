@@ -107,9 +107,12 @@ components:
           type: string
           format: password
           writeOnly: true
+        rememberMe:
+          type: boolean
       required:
         - username
         - password
+        - rememberMe
     UserRegistrationParameter:
       type: object
       properties:

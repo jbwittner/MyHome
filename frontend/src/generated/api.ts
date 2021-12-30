@@ -70,6 +70,12 @@ export interface LoginParameter {
      * @memberof LoginParameter
      */
     'password': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof LoginParameter
+     */
+    'rememberMe': boolean;
 }
 /**
  * 

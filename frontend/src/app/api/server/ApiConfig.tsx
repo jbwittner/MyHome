@@ -41,35 +41,17 @@ export const showError = (reason: Error | AxiosError): string => {
 
 axios.interceptors.response.use(
     (response) => {
-        console.log('response');
-        console.log(response);
-        console.log('response : ' + response.config);
-        console.log(response.config);
         return response;
     },
-    (error) => {
+    async function (error) {
         const originalRequest = error.config;
-        console.log('error 11');
-        console.log(error.response.status);
-        console.log(originalRequest);
-        console.log(originalRequest._retry);
-        console.log('error 22');
         if (error.response) {
             if (error.response.status === 403 && !originalRequest._retry) {
-                console.log('handling');
                 originalRequest._retry = true;
                 error.config._retry = true;
                 const securityApi = new SecurityApi(API_CONFIGURATION);
-                securityApi
-                    .refreshAccessToken()
-                    .then(() => {
-                        console.log('refreshAccessToken');
-                        return axios(originalRequest);
-                    })
-                    .catch(() => {
-                        console.log('catch Promise.reject');
-                        return Promise.reject(error);
-                    });
+                await securityApi.refreshAccessToken()
+                return axios(originalRequest);
             } else {
                 return Promise.reject(error);
             }
