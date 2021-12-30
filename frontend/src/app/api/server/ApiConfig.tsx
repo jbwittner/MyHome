@@ -1,6 +1,11 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { Configuration, ConfigurationParameters, ExceptionDTO, SecurityApi } from '../../../generated';
+import {
+    Configuration,
+    ConfigurationParameters,
+    ExceptionDTO,
+    SecurityApi
+} from '../../../generated';
 
 export const PASSWORD_REGEX: RegExp = /(^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$)/;
 export const EMAIL_REGEX: RegExp =
@@ -50,7 +55,7 @@ axios.interceptors.response.use(
                 originalRequest._retry = true;
                 error.config._retry = true;
                 const securityApi = new SecurityApi(API_CONFIGURATION);
-                await securityApi.refreshAccessToken()
+                await securityApi.refreshAccessToken();
                 return axios(originalRequest);
             } else {
                 return Promise.reject(error);
@@ -58,6 +63,5 @@ axios.interceptors.response.use(
         } else {
             return Promise.reject(error);
         }
-        
     }
 );
