@@ -19,7 +19,7 @@ public class TestCreateAccessTokenCookie extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateAccessTokenCookie(){
         final String value = this.testFactory.getRandomAlphanumericString();
-        final HttpCookie httpCookie = this.cookieUtil.createAccessTokenCookie(value, 1000L);
+        final HttpCookie httpCookie = this.cookieUtil.createAccessTokenCookie(value);
         Assertions.assertEquals(value, httpCookie.getValue());
         Assertions.assertEquals(CookieUtil.ACCESS_TOKEN_COOKIE_NAME, httpCookie.getName());
     }

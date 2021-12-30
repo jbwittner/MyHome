@@ -19,8 +19,8 @@ public class CookieUtil {
                 .build();
     }
 
-    public HttpCookie createAccessTokenCookie(final String token, final Long duration) {
-        return this.creacteCookie(ACCESS_TOKEN_COOKIE_NAME, token, duration);
+    public HttpCookie createAccessTokenCookie(final String token) {
+        return this.creacteCookie(ACCESS_TOKEN_COOKIE_NAME, token, -1L);
     }
 
     public HttpCookie createRefreshTokenCookie(final String token, final Long duration) {

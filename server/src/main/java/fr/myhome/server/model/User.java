@@ -62,6 +62,10 @@ public class User extends MotherPersistent {
     @NotNull
     private Boolean isEnabled = true;
 
+    @Column(name = "REMEMBER_ME", nullable = false)
+    @NotNull
+    private Boolean rememberMe = false;
+
     @Column(name = "REFRESH_TOKEN", nullable = true, unique = true, length = 1024)
     private String refreshToken;
 

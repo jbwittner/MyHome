@@ -3,6 +3,7 @@ package fr.myhome.server.service.authentication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -40,16 +41,41 @@ public class LoginTest extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    protected void testLoginOk() {
-        final User user = this.testFactory.getUser();
+    protected void testLoginOkNotRememberMe() {
+        User user = this.testFactory.getUser();
         final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
         user.setPassword(passwordEncoder.encode(nonEncodedPassword));
 
         final LoginParameter loginParameter = new LoginParameter();
         loginParameter.setPassword(nonEncodedPassword);
         loginParameter.setUsername(user.getUsername());
+        loginParameter.setRememberMe(false);
 
         this.authenticationServiceImpl.login(loginParameter);
+
+        user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
+
+        Assertions.assertFalse(user.getRememberMe());
+
+    }
+
+    @Test
+    protected void testLoginOkRememberMe() {
+        User user = this.testFactory.getUser();
+        final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
+        user.setPassword(passwordEncoder.encode(nonEncodedPassword));
+
+        final LoginParameter loginParameter = new LoginParameter();
+        loginParameter.setPassword(nonEncodedPassword);
+        loginParameter.setUsername(user.getUsername());
+        loginParameter.setRememberMe(true);
+
+        this.authenticationServiceImpl.login(loginParameter);
+
+        user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
+
+        Assertions.assertTrue(user.getRememberMe());
+
     }
 
     @Test

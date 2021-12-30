@@ -90,10 +90,33 @@ public class RefreshAccessTokenTest extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testRefreshAccessTokenOk() {
+    public void testRefreshAccessTokenOkNotRememberMe() {
         final User user = this.testFactory.getUser();
         final TokenDTO tokenDTO = this.jwtTokenUtil.getRefreshToken(user.getUsername());
         user.setRefreshToken(tokenDTO.getJwt());
+        this.userRepository.save(user);
+        final Cookie cookie = new Cookie(CookieUtil.REFRESH_TOKEN_COOKIE_NAME, tokenDTO.getJwt());
+        final Cookie[] cookies = new Cookie[]{cookie};
+
+        final HttpHeaders httpheaders = this.authenticationServiceImpl.refreshAccessToken(cookies);
+
+        final List<String> headers = httpheaders.get(HttpHeaders.SET_COOKIE);
+
+        Assertions.assertEquals(2, headers.size());
+        headers.forEach(header -> {
+            final String[] values = header.split("=");
+            if(!values[0].equals(CookieUtil.REFRESH_TOKEN_COOKIE_NAME) && !values[0].equals(CookieUtil.ACCESS_TOKEN_COOKIE_NAME)){
+                Assertions.fail();
+            }
+        });
+    }
+
+    @Test
+    public void testRefreshAccessTokenOkRememberMe() {
+        final User user = this.testFactory.getUser();
+        final TokenDTO tokenDTO = this.jwtTokenUtil.getRefreshToken(user.getUsername());
+        user.setRefreshToken(tokenDTO.getJwt());
+        user.setRememberMe(true);
         this.userRepository.save(user);
         final Cookie cookie = new Cookie(CookieUtil.REFRESH_TOKEN_COOKIE_NAME, tokenDTO.getJwt());
         final Cookie[] cookies = new Cookie[]{cookie};

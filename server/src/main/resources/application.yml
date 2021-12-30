@@ -10,8 +10,8 @@ application:
   jwt:
     secret: MySuperSecretPassPhraseForApplication
     audience: MyHomeDev
-    accessTokenExpirationSec: 3600 #1 h
-    refreshTokenExpirationSec: 2 592 000 #30 days
+    accessTokenExpirationSec: 3 600 #1 h
+    refreshTokenExpirationSec: 604 800 #7 days
 
 logging:
   level:

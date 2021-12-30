@@ -113,17 +113,16 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(loginParameter.getUsername());
         final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(loginParameter.getUsername());
 
+        Long accessRefreshTokenCookie = loginParameter.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
+
         final HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(
-            HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt(), accessTokenDTO.getDuration()).toString()
-            );
-        responseHeaders.add(
-            HttpHeaders.SET_COOKIE, this.cookieUtil.createRefreshTokenCookie(refreshTokenDTO.getJwt(), refreshTokenDTO.getDuration()).toString()
-            );
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRefreshTokenCookie(refreshTokenDTO.getJwt(), accessRefreshTokenCookie).toString());
 
         final User user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
 
         user.setRefreshToken(refreshTokenDTO.getJwt());
+        user.setRememberMe(loginParameter.getRememberMe());
 
         this.userRepository.save(user);
 
@@ -154,9 +153,11 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
         final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(userName);
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(userName);
 
+        Long accessRefreshTokenCookie = user.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
+
         final HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshTokenDTO.getJwt(), refreshTokenDTO.getDuration()).toString());
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt(), accessTokenDTO.getDuration()).toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRefreshTokenCookie(refreshTokenDTO.getJwt(), accessRefreshTokenCookie).toString());
 
         user.setRefreshToken(refreshTokenDTO.getJwt());
 

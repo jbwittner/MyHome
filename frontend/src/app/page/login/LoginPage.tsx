@@ -1,7 +1,7 @@
-import { Avatar, Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { PATH } from '../../router/Router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -11,12 +11,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CheckboxController, TextFieldController } from '../../components/Forms';
 import { useConnectionTest, useLogin } from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
-import {
-    clearLocalStorage,
-    getLocalStorage,
-    LOCAL_STORAGE_KEY,
-    setLocalStorage
-} from '../../storage/LocalStorage';
 
 interface IFormInputs {
     userName: string;
@@ -34,7 +28,6 @@ const schema = yup
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { setIsAuthenticated } = useContext(LoginContext);
-    const [rememberMe, setRememeberMe] = useState(false);
     const {
         control,
         formState: { errors },
@@ -44,13 +37,11 @@ export const LoginPage = () => {
     });
 
     const onSuccess = useCallback(() => {
-        setLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME, rememberMe);
         setIsAuthenticated(true);
         navigate(PATH.HOME_PATH);
-    }, [navigate, setIsAuthenticated, rememberMe]);
+    }, [navigate, setIsAuthenticated]);
 
     const onFailureConnectionText = useCallback(() => {
-        clearLocalStorage();
         setIsAuthenticated(false);
     }, [setIsAuthenticated]);
 
@@ -64,14 +55,7 @@ export const LoginPage = () => {
         callConnectionTest();
     }, []);
 
-    const onClickdd = () => {
-        callConnectionTest();
-    };
-
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        if (rememberMe !== data.rememberMe) {
-            setRememeberMe(data.rememberMe);
-        }
         callLogin({
             username: data.userName,
             password: data.password,
@@ -133,7 +117,6 @@ export const LoginPage = () => {
                     Sign In
                 </LoadingButton>
                 <Link to={PATH.REGISTRATION_PATH}>{"Don't have an account? Sign Up"}</Link>
-                <Button onClick={onClickdd}>TEST</Button>
             </Box>
         </Box>
     );
