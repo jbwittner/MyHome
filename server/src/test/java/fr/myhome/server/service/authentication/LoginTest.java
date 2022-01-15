@@ -3,7 +3,6 @@ package fr.myhome.server.service.authentication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -55,8 +54,6 @@ public class LoginTest extends AbstractMotherIntegrationTest {
 
         user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
 
-        Assertions.assertFalse(user.getRememberMe());
-
     }
 
     @Test
@@ -71,11 +68,6 @@ public class LoginTest extends AbstractMotherIntegrationTest {
         loginParameter.setRememberMe(true);
 
         this.authenticationServiceImpl.login(loginParameter);
-
-        user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
-
-        Assertions.assertTrue(user.getRememberMe());
-
     }
 
     @Test

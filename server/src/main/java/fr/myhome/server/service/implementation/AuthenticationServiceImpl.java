@@ -122,7 +122,6 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
         final User user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
 
         user.setRefreshToken(refreshTokenDTO.getJwt());
-        user.setRememberMe(loginParameter.getRememberMe());
 
         this.userRepository.save(user);
 
@@ -152,8 +151,8 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
         final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(userName);
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(userName);
-
-        final Long accessRefreshTokenCookie = user.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
+        
+        final Long accessRefreshTokenCookie = refreshTokenCookie.getMaxAge() == -1 ? accessTokenDTO.getDuration() : -1L;
 
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());

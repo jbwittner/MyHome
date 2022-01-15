@@ -116,7 +116,6 @@ public class RefreshAccessTokenTest extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
         final TokenDTO tokenDTO = this.jwtTokenUtil.getRefreshToken(user.getUsername());
         user.setRefreshToken(tokenDTO.getJwt());
-        user.setRememberMe(true);
         this.userRepository.save(user);
         final Cookie cookie = new Cookie(CookieUtil.REFRESH_TOKEN_COOKIE_NAME, tokenDTO.getJwt());
         final Cookie[] cookies = new Cookie[]{cookie};

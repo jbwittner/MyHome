@@ -10,7 +10,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 import fr.myhome.server.exception.TokenMatchException;
@@ -61,10 +60,6 @@ public class User extends MotherPersistent {
     @Column(name = "IS_ENABLED", nullable = false)
     @NotNull
     private Boolean isEnabled = true;
-
-    @Column(name = "REMEMBER_ME", nullable = false)
-    @NotNull
-    private Boolean rememberMe = false;
 
     @Column(name = "REFRESH_TOKEN", nullable = true, unique = true, length = 1024)
     private String refreshToken;
