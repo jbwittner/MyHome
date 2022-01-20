@@ -110,7 +110,7 @@ export interface TokenDTO {
 
 export enum TokenTypeEnum {
     AccessToken = 'ACCESS_TOKEN',
-    RefreshToken = 'REFRESH_TOKEN'
+    RememberMeToken = 'REMEMBER_ME_TOKEN'
 }
 
 /**
@@ -275,6 +275,36 @@ export const SecurityApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/authentication/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Refresh access token
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -374,6 +404,16 @@ export const SecurityApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logout(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Refresh access token
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -421,6 +461,15 @@ export const SecurityApiFactory = function (configuration?: Configuration, baseP
          */
         login(loginParameter?: LoginParameter, options?: any): AxiosPromise<void> {
             return localVarFp.login(loginParameter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout(options?: any): AxiosPromise<void> {
+            return localVarFp.logout(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -472,6 +521,17 @@ export class SecurityApi extends BaseAPI {
      */
     public login(loginParameter?: LoginParameter, options?: AxiosRequestConfig) {
         return SecurityApiFp(this.configuration).login(loginParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Logout
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SecurityApi
+     */
+    public logout(options?: AxiosRequestConfig) {
+        return SecurityApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
