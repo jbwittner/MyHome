@@ -4,7 +4,6 @@ import {
     Configuration,
     ConfigurationParameters,
     ExceptionDTO,
-    SecurityApi
 } from '../../../generated';
 
 export const PASSWORD_REGEX: RegExp = /(^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$)/;
@@ -43,25 +42,3 @@ export const showError = (reason: Error | AxiosError): string => {
 
     return message;
 };
-
-axios.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    async function (error) {
-        const originalRequest = error.config;
-        if (error.response) {
-            if (error.response.status === 403 && !originalRequest._retry) {
-                originalRequest._retry = true;
-                error.config._retry = true;
-                const securityApi = new SecurityApi(API_CONFIGURATION);
-                await securityApi.refreshAccessToken();
-                return axios(originalRequest);
-            } else {
-                return Promise.reject(error);
-            }
-        } else {
-            return Promise.reject(error);
-        }
-    }
-);

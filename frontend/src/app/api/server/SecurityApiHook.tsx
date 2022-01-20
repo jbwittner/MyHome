@@ -85,3 +85,41 @@ export const useConnectionTest = (props: RequestProps<void>) => {
 
     return { callConnectionTest };
 };
+
+export const useLogout = (props: RequestProps<void>) => {
+    const callLogout = useCallback(() => {
+        securityApi
+            .logout()
+            .then((response) => {
+                if (props.onSuccess) {
+                    props.onSuccess(response.data);
+                }
+            })
+            .catch(() => {
+                if (props.onError) {
+                    props.onError();
+                }
+            });
+    }, [props.onSuccess, props.onError]);
+
+    return { callLogout };
+};
+
+export const useRefreshAccessToken = (props: RequestProps<void>) => {
+    const callRefreshAccessToken = useCallback(() => {
+        securityApi
+            .refreshAccessToken()
+            .then((response) => {
+                if (props.onSuccess) {
+                    props.onSuccess(response.data);
+                }
+            })
+            .catch(() => {
+                if (props.onError) {
+                    props.onError();
+                }
+            });
+    }, [props.onSuccess, props.onError]);
+
+    return { callRefreshAccessToken };
+};

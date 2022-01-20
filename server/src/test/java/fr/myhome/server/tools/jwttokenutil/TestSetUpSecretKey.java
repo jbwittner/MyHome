@@ -17,7 +17,7 @@ public class TestSetUpSecretKey extends AbstractMotherIntegrationTest {
         this.jwtTokenUtil = new JwtTokenUtil();
         ReflectionTestUtils.setField(this.jwtTokenUtil, "audience", this.testFactory.getRandomAlphanumericString());
         ReflectionTestUtils.setField(this.jwtTokenUtil, "accessTokenExpirationSec", this.testFactory.getRandomInteger());
-        ReflectionTestUtils.setField(this.jwtTokenUtil, "refreshtokenExpirationSec", this.testFactory.getRandomInteger());
+        ReflectionTestUtils.setField(this.jwtTokenUtil, "rememberMeTokenExpirationSec", this.testFactory.getRandomInteger());
     }
 
     @Test

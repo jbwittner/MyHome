@@ -61,19 +61,19 @@ public class User extends MotherPersistent {
     @NotNull
     private Boolean isEnabled = true;
 
-    @Column(name = "REFRESH_TOKEN", nullable = true, unique = true, length = 1024)
-    private String refreshToken;
+    @Column(name = "REMEMBER_ME_TOKEN", nullable = true, unique = true, length = 1024)
+    private String rememberMeToken;
 
     @Override
     public String toString() {
         return "User [id=" + this.id + ", userName=" + username + "]";
     }
 
-    public void isRefreshTokenMath(final String refreshToken){
+    public void isRememberMeTokenMath(final String rememberMeToken){
         boolean value = false;
 
-        if(refreshToken != null && this.refreshToken != null){
-            if(refreshToken.equals(this.refreshToken)){
+        if(rememberMeToken != null && this.rememberMeToken != null){
+            if(rememberMeToken.equals(this.rememberMeToken)){
                 value = true;
             }
         }

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import fr.myhome.server.dto.UserDTOBuilder;
 import fr.myhome.server.exception.LoginException;
-import fr.myhome.server.exception.NoRefreshTokenCookie;
+import fr.myhome.server.exception.NoRememberMeTokenCookie;
 import fr.myhome.server.exception.TokenMatchException;
 import fr.myhome.server.exception.UserEmailAlreadyExistException;
 import fr.myhome.server.exception.UserNotExistException;
@@ -111,17 +111,18 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
         }
 
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(loginParameter.getUsername());
-        final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(loginParameter.getUsername());
-
-        final Long accessRefreshTokenCookie = loginParameter.getRememberMe() == true ? accessTokenDTO.getDuration() : -1L;
 
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());
-        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRefreshTokenCookie(refreshTokenDTO.getJwt(), accessRefreshTokenCookie).toString());
 
         final User user = this.userRepository.findByUsername(loginParameter.getUsername()).get();
 
-        user.setRefreshToken(refreshTokenDTO.getJwt());
+        if(loginParameter.getRememberMe() == true){
+            final TokenDTO rememberMeTokenDTO = this.jwtTokenUtil.getRememberMeToken(loginParameter.getUsername());
+            responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRememberMeTokenCookie(rememberMeTokenDTO.getJwt(), rememberMeTokenDTO.getDuration()).toString());
+            user.setRememberMeToken(rememberMeTokenDTO.getJwt());
+
+        }
 
         this.userRepository.save(user);
 
@@ -132,38 +133,44 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
     public HttpHeaders refreshAccessToken(final Cookie[] cookies){
 
         if(cookies == null) {
-            throw new NoRefreshTokenCookie();
+            throw new NoRememberMeTokenCookie();
         }
 
-        final Cookie refreshTokenCookie = Arrays.stream(cookies)
-                                            .filter(cookie -> CookieUtil.REFRESH_TOKEN_COOKIE_NAME.equals(cookie.getName()))
+        final Cookie rememberMeTokenCookie = Arrays.stream(cookies)
+                                            .filter(cookie -> CookieUtil.REMEMBER_ME_TOKEN_COOKIE_NAME.equals(cookie.getName()))
                                             .findFirst()
                                             .orElseThrow(() -> new TokenMatchException());
 
-        final String refreshToken = refreshTokenCookie.getValue();
+        final String rememberMeToken = rememberMeTokenCookie.getValue();
 
-        final String userName = this.jwtTokenUtil.getUserName(refreshToken);
+        final String userName = this.jwtTokenUtil.getUserName(rememberMeToken);
 
         final User user = this.userRepository.findByUsername(userName)
             .orElseThrow(() -> new UserNotExistException(userName));
 
-        user.isRefreshTokenMath(refreshToken);
+        user.isRememberMeTokenMath(rememberMeToken);
 
-        final TokenDTO refreshTokenDTO = this.jwtTokenUtil.getRefreshToken(userName);
+        final TokenDTO rememberMeTokenDTO = this.jwtTokenUtil.getRememberMeToken(userName);
         final TokenDTO accessTokenDTO = this.jwtTokenUtil.getAccessToken(userName);
         
-        final Long accessRefreshTokenCookie = refreshTokenCookie.getMaxAge() == -1 ? accessTokenDTO.getDuration() : -1L;
-
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createAccessTokenCookie(accessTokenDTO.getJwt()).toString());
-        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRefreshTokenCookie(refreshTokenDTO.getJwt(), accessRefreshTokenCookie).toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRememberMeTokenCookie(rememberMeTokenDTO.getJwt(), rememberMeTokenDTO.getDuration()).toString());
 
-        user.setRefreshToken(refreshTokenDTO.getJwt());
+        user.setRememberMeToken(rememberMeTokenDTO.getJwt());
 
         this.userRepository.save(user);
 
         return responseHeaders;
 
+    }
+
+    @Override
+    public HttpHeaders logout() {
+        final HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.deleteCookie(CookieUtil.ACCESS_TOKEN_COOKIE_NAME).toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.deleteCookie(CookieUtil.REMEMBER_ME_TOKEN_COOKIE_NAME).toString());
+        return responseHeaders;
     }
 
     

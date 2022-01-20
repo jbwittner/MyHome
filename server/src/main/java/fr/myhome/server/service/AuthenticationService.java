@@ -14,6 +14,8 @@ public interface AuthenticationService {
 
     HttpHeaders login(final LoginParameter loginParameter);
 
+    HttpHeaders logout();
+
     HttpHeaders refreshAccessToken(Cookie[] cookies);
 
 }

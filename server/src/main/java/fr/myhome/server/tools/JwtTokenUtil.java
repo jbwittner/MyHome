@@ -2,33 +2,25 @@ package fr.myhome.server.tools;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.KeySpec;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import fr.myhome.server.exception.BadTokenException;
 import fr.myhome.server.generated.model.TokenDTO;
 import fr.myhome.server.generated.model.TokenTypeEnum;
-import fr.myhome.server.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
@@ -53,8 +45,8 @@ public class JwtTokenUtil {
     @Value("${application.jwt.accessTokenExpirationSec:3600}") //1 h
     private long accessTokenExpirationSec;
 
-    @Value("${application.jwt.refreshTokenExpirationSec:2592000}") //30 days
-    private long refreshtokenExpirationSec;
+    @Value("${application.jwt.rememberMeTokenExpirationSec:2592000}") //30 days
+    private long rememberMeTokenExpirationSec;
 
     private SecretKey secretKey;
 
@@ -111,8 +103,8 @@ public class JwtTokenUtil {
         return tokenDTO;
     }
 
-    public TokenDTO getRefreshToken(final String userName){
-        final TokenDTO tokenDTO = this.getToken(userName, TokenTypeEnum.REFRESH_TOKEN, this.refreshtokenExpirationSec, null);
+    public TokenDTO getRememberMeToken(final String userName){
+        final TokenDTO tokenDTO = this.getToken(userName, TokenTypeEnum.REMEMBER_ME_TOKEN, this.rememberMeTokenExpirationSec, null);
         return tokenDTO;
     }
 

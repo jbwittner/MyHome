@@ -32,6 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg",
         "/api/authentication/registration",
         "/api/authentication/login",
+        "/api/authentication/logout",
         "/api/authentication/refreshAccessToken"};
 
     @Bean
