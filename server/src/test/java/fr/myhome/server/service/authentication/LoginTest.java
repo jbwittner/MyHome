@@ -58,7 +58,7 @@ public class LoginTest extends AbstractMotherIntegrationTest {
 
     @Test
     protected void testLoginOkRememberMe() {
-        User user = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
         final String nonEncodedPassword = this.testFactory.getRandomAlphanumericString();
         user.setPassword(passwordEncoder.encode(nonEncodedPassword));
 
