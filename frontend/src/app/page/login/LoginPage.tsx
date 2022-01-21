@@ -9,8 +9,25 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckboxController, TextFieldController } from '../../components/Forms';
-import { useConnectionTest, useLogin } from '../../api/server/SecurityApiHook';
+import {
+    useConnectionTest,
+    useLogin,
+    useLogout,
+    useRefreshAccessToken
+} from '../../api/server/SecurityApiHook';
 import { LoginContext } from '../../context/Context';
+import {
+    clearLocalStorage,
+    getLocalStorage,
+    LOCAL_STORAGE_KEY,
+    setLocalStorage
+} from '../../storage/LocalStorage';
+import {
+    clearSessionStorage,
+    getSessionStorage,
+    SESSION_STORAGE_KEY,
+    setSessionStorage
+} from '../../storage/SessionStorage';
 
 interface IFormInputs {
     userName: string;
@@ -36,26 +53,55 @@ export const LoginPage = () => {
         resolver: yupResolver(schema)
     });
 
+    const { callLogout } = useLogout({});
+
     const onSuccess = useCallback(() => {
         setIsAuthenticated(true);
         navigate(PATH.HOME_PATH);
     }, [navigate, setIsAuthenticated]);
 
-    const onFailureConnectionText = useCallback(() => {
+    const onFailureAutoCall = useCallback(() => {
+        callLogout();
+        clearLocalStorage();
+        clearSessionStorage();
         setIsAuthenticated(false);
-    }, [setIsAuthenticated]);
+    }, [callLogout, setIsAuthenticated]);
 
-    const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess });
+    const onFailureLogin = useCallback(() => {
+        clearLocalStorage();
+        clearSessionStorage();
+    }, [callLogout, setIsAuthenticated]);
+
+    const { isLoading, callLogin } = useLogin({ onSuccess: onSuccess, onError: onFailureLogin });
+
+    const { callRefreshAccessToken } = useRefreshAccessToken({
+        onSuccess: onSuccess,
+        onError: onFailureAutoCall
+    });
+
     const { callConnectionTest } = useConnectionTest({
         onSuccess: onSuccess,
-        onError: onFailureConnectionText
+        onError: onFailureAutoCall
     });
 
     useEffect(() => {
-        callConnectionTest();
+        const isLogin = getSessionStorage(SESSION_STORAGE_KEY.LOGIN);
+        const rememberMe = getLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME);
+
+        if (isLogin === true) {
+            callConnectionTest();
+        } else if (rememberMe === true) {
+            callRefreshAccessToken();
+        }
     }, []);
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+        if (data.rememberMe === true) {
+            setLocalStorage(LOCAL_STORAGE_KEY.REMEMBER_ME, true);
+        }
+
+        setSessionStorage(SESSION_STORAGE_KEY.LOGIN, true);
+
         callLogin({
             username: data.userName,
             password: data.password,

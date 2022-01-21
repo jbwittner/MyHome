@@ -7,7 +7,7 @@ import org.springframework.http.HttpCookie;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;
 import fr.myhome.server.tools.CookieUtil;
 
-public class TestCreateRefreshTokenCookie extends AbstractMotherIntegrationTest {
+public class TestCreateRememberMeTokenCookie extends AbstractMotherIntegrationTest {
 
     private CookieUtil cookieUtil;
 
@@ -17,11 +17,11 @@ public class TestCreateRefreshTokenCookie extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateRefreshTokenCookie(){
+    public void testCreateRememberMeTokenCookie(){
         final String value = this.testFactory.getRandomAlphanumericString();
-        final HttpCookie httpCookie = this.cookieUtil.createRefreshTokenCookie(value, 1000L);
+        final HttpCookie httpCookie = this.cookieUtil.createRememberMeTokenCookie(value, 1000L);
         Assertions.assertEquals(value, httpCookie.getValue());
-        Assertions.assertEquals(CookieUtil.REFRESH_TOKEN_COOKIE_NAME, httpCookie.getName());
+        Assertions.assertEquals(CookieUtil.REMEMBER_ME_TOKEN_COOKIE_NAME, httpCookie.getName());
     }
     
 }

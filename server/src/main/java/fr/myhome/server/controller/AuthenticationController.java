@@ -1,7 +1,5 @@
 package fr.myhome.server.controller;
 
-import java.util.Arrays;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,6 +49,12 @@ public class AuthenticationController extends BaseRestController implements Auth
     public ResponseEntity<Void> refreshAccessToken(){
         final Cookie[] cookies = this.httpServletRequest.getCookies();
         final HttpHeaders responseHeaders = this.authenticationService.refreshAccessToken(cookies);
+        return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> logout() {
+        final HttpHeaders responseHeaders = this.authenticationService.logout();
         return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).build();
     }
     

@@ -18,7 +18,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-public class TestGetRefreshToken extends AbstractMotherIntegrationTest {
+public class TestGetRememberMeToken extends AbstractMotherIntegrationTest {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

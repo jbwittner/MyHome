@@ -72,6 +72,24 @@ public interface AuthenticationApi {
 
 
     /**
+     * POST /authentication/logout : Logout
+     *
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "Logout", nickname = "logout", notes = "", tags={ "security", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation") })
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/authentication/logout"
+    )
+    default ResponseEntity<Void> logout() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * POST /authentication/refreshAccessToken : Refresh access token
      *
      * @return successful operation (status code 200)

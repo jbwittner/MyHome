@@ -29,21 +29,21 @@ public class TestGetAccessToken extends AbstractMotherIntegrationTest {
     @Value("${application.jwt.audience:MyHomeDev}")
     private String audience;
  
-    @Value("${application.jwt.refreshTokenExpirationSec:2592000}") //30 days
-    private long refreshtokenExpirationSec;
+    @Value("${application.jwt.rememberMeTokenExpirationSec:2592000}") //30 days
+    private long rememberMeTokenExpirationSec;
 
     @Override
     protected void initDataBeforeEach() {}
 
     @Test
-    public void testGetRefreshToken(){
+    public void testgetRememberMeToken(){
         final String userName = this.testFactory.getRandomAlphanumericString();
-        final TokenDTO tokenDTO = this.jwtTokenUtil.getRefreshToken(userName);
+        final TokenDTO tokenDTO = this.jwtTokenUtil.getRememberMeToken(userName);
 
         final String jwt = tokenDTO.getJwt();
 
-        Assertions.assertEquals(TokenTypeEnum.REFRESH_TOKEN, tokenDTO.getType());
-        Assertions.assertEquals(this.refreshtokenExpirationSec, tokenDTO.getDuration());
+        Assertions.assertEquals(TokenTypeEnum.REMEMBER_ME_TOKEN, tokenDTO.getType());
+        Assertions.assertEquals(this.rememberMeTokenExpirationSec, tokenDTO.getDuration());
 
         final byte[] bytes = this.secret.getBytes(StandardCharsets.UTF_8);
         final SecretKey secretKey = Keys.hmacShaKeyFor(bytes);
@@ -57,12 +57,12 @@ public class TestGetAccessToken extends AbstractMotherIntegrationTest {
         final Claims body = claims.getBody();
 
         final long duration = body.getExpiration().getTime() - body.getIssuedAt().getTime();
-        final long rest = Math.abs(duration - this.refreshtokenExpirationSec*1000);
+        final long rest = Math.abs(duration - this.rememberMeTokenExpirationSec*1000);
 
         Assertions.assertEquals(7, body.size());
         Assertions.assertEquals(this.audience, body.getAudience());
         Assertions.assertEquals(JwtTokenUtil.JWT_ISSUER + "_" + this.audience, body.getIssuer());
-        Assertions.assertEquals(TokenTypeEnum.REFRESH_TOKEN.getValue(), body.getSubject());
+        Assertions.assertEquals(TokenTypeEnum.REMEMBER_ME_TOKEN.getValue(), body.getSubject());
         Assertions.assertEquals(userName, body.get(JwtTokenUtil.CLAIM_USERNAME));
         Assertions.assertTrue(rest < 10);
 

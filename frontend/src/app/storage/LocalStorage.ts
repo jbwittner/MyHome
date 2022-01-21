@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 export enum LOCAL_STORAGE_KEY {
-    EXEMPLE = 'EXEMPLE'
+    REMEMBER_ME = 'REMEMBER_ME'
 }
 /* eslint-enable no-unused-vars */
 

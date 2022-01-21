@@ -15,7 +15,7 @@ public enum TokenTypeEnum {
   
   ACCESS_TOKEN("ACCESS_TOKEN"),
   
-  REFRESH_TOKEN("REFRESH_TOKEN");
+  REMEMBER_ME_TOKEN("REMEMBER_ME_TOKEN");
 
   private String value;
 

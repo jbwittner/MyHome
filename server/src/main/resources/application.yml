@@ -11,7 +11,7 @@ application:
     secret: MySuperSecretPassPhraseForApplication
     audience: MyHomeDev
     accessTokenExpirationSec: 3 600 #1 h
-    refreshTokenExpirationSec: 604 800 #7 days
+    rememberMeTokenExpirationSec: 604 800 #7 days
 
 logging:
   level:
