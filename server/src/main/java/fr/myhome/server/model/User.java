@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fr.myhome.server.exception.TokenMatchException;
 import fr.myhome.server.model.enumerate.Role;
 import fr.myhome.server.model.mother.MotherPersistent;
@@ -63,6 +65,14 @@ public class User extends MotherPersistent {
 
     @Column(name = "REMEMBER_ME_TOKEN", nullable = true, unique = true, length = 1024)
     private String rememberMeToken;
+
+    public User(final String email, final String firstName, final String lastName, final String userName, final String password){
+        this.email = email;
+        this.firstName = StringUtils.capitalize(firstName.toLowerCase());
+        this.lastName = lastName.toUpperCase();
+        this.username = userName.toLowerCase();
+        this.password = password;
+    }
 
     @Override
     public String toString() {

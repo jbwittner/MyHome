@@ -141,13 +141,13 @@ public class TestFactory extends Faker {
     }
 
     public User getUser(){
-        final User user = new User();
-        user.setEmail(this.internet().emailAddress());
-        final String firstName = StringUtils.capitalize(this.name().firstName().toLowerCase());
-        user.setFirstName(firstName);
-        user.setLastName(this.name().lastName().toUpperCase());
-        user.setUsername(this.name().username().toLowerCase());
-        user.setPassword(this.passwordEncoder.encode(this.getRandomAlphanumericString()));
+        final User user = new User(
+            this.internet().emailAddress(),
+            this.name().firstName(),
+            this.name().lastName(),
+            this.name().username(),
+            this.passwordEncoder.encode(this.getRandomAlphanumericString())
+            );
         
         final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);

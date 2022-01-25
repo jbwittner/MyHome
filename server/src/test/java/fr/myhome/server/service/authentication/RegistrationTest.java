@@ -19,6 +19,8 @@ import fr.myhome.server.generated.model.UserRegistrationParameter;
 import fr.myhome.server.generated.model.UserRoleEnum;
 import fr.myhome.server.model.User;
 import fr.myhome.server.model.enumerate.Role;
+import fr.myhome.server.repository.CollectionPermissionRepository;
+import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.implementation.AuthenticationServiceImpl;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;
@@ -29,6 +31,12 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CollectionRepository collectionRepository;
+
+    @Autowired
+    private CollectionPermissionRepository collectionPermissionRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -46,7 +54,7 @@ public class RegistrationTest extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() {
-        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository);
+        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository, collectionRepository, collectionPermissionRepository);
     }
 
     @Test

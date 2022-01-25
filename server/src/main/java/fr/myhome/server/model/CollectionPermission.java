@@ -35,5 +35,11 @@ public class CollectionPermission extends MotherPersistent {
     @Column(name = "PERMISSION", nullable = false)
     @NotNull
     private CollectionPermissionEnum permission;
+
+    public CollectionPermission(final Collection collection, final User user, final CollectionPermissionEnum permission){
+        this.collection = collection;
+        this.user = user;
+        this.permission = permission;
+    }
     
 }

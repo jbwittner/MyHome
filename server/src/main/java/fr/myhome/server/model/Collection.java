@@ -31,6 +31,10 @@ public class Collection extends MotherPersistent {
     @OneToMany(fetch = FetchType.EAGER ,mappedBy = "collection")
     private List<CollectionPermission> permissions = new ArrayList<>();
 
+    public Collection(final String collectionName){
+        this.collectionName = collectionName;
+    }
+
     private CollectionPermission getPermission(final User user) {
         final CollectionPermission collectionPermission = this.permissions.stream()
             .filter(permission -> user.getId().equals(permission.getUser().getId()))

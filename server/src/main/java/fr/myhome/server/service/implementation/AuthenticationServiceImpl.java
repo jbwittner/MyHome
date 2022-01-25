@@ -29,8 +29,13 @@ import fr.myhome.server.generated.model.LoginParameter;
 import fr.myhome.server.generated.model.TokenDTO;
 import fr.myhome.server.generated.model.UserDTO;
 import fr.myhome.server.generated.model.UserRegistrationParameter;
+import fr.myhome.server.model.Collection;
+import fr.myhome.server.model.CollectionPermission;
 import fr.myhome.server.model.User;
+import fr.myhome.server.model.enumerate.CollectionPermissionEnum;
 import fr.myhome.server.model.enumerate.Role;
+import fr.myhome.server.repository.CollectionPermissionRepository;
+import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.AuthenticationService;
 import fr.myhome.server.tools.CookieUtil;
@@ -44,19 +49,25 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
     private final CookieUtil cookieUtil;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final CollectionRepository collectionRepository;
+    private final CollectionPermissionRepository collectionPermissionRepository;
     private final PasswordEncoder passwordEncoder;
 
     private static final UserDTOBuilder USER_DTO_BUILDER = new UserDTOBuilder();
 
     @Autowired
     public AuthenticationServiceImpl(final JwtTokenUtil jwtTokenUtil, final CookieUtil cookieUtil,
-     final AuthenticationManager authenticationManager, final PasswordEncoder passwordEncoder, final UserRepository userRepository){
+     final AuthenticationManager authenticationManager, final PasswordEncoder passwordEncoder,
+     final UserRepository userRepository, final CollectionRepository collectionRepository,
+     final CollectionPermissionRepository collectionPermissionRepository){
         super();
         this.jwtTokenUtil = jwtTokenUtil;
         this.cookieUtil = cookieUtil;
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.collectionRepository = collectionRepository;
+        this.collectionPermissionRepository = collectionPermissionRepository;
     }
 
     @Override
@@ -68,16 +79,11 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
             throw new UsernameAlreadyExistException(userRegistrationParameter.getUsername());
         }
 
-        final User user = new User();
-        user.setEmail(userRegistrationParameter.getEmail());
-
-        final String firstName = StringUtils.capitalize(userRegistrationParameter.getFirstName().toLowerCase());
-        user.setFirstName(firstName);
-
-        user.setLastName(userRegistrationParameter.getLastName().toUpperCase());
-        user.setUsername(userRegistrationParameter.getUsername().toLowerCase());
-
-        user.setPassword(this.passwordEncoder.encode(userRegistrationParameter.getPassword()));
+        User user = new User(userRegistrationParameter.getEmail(),
+            userRegistrationParameter.getFirstName(),
+            userRegistrationParameter.getLastName(),
+            userRegistrationParameter.getUsername(),
+            this.passwordEncoder.encode(userRegistrationParameter.getPassword()));
         
         final List<Role> roles = new ArrayList<>();
         final List<User> users = this.userRepository.findAll();
@@ -90,7 +96,13 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
         user.setRoles(roles);
 
-        this.userRepository.save(user);
+        user = this.userRepository.save(user);
+
+        Collection collection = new Collection("COLLECTION_" + user.getUsername().toUpperCase());
+        collection = this.collectionRepository.save(collection);
+
+        CollectionPermission collectionPermission = new CollectionPermission(collection, user, CollectionPermissionEnum.ADMIN);
+        this.collectionPermissionRepository.save(collectionPermission);
 
         this.logger.info("Regisatrion of : {}", user.getUsername());
 

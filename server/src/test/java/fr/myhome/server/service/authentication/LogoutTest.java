@@ -1,14 +1,12 @@
 package fr.myhome.server.service.authentication;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import fr.myhome.server.exception.LoginException;
-import fr.myhome.server.generated.model.LoginParameter;
-import fr.myhome.server.model.User;
+import fr.myhome.server.repository.CollectionPermissionRepository;
+import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.implementation.AuthenticationServiceImpl;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;
@@ -19,6 +17,12 @@ public class LogoutTest extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CollectionRepository collectionRepository;
+
+    @Autowired
+    private CollectionPermissionRepository collectionPermissionRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -36,7 +40,7 @@ public class LogoutTest extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() {
-        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository);
+        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository, collectionRepository, collectionPermissionRepository);
     }
 
     @Test
