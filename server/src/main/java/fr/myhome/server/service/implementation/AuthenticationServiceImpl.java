@@ -98,7 +98,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
         user = this.userRepository.save(user);
 
-        Collection collection = new Collection("COLLECTION_" + user.getUsername().toUpperCase());
+        Collection collection = new Collection(user.getUsername().toUpperCase() + "_COLLECTION");
         collection = this.collectionRepository.save(collection);
 
         CollectionPermission collectionPermission = new CollectionPermission(collection, user, CollectionPermissionEnum.ADMIN);
