@@ -16,15 +16,17 @@ servers:
 security:
   - JwtAuth: []
 tags:
-  - name: security
-    description: Management of security
+  - name: authentication
+    description: Management of authentication
+  - name: collection
+    description: Management of collections  
 paths:
-#  ----- PATHS  ---------------------------------------------
-#  ----- AUTHENTICATION  ------------------------------------
+#  ----- PATHS ---------------------------------------------
+#  ----- AUTHENTICATION ------------------------------------
   /authentication/login:
     post:
       tags:
-        - security
+        - authentication
       summary: Login
       operationId: login
       security: []
@@ -40,7 +42,7 @@ paths:
   /authentication/logout:
     post:
       tags:
-        - security
+        - authentication
       summary: Logout
       operationId: logout
       security: []
@@ -50,7 +52,7 @@ paths:
   /authentication/registration:
     put:
       tags:
-        - security
+        - authentication
       summary: Register a new user account
       operationId: registration
       security: []
@@ -66,7 +68,7 @@ paths:
   /authentication/connectionTest:
     get:
       tags:
-        - security
+        - authentication
       summary: Check if the user are connected
       operationId: connectionTest
       responses:
@@ -75,13 +77,35 @@ paths:
   /authentication/refreshAccessToken:
     post:
       tags:
-        - security
+        - authentication
       summary: Refresh access token
       operationId: refreshAccessToken
       responses:
         '200':
           description: successful operation
-#  ----- AUTHENTICATION  ------------------------------------
+#  ----- AUTHENTICATION ------------------------------------
+#  ----- COLLECTION ----------------------------------------
+  /collection:
+    post:
+      tags:
+        - collection
+      summary: Create Collection
+      operationId: createCollection
+      security: []
+      requestBody:
+        description: Object that need to create a collection
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionParameter'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionDTO'
+#  ----- COLLECTION ----------------------------------------
 components:
   securitySchemes:
     JwtAuth:
@@ -131,8 +155,7 @@ components:
         email:
           type: string
           format: email
-          pattern: >-
-            ^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
+          pattern: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
         firstName:
           type: string
         lastName:
@@ -146,6 +169,28 @@ components:
         - firstName
         - lastName
         - password
+    CollectionParameter:
+      type: object
+      properties:
+        collectionName:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionPermissionParameter'
+      required:
+        - collectionName
+        - usersPermission
+    CollectionPermissionParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+        permission:
+          $ref: '#/components/schemas/CollectionPermissionEnum'
+      required:
+        - userName
+        - permission
 #  ----- PARAMETERS  ----------------------------------------
 #  ----- DTO  -----------------------------------------------
     UserDTO:
@@ -170,8 +215,6 @@ components:
         - firstName
         - lastName
         - roles
-#  ----- DTO  -----------------------------------------------
-#  ----- Enum -----------------------------------------------
     TokenDTO:
       type: object
       properties:
@@ -186,6 +229,30 @@ components:
         - jwt
         - duration
         - type
+    CollectionDTO:
+      type: object
+      properties:
+        collectionName:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionPermissionDTO'
+      required:
+        - collectionName
+        - permissions
+    CollectionPermissionDTO:
+      type: object
+      properties:
+        userDTO:
+          $ref: '#/components/schemas/UserDTO'
+        permission:
+          $ref: '#/components/schemas/CollectionPermissionEnum'
+      required:
+        - userDTO
+        - permission
+#  ----- DTO  -----------------------------------------------
+#  ----- Enum -----------------------------------------------
     UserRoleEnum:
       type: string
       enum:
@@ -196,3 +263,9 @@ components:
       enum:
         - ACCESS_TOKEN
         - REMEMBER_ME_TOKEN
+    CollectionPermissionEnum:
+      type: string
+      enum:
+        - ADMIN
+        - READ_WRITE
+        - READ

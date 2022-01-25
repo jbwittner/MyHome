@@ -38,7 +38,7 @@ public interface AuthenticationApi {
     @ApiOperation(value = "Check if the user are connected", nickname = "connectionTest", notes = "", authorizations = {
         
         @Authorization(value = "JwtAuth")
-         }, tags={ "security", })
+         }, tags={ "authentication", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(
@@ -57,7 +57,7 @@ public interface AuthenticationApi {
      * @param loginParameter Object that need to be authenticated (optional)
      * @return successful operation (status code 200)
      */
-    @ApiOperation(value = "Login", nickname = "login", notes = "", tags={ "security", })
+    @ApiOperation(value = "Login", nickname = "login", notes = "", tags={ "authentication", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(
@@ -76,7 +76,7 @@ public interface AuthenticationApi {
      *
      * @return successful operation (status code 200)
      */
-    @ApiOperation(value = "Logout", nickname = "logout", notes = "", tags={ "security", })
+    @ApiOperation(value = "Logout", nickname = "logout", notes = "", tags={ "authentication", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(
@@ -97,7 +97,7 @@ public interface AuthenticationApi {
     @ApiOperation(value = "Refresh access token", nickname = "refreshAccessToken", notes = "", authorizations = {
         
         @Authorization(value = "JwtAuth")
-         }, tags={ "security", })
+         }, tags={ "authentication", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(
@@ -116,7 +116,7 @@ public interface AuthenticationApi {
      * @param userRegistrationParameter Object that needs to register a new user (optional)
      * @return successful operation (status code 200)
      */
-    @ApiOperation(value = "Register a new user account", nickname = "registration", notes = "", tags={ "security", })
+    @ApiOperation(value = "Register a new user account", nickname = "registration", notes = "", tags={ "authentication", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(

@@ -24,6 +24,94 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface CollectionDTO
+ */
+export interface CollectionDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionDTO
+     */
+    'collectionName': string;
+    /**
+     * 
+     * @type {Array<CollectionPermissionDTO>}
+     * @memberof CollectionDTO
+     */
+    'permissions': Array<CollectionPermissionDTO>;
+}
+/**
+ * 
+ * @export
+ * @interface CollectionParameter
+ */
+export interface CollectionParameter {
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionParameter
+     */
+    'collectionName': string;
+    /**
+     * 
+     * @type {Array<CollectionPermissionParameter>}
+     * @memberof CollectionParameter
+     */
+    'permissions'?: Array<CollectionPermissionParameter>;
+}
+/**
+ * 
+ * @export
+ * @interface CollectionPermissionDTO
+ */
+export interface CollectionPermissionDTO {
+    /**
+     * 
+     * @type {UserDTO}
+     * @memberof CollectionPermissionDTO
+     */
+    'userDTO': UserDTO;
+    /**
+     * 
+     * @type {CollectionPermissionEnum}
+     * @memberof CollectionPermissionDTO
+     */
+    'permission': CollectionPermissionEnum;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export enum CollectionPermissionEnum {
+    Admin = 'ADMIN',
+    ReadWrite = 'READ_WRITE',
+    Read = 'READ'
+}
+
+/**
+ * 
+ * @export
+ * @interface CollectionPermissionParameter
+ */
+export interface CollectionPermissionParameter {
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionPermissionParameter
+     */
+    'userName': string;
+    /**
+     * 
+     * @type {CollectionPermissionEnum}
+     * @memberof CollectionPermissionParameter
+     */
+    'permission': CollectionPermissionEnum;
+}
+/**
+ * 
+ * @export
  * @interface ExceptionDTO
  */
 export interface ExceptionDTO {
@@ -200,10 +288,10 @@ export enum UserRoleEnum {
 
 
 /**
- * SecurityApi - axios parameter creator
+ * AuthenticationApi - axios parameter creator
  * @export
  */
-export const SecurityApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AuthenticationApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -375,11 +463,11 @@ export const SecurityApiAxiosParamCreator = function (configuration?: Configurat
 };
 
 /**
- * SecurityApi - functional programming interface
+ * AuthenticationApi - functional programming interface
  * @export
  */
-export const SecurityApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = SecurityApiAxiosParamCreator(configuration)
+export const AuthenticationApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AuthenticationApiAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -437,11 +525,11 @@ export const SecurityApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * SecurityApi - factory interface
+ * AuthenticationApi - factory interface
  * @export
  */
-export const SecurityApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = SecurityApiFp(configuration)
+export const AuthenticationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AuthenticationApiFp(configuration)
     return {
         /**
          * 
@@ -494,21 +582,21 @@ export const SecurityApiFactory = function (configuration?: Configuration, baseP
 };
 
 /**
- * SecurityApi - object-oriented interface
+ * AuthenticationApi - object-oriented interface
  * @export
- * @class SecurityApi
+ * @class AuthenticationApi
  * @extends {BaseAPI}
  */
-export class SecurityApi extends BaseAPI {
+export class AuthenticationApi extends BaseAPI {
     /**
      * 
      * @summary Check if the user are connected
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SecurityApi
+     * @memberof AuthenticationApi
      */
     public connectionTest(options?: AxiosRequestConfig) {
-        return SecurityApiFp(this.configuration).connectionTest(options).then((request) => request(this.axios, this.basePath));
+        return AuthenticationApiFp(this.configuration).connectionTest(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -517,10 +605,10 @@ export class SecurityApi extends BaseAPI {
      * @param {LoginParameter} [loginParameter] Object that need to be authenticated
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SecurityApi
+     * @memberof AuthenticationApi
      */
     public login(loginParameter?: LoginParameter, options?: AxiosRequestConfig) {
-        return SecurityApiFp(this.configuration).login(loginParameter, options).then((request) => request(this.axios, this.basePath));
+        return AuthenticationApiFp(this.configuration).login(loginParameter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -528,10 +616,10 @@ export class SecurityApi extends BaseAPI {
      * @summary Logout
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SecurityApi
+     * @memberof AuthenticationApi
      */
     public logout(options?: AxiosRequestConfig) {
-        return SecurityApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+        return AuthenticationApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -539,10 +627,10 @@ export class SecurityApi extends BaseAPI {
      * @summary Refresh access token
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SecurityApi
+     * @memberof AuthenticationApi
      */
     public refreshAccessToken(options?: AxiosRequestConfig) {
-        return SecurityApiFp(this.configuration).refreshAccessToken(options).then((request) => request(this.axios, this.basePath));
+        return AuthenticationApiFp(this.configuration).refreshAccessToken(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -551,10 +639,115 @@ export class SecurityApi extends BaseAPI {
      * @param {UserRegistrationParameter} [userRegistrationParameter] Object that needs to register a new user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SecurityApi
+     * @memberof AuthenticationApi
      */
     public registration(userRegistrationParameter?: UserRegistrationParameter, options?: AxiosRequestConfig) {
-        return SecurityApiFp(this.configuration).registration(userRegistrationParameter, options).then((request) => request(this.axios, this.basePath));
+        return AuthenticationApiFp(this.configuration).registration(userRegistrationParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * CollectionApi - axios parameter creator
+ * @export
+ */
+export const CollectionApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create Collection
+         * @param {CollectionParameter} [collectionParameter] Object that need to create a collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createCollection: async (collectionParameter?: CollectionParameter, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/collection`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(collectionParameter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CollectionApi - functional programming interface
+ * @export
+ */
+export const CollectionApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CollectionApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Collection
+         * @param {CollectionParameter} [collectionParameter] Object that need to create a collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createCollection(collectionParameter?: CollectionParameter, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createCollection(collectionParameter, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * CollectionApi - factory interface
+ * @export
+ */
+export const CollectionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CollectionApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Collection
+         * @param {CollectionParameter} [collectionParameter] Object that need to create a collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createCollection(collectionParameter?: CollectionParameter, options?: any): AxiosPromise<CollectionDTO> {
+            return localVarFp.createCollection(collectionParameter, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CollectionApi - object-oriented interface
+ * @export
+ * @class CollectionApi
+ * @extends {BaseAPI}
+ */
+export class CollectionApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create Collection
+     * @param {CollectionParameter} [collectionParameter] Object that need to create a collection
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public createCollection(collectionParameter?: CollectionParameter, options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).createCollection(collectionParameter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
