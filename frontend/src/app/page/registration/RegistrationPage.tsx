@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router';
 import { PATH } from '../../router/Router';
 import { UserRegistrationParameter } from '../../../generated';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useRegistration } from '../../api/server/SecurityApiHook';
+import { useRegistration } from '../../api/server/AuthenticationApiHook';
 import { toast } from 'react-toastify';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../api/server/ApiConfig';
 import { TextFieldController } from '../../components/Forms';

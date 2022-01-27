@@ -2,6 +2,7 @@ package fr.myhome.server.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -19,6 +20,7 @@ import fr.myhome.server.model.enumerate.Role;
 import fr.myhome.server.model.mother.MotherPersistent;
 
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -65,6 +67,9 @@ public class User extends MotherPersistent {
 
     @Column(name = "REMEMBER_ME_TOKEN", nullable = true, unique = true, length = 1024)
     private String rememberMeToken;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CollectionPermission> collectionPermissions;
 
     public User(final String email, final String firstName, final String lastName, final String userName, final String password){
         this.email = email;

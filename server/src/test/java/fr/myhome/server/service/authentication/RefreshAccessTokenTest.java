@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.myhome.server.exception.NoRememberMeTokenCookie;
@@ -21,6 +20,7 @@ import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.implementation.AuthenticationServiceImpl;
 import fr.myhome.server.testhelper.AbstractMotherIntegrationTest;
+import fr.myhome.server.tools.AuthenticationFacade;
 import fr.myhome.server.tools.CookieUtil;
 import fr.myhome.server.tools.JwtTokenUtil;
 
@@ -36,7 +36,7 @@ public class RefreshAccessTokenTest extends AbstractMotherIntegrationTest {
     private CollectionPermissionRepository collectionPermissionRepository;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationFacade authenticationFacade;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,7 +51,7 @@ public class RefreshAccessTokenTest extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() {
-        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationManager, passwordEncoder, userRepository, collectionRepository, collectionPermissionRepository);
+        this.authenticationServiceImpl = new AuthenticationServiceImpl(jwtTokenUtil, cookieUtil, authenticationFacade, passwordEncoder, userRepository, collectionRepository, collectionPermissionRepository);
     }
 
     @Test

@@ -23,7 +23,6 @@ public class CollectionPermission extends MotherPersistent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COLLECTION_ID", nullable = false)
-    @NotNull
     protected Collection collection;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,8 +35,7 @@ public class CollectionPermission extends MotherPersistent {
     @NotNull
     private CollectionPermissionEnum permission;
 
-    public CollectionPermission(final Collection collection, final User user, final CollectionPermissionEnum permission){
-        this.collection = collection;
+    public CollectionPermission(final User user, final CollectionPermissionEnum permission){
         this.user = user;
         this.permission = permission;
     }

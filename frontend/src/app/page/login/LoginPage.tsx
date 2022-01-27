@@ -14,7 +14,7 @@ import {
     useLogin,
     useLogout,
     useRefreshAccessToken
-} from '../../api/server/SecurityApiHook';
+} from '../../api/server/AuthenticationApiHook';
 import { LoginContext } from '../../context/Context';
 import {
     clearLocalStorage,

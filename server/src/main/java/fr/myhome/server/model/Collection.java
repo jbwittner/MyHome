@@ -31,8 +31,9 @@ public class Collection extends MotherPersistent {
     @OneToMany(fetch = FetchType.EAGER ,mappedBy = "collection")
     private List<CollectionPermission> permissions = new ArrayList<>();
 
-    public Collection(final String collectionName){
+    public Collection(final String collectionName, final List<CollectionPermission> permissions){
         this.collectionName = collectionName;
+        this.permissions = permissions;
     }
 
     private CollectionPermission getPermission(final User user) {

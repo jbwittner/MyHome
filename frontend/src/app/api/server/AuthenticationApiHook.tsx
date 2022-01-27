@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
-import { LoginParameter, SecurityApi, UserRegistrationParameter } from '../../../generated';
+import { LoginParameter, AuthenticationApi, UserRegistrationParameter } from '../../../generated';
 import { API_CONFIGURATION, showError } from './ApiConfig';
 
-const securityApi = new SecurityApi(API_CONFIGURATION);
+const authenticationApi = new AuthenticationApi(API_CONFIGURATION);
 
 interface RequestProps<T> {
     onSuccess?: (data: T) => void;
@@ -15,7 +15,7 @@ export const useLogin = (props: RequestProps<void>) => {
     const callLogin = useCallback(
         (loginParameter: LoginParameter) => {
             setIsLoading(true);
-            securityApi
+            authenticationApi
                 .login(loginParameter)
                 .then((response) => {
                     if (props.onSuccess) {
@@ -44,7 +44,7 @@ export const useRegistration = (props: RequestProps<void>) => {
     const callRegistration = useCallback(
         (userRegistrationParameter: UserRegistrationParameter) => {
             setIsLoading(true);
-            securityApi
+            authenticationApi
                 .registration(userRegistrationParameter)
                 .then((response) => {
                     if (props.onSuccess) {
@@ -69,7 +69,7 @@ export const useRegistration = (props: RequestProps<void>) => {
 
 export const useConnectionTest = (props: RequestProps<void>) => {
     const callConnectionTest = useCallback(() => {
-        securityApi
+        authenticationApi
             .connectionTest()
             .then((response) => {
                 if (props.onSuccess) {
@@ -88,7 +88,7 @@ export const useConnectionTest = (props: RequestProps<void>) => {
 
 export const useLogout = (props: RequestProps<void>) => {
     const callLogout = useCallback(() => {
-        securityApi
+        authenticationApi
             .logout()
             .then((response) => {
                 if (props.onSuccess) {
@@ -107,7 +107,7 @@ export const useLogout = (props: RequestProps<void>) => {
 
 export const useRefreshAccessToken = (props: RequestProps<void>) => {
     const callRefreshAccessToken = useCallback(() => {
-        securityApi
+        authenticationApi
             .refreshAccessToken()
             .then((response) => {
                 if (props.onSuccess) {

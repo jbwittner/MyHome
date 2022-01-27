@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -98,11 +97,14 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
         user = this.userRepository.save(user);
 
-        Collection collection = new Collection(user.getUsername().toUpperCase() + "_COLLECTION");
-        collection = this.collectionRepository.save(collection);
-
-        CollectionPermission collectionPermission = new CollectionPermission(collection, user, CollectionPermissionEnum.ADMIN);
+        CollectionPermission collectionPermission = new CollectionPermission(user, CollectionPermissionEnum.ADMIN);
         this.collectionPermissionRepository.save(collectionPermission);
+
+        List<CollectionPermission> collectionPermissions = new ArrayList<>();
+        collectionPermissions.add(collectionPermission);
+
+        Collection collection = new Collection(user.getUsername().toUpperCase() + "_COLLECTION", collectionPermissions);
+        collection = this.collectionRepository.save(collection);
 
         this.logger.info("Regisatrion of : {}", user.getUsername());
 
