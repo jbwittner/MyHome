@@ -1,5 +1,7 @@
 package fr.myhome.server.service.implementation;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,16 @@ public class CollectionServiceImpl implements CollectionService {
 
         Collection collection = new Collection(collectionParameter.getCollectionName());
         User user = this.authenticationFacade.getCurrentUser();
+
+        List<CollectionPermission> toto = user.getCollectionPermissions();
+
+        toto.forEach(e -> {
+            System.out.println(e);
+            Collection dddd = e.getCollection();
+            System.out.println(dddd);
+        });
+
+        System.out.println(toto.size());
         
         CollectionPermission collectionPermission = this.collectionPermissionRepository.save(new CollectionPermission(user, CollectionPermissionEnum.ADMIN, collection));
 

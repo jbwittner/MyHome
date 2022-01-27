@@ -31,6 +31,8 @@ public class Collection extends MotherPersistent {
     @OneToMany(fetch = FetchType.LAZY ,mappedBy = "collection")
     private List<CollectionPermission> permissions = new ArrayList<>();
 
+    public Collection(){}
+
     public Collection(final String collectionName){
         this.collectionName = collectionName;
     }

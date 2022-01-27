@@ -31,6 +31,8 @@ public class CollectionPermission extends MotherCollectionElement {
     @NotNull
     private CollectionPermissionEnum permission;
 
+    public CollectionPermission(){}
+
     public CollectionPermission(final User user, final CollectionPermissionEnum permission, final Collection collection){
         this.collection = collection;
         this.user = user;
