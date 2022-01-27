@@ -97,14 +97,11 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
         user = this.userRepository.save(user);
 
-        CollectionPermission collectionPermission = new CollectionPermission(user, CollectionPermissionEnum.ADMIN);
-        this.collectionPermissionRepository.save(collectionPermission);
-
-        List<CollectionPermission> collectionPermissions = new ArrayList<>();
-        collectionPermissions.add(collectionPermission);
-
-        Collection collection = new Collection(user.getUsername().toUpperCase() + "_COLLECTION", collectionPermissions);
+        Collection collection = new Collection(user.getUsername().toUpperCase() + "_COLLECTION");
         collection = this.collectionRepository.save(collection);
+
+        CollectionPermission collectionPermission = new CollectionPermission(user, CollectionPermissionEnum.ADMIN, collection);
+        collectionPermission = this.collectionPermissionRepository.save(collectionPermission);
 
         this.logger.info("Regisatrion of : {}", user.getUsername());
 
