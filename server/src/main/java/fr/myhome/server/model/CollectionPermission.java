@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import fr.myhome.server.model.enumerate.CollectionPermissionEnum;
-import fr.myhome.server.model.mother.MotherPersistent;
+import fr.myhome.server.model.mother.MotherCollectionElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,11 +19,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "COLLECTION_ELEMENT_PERMISSIONS")
 @Data
-public class CollectionPermission extends MotherPersistent {
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COLLECTION_ID", nullable = false)
-    protected Collection collection;
+public class CollectionPermission extends MotherCollectionElement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -35,7 +31,8 @@ public class CollectionPermission extends MotherPersistent {
     @NotNull
     private CollectionPermissionEnum permission;
 
-    public CollectionPermission(final User user, final CollectionPermissionEnum permission){
+    public CollectionPermission(final User user, final CollectionPermissionEnum permission, final Collection collection){
+        this.collection = collection;
         this.user = user;
         this.permission = permission;
     }

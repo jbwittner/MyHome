@@ -28,12 +28,11 @@ public class Collection extends MotherPersistent {
     @NotNull
     private String collectionName;
 
-    @OneToMany(fetch = FetchType.EAGER ,mappedBy = "collection")
+    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "collection")
     private List<CollectionPermission> permissions = new ArrayList<>();
 
-    public Collection(final String collectionName, final List<CollectionPermission> permissions){
+    public Collection(final String collectionName){
         this.collectionName = collectionName;
-        this.permissions = permissions;
     }
 
     private CollectionPermission getPermission(final User user) {
