@@ -14,6 +14,7 @@ import fr.myhome.server.repository.CollectionPermissionRepository;
 import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.CollectionService;
+import fr.myhome.server.tools.AuthenticationFacade;
 
 @Service
 @Transactional
@@ -21,17 +22,17 @@ public class CollectionServiceImpl implements CollectionService {
 
     private static final CollectionDTOBuilder COLLECTION_DTO_BUILDER = new CollectionDTOBuilder();
 
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
     private final CollectionRepository collectionRepository;
     private final CollectionPermissionRepository collectionPermissionRepository;
 
     @Autowired
-    public CollectionServiceImpl(final AuthenticationManager authenticationManager,
+    public CollectionServiceImpl(final AuthenticationFacade authenticationFacade,
         final UserRepository userRepository,
         final CollectionRepository collectionRepository,
         final CollectionPermissionRepository collectionPermissionRepository){
-            this.authenticationManager = authenticationManager;
+            this.authenticationFacade = authenticationFacade;
             this.userRepository = userRepository;
             this.collectionRepository = collectionRepository;
             this.collectionPermissionRepository = collectionPermissionRepository;
@@ -39,7 +40,7 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public CollectionDTO createCollection(final CollectionParameter collectionParameter) {
-        Collection collection = new C
+        //Collection collection = new C
         return null;
     }
     

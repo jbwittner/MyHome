@@ -37,6 +37,7 @@ import fr.myhome.server.repository.CollectionPermissionRepository;
 import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
 import fr.myhome.server.service.AuthenticationService;
+import fr.myhome.server.tools.AuthenticationFacade;
 import fr.myhome.server.tools.CookieUtil;
 import fr.myhome.server.tools.JwtTokenUtil;
 
@@ -46,7 +47,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
     private final JwtTokenUtil jwtTokenUtil;
     private final CookieUtil cookieUtil;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
     private final CollectionRepository collectionRepository;
     private final CollectionPermissionRepository collectionPermissionRepository;
@@ -56,13 +57,13 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
     @Autowired
     public AuthenticationServiceImpl(final JwtTokenUtil jwtTokenUtil, final CookieUtil cookieUtil,
-     final AuthenticationManager authenticationManager, final PasswordEncoder passwordEncoder,
+     final AuthenticationFacade authenticationFacade, final PasswordEncoder passwordEncoder,
      final UserRepository userRepository, final CollectionRepository collectionRepository,
      final CollectionPermissionRepository collectionPermissionRepository){
         super();
         this.jwtTokenUtil = jwtTokenUtil;
         this.cookieUtil = cookieUtil;
-        this.authenticationManager = authenticationManager;
+        this.authenticationFacade = authenticationFacade;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.collectionRepository = collectionRepository;
@@ -116,7 +117,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
                         loginParameter.getUsername(), loginParameter.getPassword());
 
         try {
-            authenticationManager.authenticate(loginCredentials);
+            authenticationFacade.authenticate(loginCredentials);
         } catch (DisabledException | LockedException | BadCredentialsException e) {
                throw new LoginException(e);
         }
