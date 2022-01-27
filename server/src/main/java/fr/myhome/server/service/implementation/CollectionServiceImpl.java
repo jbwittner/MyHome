@@ -10,6 +10,9 @@ import fr.myhome.server.dto.CollectionDTOBuilder;
 import fr.myhome.server.generated.model.CollectionDTO;
 import fr.myhome.server.generated.model.CollectionParameter;
 import fr.myhome.server.model.Collection;
+import fr.myhome.server.model.CollectionPermission;
+import fr.myhome.server.model.User;
+import fr.myhome.server.model.enumerate.CollectionPermissionEnum;
 import fr.myhome.server.repository.CollectionPermissionRepository;
 import fr.myhome.server.repository.CollectionRepository;
 import fr.myhome.server.repository.UserRepository;
@@ -40,8 +43,18 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public CollectionDTO createCollection(final CollectionParameter collectionParameter) {
-        //Collection collection = new C
-        return null;
+
+        Collection collection = new Collection(collectionParameter.getCollectionName());
+        User user = this.authenticationFacade.getCurrentUser();
+        
+        CollectionPermission collectionPermission = this.collectionPermissionRepository.save(new CollectionPermission(user, CollectionPermissionEnum.ADMIN, collection));
+
+        collection.getPermissions().add(collectionPermission);
+
+        collection = this.collectionRepository.save(collection);
+        
+        CollectionDTO collectionDTO = COLLECTION_DTO_BUILDER.transform(collection);
+        return collectionDTO;
     }
     
 }

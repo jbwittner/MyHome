@@ -1,13 +1,8 @@
 import { useCallback, useState } from 'react';
 import { LoginParameter, AuthenticationApi, UserRegistrationParameter } from '../../../generated';
-import { API_CONFIGURATION, showError } from './ApiConfig';
+import { API_CONFIGURATION, RequestProps, showError } from './ApiConfig';
 
 const authenticationApi = new AuthenticationApi(API_CONFIGURATION);
-
-interface RequestProps<T> {
-    onSuccess?: (data: T) => void;
-    onError?: () => void;
-}
 
 export const useLogin = (props: RequestProps<void>) => {
     const [isLoading, setIsLoading] = useState(false);

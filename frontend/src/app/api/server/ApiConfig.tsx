@@ -12,6 +12,11 @@ const configurationParmeter: ConfigurationParameters = {
 
 export const API_CONFIGURATION: Configuration = new Configuration(configurationParmeter);
 
+export interface RequestProps<T> {
+    onSuccess?: (data: T) => void;
+    onError?: () => void;
+}
+
 export const showError = (reason: Error | AxiosError): string => {
     let message: string = 'An unexpected error has occurred';
 

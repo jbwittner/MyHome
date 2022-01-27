@@ -71,6 +71,8 @@ public class User extends MotherPersistent {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CollectionPermission> collectionPermissions;
 
+    public User(){}
+
     public User(final String email, final String firstName, final String lastName, final String userName, final String password){
         this.email = email;
         this.firstName = StringUtils.capitalize(firstName.toLowerCase());
