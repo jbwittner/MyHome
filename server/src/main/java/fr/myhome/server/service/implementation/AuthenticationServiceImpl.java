@@ -117,7 +117,7 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
 
         try {
             authenticationFacade.authenticate(loginCredentials);
-        } catch (Exception e) {
+        } catch (DisabledException | LockedException | BadCredentialsException e) {
                throw new LoginException(e);
         }
 

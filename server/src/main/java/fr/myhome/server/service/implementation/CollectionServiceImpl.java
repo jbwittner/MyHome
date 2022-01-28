@@ -1,6 +1,5 @@
 package fr.myhome.server.service.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
