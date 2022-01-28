@@ -62,6 +62,35 @@ public interface CollectionApi {
 
 
     /**
+     * GET /collection/{collectionId} : Get collection
+     *
+     * @param collectionId ID of collection to return (required)
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "Get collection", nickname = "getCollection", notes = "", response = CollectionDTO.class, tags={ "collection", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = CollectionDTO.class) })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/collection/{collectionId}",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<CollectionDTO> getCollection(@ApiParam(value = "ID of collection to return", required = true) @PathVariable("collectionId") Integer collectionId) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"permissions\" : [ { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } }, { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } } ], \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /collection : Get all user collection
      *
      * @return successful operation (status code 200)

@@ -37,5 +37,11 @@ public class CollectionController extends BaseRestController implements Collecti
         final List<CollectionSumarryDTO> collectionDTOs = this.collectionService.getCollections();
         return new ResponseEntity<>(collectionDTOs, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<CollectionDTO> getCollection(Integer collectionId) {
+        final CollectionDTO collectionDTO = this.collectionService.getCollection(collectionId);
+        return new ResponseEntity<>(collectionDTO, HttpStatus.OK);
+    }
     
 }

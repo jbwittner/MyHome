@@ -132,7 +132,6 @@ public class AuthenticationServiceImpl extends MotherServiceImpl implements Auth
             final TokenDTO rememberMeTokenDTO = this.jwtTokenUtil.getRememberMeToken(loginParameter.getUsername());
             responseHeaders.add(HttpHeaders.SET_COOKIE, this.cookieUtil.createRememberMeTokenCookie(rememberMeTokenDTO.getJwt(), rememberMeTokenDTO.getDuration()).toString());
             user.setRememberMeToken(rememberMeTokenDTO.getJwt());
-
         }
 
         this.userRepository.save(user);

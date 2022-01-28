@@ -732,6 +732,40 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
+         * @summary Get collection
+         * @param {number} collectionId ID of collection to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCollection: async (collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'collectionId' is not null or undefined
+            assertParamExists('getCollection', 'collectionId', collectionId)
+            const localVarPath = `/collection/{collectionId}`
+                .replace(`{${"collectionId"}}`, encodeURIComponent(String(collectionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get all user collection
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -783,6 +817,17 @@ export const CollectionApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get collection
+         * @param {number} collectionId ID of collection to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCollection(collectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCollection(collectionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get all user collection
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -813,6 +858,16 @@ export const CollectionApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
+         * @summary Get collection
+         * @param {number} collectionId ID of collection to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCollection(collectionId: number, options?: any): AxiosPromise<CollectionDTO> {
+            return localVarFp.getCollection(collectionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get all user collection
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -840,6 +895,18 @@ export class CollectionApi extends BaseAPI {
      */
     public createCollection(collectionParameter?: CollectionParameter, options?: AxiosRequestConfig) {
         return CollectionApiFp(this.configuration).createCollection(collectionParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get collection
+     * @param {number} collectionId ID of collection to return
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public getCollection(collectionId: number, options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).getCollection(collectionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

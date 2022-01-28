@@ -120,6 +120,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CollectionSumarryDTO'
+  /collection/{collectionId}:
+    get:
+      tags:
+        - collection
+      summary : Get collection
+      operationId: getCollection
+      security: []
+      parameters:
+      - name: "collectionId"
+        in: "path"
+        description: "ID of collection to return"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionDTO'
 #  ----- COLLECTION ----------------------------------------
 components:
   securitySchemes:

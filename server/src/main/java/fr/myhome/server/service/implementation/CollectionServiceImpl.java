@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import fr.myhome.server.dto.CollectionDTOBuilder;
 import fr.myhome.server.dto.CollectionSumarryDTOBuilder;
+import fr.myhome.server.exception.CollectionNotExistException;
 import fr.myhome.server.exception.UserNotExistException;
 import fr.myhome.server.generated.model.CollectionDTO;
 import fr.myhome.server.generated.model.CollectionParameter;
@@ -79,6 +80,14 @@ public class CollectionServiceImpl implements CollectionService {
         final User user = this.authenticationFacade.getCurrentUser();
         final List<CollectionPermission> collectionPermissions = user.getCollectionPermissions();
         return COLLECTION_SUMARRY_DTO_BUILDER.transformAll(collectionPermissions);
+    }
+
+    @Override
+    public CollectionDTO getCollection(Integer collectionId) {
+        final Collection collection = this.collectionRepository.findById(collectionId).orElseThrow(() -> new CollectionNotExistException(collectionId));
+        final User user = this.authenticationFacade.getCurrentUser();
+        collection.checkCanRead(user);
+        return COLLECTION_DTO_BUILDER.transform(collection);
     }
     
 }

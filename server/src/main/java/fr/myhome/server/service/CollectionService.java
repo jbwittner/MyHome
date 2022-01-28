@@ -11,4 +11,6 @@ public interface CollectionService {
     CollectionDTO createCollection(final CollectionParameter collectionParameter);
     
     List<CollectionSumarryDTO> getCollections();
+
+    CollectionDTO getCollection(Integer collectionId);
 }
