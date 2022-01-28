@@ -17,6 +17,9 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class UserDTO   {
+  @JsonProperty("userId")
+  private Integer userId;
+
   @JsonProperty("username")
   private String username;
 
@@ -32,6 +35,27 @@ public class UserDTO   {
   @JsonProperty("roles")
   @Valid
   private List<UserRoleEnum> roles = new ArrayList<UserRoleEnum>();
+
+  public UserDTO userId(Integer userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  /**
+   * Get userId
+   * @return userId
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+
+  public Integer getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
   public UserDTO username(String username) {
     this.username = username;
@@ -154,7 +178,8 @@ public class UserDTO   {
       return false;
     }
     UserDTO userDTO = (UserDTO) o;
-    return Objects.equals(this.username, userDTO.username) &&
+    return Objects.equals(this.userId, userDTO.userId) &&
+        Objects.equals(this.username, userDTO.username) &&
         Objects.equals(this.email, userDTO.email) &&
         Objects.equals(this.firstName, userDTO.firstName) &&
         Objects.equals(this.lastName, userDTO.lastName) &&
@@ -163,7 +188,7 @@ public class UserDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, email, firstName, lastName, roles);
+    return Objects.hash(userId, username, email, firstName, lastName, roles);
   }
 
   @Override
@@ -171,6 +196,7 @@ public class UserDTO   {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserDTO {\n");
     
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");

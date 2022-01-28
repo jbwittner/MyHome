@@ -12,6 +12,7 @@ public class CollectionPermissionDTOBuilder extends Transformer<CollectionPermis
     @Override
     public CollectionPermissionDTO transform(final CollectionPermission input) {
         final CollectionPermissionDTO collectionPermissionDTO = new CollectionPermissionDTO();
+        collectionPermissionDTO.setCollectionPermissionId(input.getId());
         final UserDTO userDTO = USER_DTO_BUILDER.transform(input.getUser());
         collectionPermissionDTO.setUserDTO(userDTO);
         final CollectionPermissionEnum collectionPermissionEnum = CollectionPermissionEnum.fromValue(input.getPermission().toString());

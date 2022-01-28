@@ -17,11 +17,13 @@ import fr.myhome.server.model.enumerate.CollectionPermissionEnum;
 import fr.myhome.server.model.mother.MotherPersistent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "COLLECTION_ELEMENTS")
 @Data
+@NoArgsConstructor
 public class Collection extends MotherPersistent {
 
     @Column(name = "COLLECTION_NAME", nullable = false)
@@ -30,8 +32,6 @@ public class Collection extends MotherPersistent {
 
     @OneToMany(fetch = FetchType.LAZY ,mappedBy = "collection")
     private List<CollectionPermission> permissions = new ArrayList<>();
-
-    public Collection(){}
 
     public Collection(final String collectionName){
         this.collectionName = collectionName;

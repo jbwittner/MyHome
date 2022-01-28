@@ -4,7 +4,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import fr.myhome.server.generated.model.CollectionPermissionEnum;
-import fr.myhome.server.generated.model.UserDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -12,63 +11,62 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CollectionPermissionDTO
+ * CollectionSumarryDTO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class CollectionPermissionDTO   {
-  @JsonProperty("collectionPermissionId")
-  private Integer collectionPermissionId;
+public class CollectionSumarryDTO   {
+  @JsonProperty("collectionId")
+  private Integer collectionId;
 
-  @JsonProperty("userDTO")
-  private UserDTO userDTO;
+  @JsonProperty("collectionName")
+  private String collectionName;
 
   @JsonProperty("permission")
   private CollectionPermissionEnum permission;
 
-  public CollectionPermissionDTO collectionPermissionId(Integer collectionPermissionId) {
-    this.collectionPermissionId = collectionPermissionId;
+  public CollectionSumarryDTO collectionId(Integer collectionId) {
+    this.collectionId = collectionId;
     return this;
   }
 
   /**
-   * Get collectionPermissionId
-   * @return collectionPermissionId
+   * Get collectionId
+   * @return collectionId
   */
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
 
-  public Integer getCollectionPermissionId() {
-    return collectionPermissionId;
+  public Integer getCollectionId() {
+    return collectionId;
   }
 
-  public void setCollectionPermissionId(Integer collectionPermissionId) {
-    this.collectionPermissionId = collectionPermissionId;
+  public void setCollectionId(Integer collectionId) {
+    this.collectionId = collectionId;
   }
 
-  public CollectionPermissionDTO userDTO(UserDTO userDTO) {
-    this.userDTO = userDTO;
+  public CollectionSumarryDTO collectionName(String collectionName) {
+    this.collectionName = collectionName;
     return this;
   }
 
   /**
-   * Get userDTO
-   * @return userDTO
+   * Get collectionName
+   * @return collectionName
   */
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
-  @Valid
 
-  public UserDTO getUserDTO() {
-    return userDTO;
+  public String getCollectionName() {
+    return collectionName;
   }
 
-  public void setUserDTO(UserDTO userDTO) {
-    this.userDTO = userDTO;
+  public void setCollectionName(String collectionName) {
+    this.collectionName = collectionName;
   }
 
-  public CollectionPermissionDTO permission(CollectionPermissionEnum permission) {
+  public CollectionSumarryDTO permission(CollectionPermissionEnum permission) {
     this.permission = permission;
     return this;
   }
@@ -99,24 +97,24 @@ public class CollectionPermissionDTO   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CollectionPermissionDTO collectionPermissionDTO = (CollectionPermissionDTO) o;
-    return Objects.equals(this.collectionPermissionId, collectionPermissionDTO.collectionPermissionId) &&
-        Objects.equals(this.userDTO, collectionPermissionDTO.userDTO) &&
-        Objects.equals(this.permission, collectionPermissionDTO.permission);
+    CollectionSumarryDTO collectionSumarryDTO = (CollectionSumarryDTO) o;
+    return Objects.equals(this.collectionId, collectionSumarryDTO.collectionId) &&
+        Objects.equals(this.collectionName, collectionSumarryDTO.collectionName) &&
+        Objects.equals(this.permission, collectionSumarryDTO.permission);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(collectionPermissionId, userDTO, permission);
+    return Objects.hash(collectionId, collectionName, permission);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionPermissionDTO {\n");
+    sb.append("class CollectionSumarryDTO {\n");
     
-    sb.append("    collectionPermissionId: ").append(toIndentedString(collectionPermissionId)).append("\n");
-    sb.append("    userDTO: ").append(toIndentedString(userDTO)).append("\n");
+    sb.append("    collectionId: ").append(toIndentedString(collectionId)).append("\n");
+    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
     sb.append("    permission: ").append(toIndentedString(permission)).append("\n");
     sb.append("}");
     return sb.toString();

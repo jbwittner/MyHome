@@ -13,6 +13,7 @@ public class CollectionDTOBuilder extends Transformer<Collection, CollectionDTO>
     @Override
     public CollectionDTO transform(final Collection input) {
         CollectionDTO collectionDTO = new CollectionDTO();
+        collectionDTO.setCollectionId(input.getId());
         collectionDTO.setCollectionName(input.getCollectionName());
         List<CollectionPermissionDTO> permissionDTOs = COLLECTION_PERMISSION_DTO_BUILDER.transformAll(input.getPermissions());
         collectionDTO.setPermissions(permissionDTOs);

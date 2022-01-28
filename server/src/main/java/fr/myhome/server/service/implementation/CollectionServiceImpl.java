@@ -1,16 +1,19 @@
 package fr.myhome.server.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import fr.myhome.server.dto.CollectionDTOBuilder;
+import fr.myhome.server.dto.CollectionSumarryDTOBuilder;
+import fr.myhome.server.exception.UserNotExistException;
 import fr.myhome.server.generated.model.CollectionDTO;
 import fr.myhome.server.generated.model.CollectionParameter;
+import fr.myhome.server.generated.model.CollectionSumarryDTO;
 import fr.myhome.server.model.Collection;
 import fr.myhome.server.model.CollectionPermission;
 import fr.myhome.server.model.User;
@@ -26,6 +29,7 @@ import fr.myhome.server.tools.AuthenticationFacade;
 public class CollectionServiceImpl implements CollectionService {
 
     private static final CollectionDTOBuilder COLLECTION_DTO_BUILDER = new CollectionDTOBuilder();
+    private static final CollectionSumarryDTOBuilder COLLECTION_SUMARRY_DTO_BUILDER = new CollectionSumarryDTOBuilder();
 
     private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
@@ -46,27 +50,36 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public CollectionDTO createCollection(final CollectionParameter collectionParameter) {
 
-        Collection collection = new Collection(collectionParameter.getCollectionName());
-        User user = this.authenticationFacade.getCurrentUser();
+        final Collection collection = new Collection(collectionParameter.getCollectionName());
+        this.collectionRepository.save(collection);
 
-        List<CollectionPermission> toto = user.getCollectionPermissions();
+        final User currentUser = this.authenticationFacade.getCurrentUser();
 
-        toto.forEach(e -> {
-            System.out.println(e);
-            Collection dddd = e.getCollection();
-            System.out.println(dddd);
-        });
-
-        System.out.println(toto.size());
-        
-        CollectionPermission collectionPermission = this.collectionPermissionRepository.save(new CollectionPermission(user, CollectionPermissionEnum.ADMIN, collection));
-
+        final CollectionPermission collectionPermission = this.collectionPermissionRepository.save(new CollectionPermission(currentUser, CollectionPermissionEnum.ADMIN, collection));
         collection.getPermissions().add(collectionPermission);
 
-        collection = this.collectionRepository.save(collection);
+        if(collectionParameter.getPermissions() != null){
+            collectionParameter.getPermissions().forEach(permissionParameter -> {
+                final String userName = permissionParameter.getUserName();
+                final User user = this.userRepository.findByUsername(userName).orElseThrow(() -> new UserNotExistException(userName));
+                final CollectionPermissionEnum userCollectionPermissionEnum = CollectionPermissionEnum.fromValue(permissionParameter.getPermission().toString());
+                CollectionPermission userCollectionPermission = new CollectionPermission(user, userCollectionPermissionEnum, collection);
+                userCollectionPermission = this.collectionPermissionRepository.save(userCollectionPermission);
+                collection.getPermissions().add(userCollectionPermission);
+            });
+        }
+
+        this.collectionRepository.save(collection);
+
+        System.out.println(collection);
         
-        CollectionDTO collectionDTO = COLLECTION_DTO_BUILDER.transform(collection);
-        return collectionDTO;
+        return COLLECTION_DTO_BUILDER.transform(collection);
+    }
+
+    public List<CollectionSumarryDTO> getCollections() {
+        final User user = this.authenticationFacade.getCurrentUser();
+        final List<CollectionPermission> collectionPermissions = user.getCollectionPermissions();
+        return COLLECTION_SUMARRY_DTO_BUILDER.transformAll(collectionPermissions);
     }
     
 }

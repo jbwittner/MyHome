@@ -105,6 +105,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionDTO'
+    get:
+      tags:
+        - collection
+      summary : Get all user collection
+      operationId: getCollections
+      security: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionSumarryDTO'
 #  ----- COLLECTION ----------------------------------------
 components:
   securitySchemes:
@@ -196,6 +211,8 @@ components:
     UserDTO:
       type: object
       properties:
+        userId:
+          type: integer
         username:
           type: string
         email:
@@ -210,6 +227,7 @@ components:
           items:
             $ref: '#/components/schemas/UserRoleEnum'
       required:
+        - userId
         - username
         - email
         - firstName
@@ -232,6 +250,8 @@ components:
     CollectionDTO:
       type: object
       properties:
+        collectionId:
+          type: integer
         collectionName:
           type: string
         permissions:
@@ -239,16 +259,33 @@ components:
           items:
             $ref: '#/components/schemas/CollectionPermissionDTO'
       required:
+        - collectionId
         - collectionName
         - permissions
+    CollectionSumarryDTO:
+      type: object
+      properties:
+        collectionId:
+          type: integer
+        collectionName:
+          type: string
+        permission:
+          $ref: '#/components/schemas/CollectionPermissionEnum'
+      required:
+        - collectionId
+        - collectionName
+        - permission
     CollectionPermissionDTO:
       type: object
       properties:
+        collectionPermissionId:
+          type: integer
         userDTO:
           $ref: '#/components/schemas/UserDTO'
         permission:
           $ref: '#/components/schemas/CollectionPermissionEnum'
       required:
+        - collectionPermissionId
         - userDTO
         - permission
 #  ----- DTO  -----------------------------------------------

@@ -1,5 +1,6 @@
 package fr.myhome.server.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,11 +25,13 @@ import javax.persistence.OneToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "USERS")
 @Data
+@NoArgsConstructor
 public class User extends MotherPersistent {
 
     @Column(name = "USER_NAME", nullable = false, unique = true)
@@ -69,9 +72,7 @@ public class User extends MotherPersistent {
     private String rememberMeToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<CollectionPermission> collectionPermissions;
-
-    public User(){}
+    private List<CollectionPermission> collectionPermissions = new ArrayList<>();
 
     public User(final String email, final String firstName, final String lastName, final String userName, final String password){
         this.email = email;

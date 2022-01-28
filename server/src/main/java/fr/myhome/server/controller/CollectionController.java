@@ -1,5 +1,7 @@
 package fr.myhome.server.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.myhome.server.generated.api.CollectionApi;
 import fr.myhome.server.generated.model.CollectionDTO;
 import fr.myhome.server.generated.model.CollectionParameter;
+import fr.myhome.server.generated.model.CollectionSumarryDTO;
 import fr.myhome.server.service.CollectionService;
 
 @RestController
@@ -25,8 +28,14 @@ public class CollectionController extends BaseRestController implements Collecti
 
     @Override
     public ResponseEntity<CollectionDTO> createCollection(@Valid CollectionParameter collectionParameter) {
-        CollectionDTO collectionDTO = this.collectionService.createCollection(collectionParameter);
+        final CollectionDTO collectionDTO = this.collectionService.createCollection(collectionParameter);
         return new ResponseEntity<>(collectionDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CollectionSumarryDTO>> getCollections() {
+        final List<CollectionSumarryDTO> collectionDTOs = this.collectionService.getCollections();
+        return new ResponseEntity<>(collectionDTOs, HttpStatus.OK);
     }
     
 }

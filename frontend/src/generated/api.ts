@@ -29,6 +29,12 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface CollectionDTO {
     /**
      * 
+     * @type {number}
+     * @memberof CollectionDTO
+     */
+    'collectionId': number;
+    /**
+     * 
      * @type {string}
      * @memberof CollectionDTO
      */
@@ -65,6 +71,12 @@ export interface CollectionParameter {
  * @interface CollectionPermissionDTO
  */
 export interface CollectionPermissionDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionPermissionDTO
+     */
+    'collectionPermissionId': number;
     /**
      * 
      * @type {UserDTO}
@@ -106,6 +118,31 @@ export interface CollectionPermissionParameter {
      * 
      * @type {CollectionPermissionEnum}
      * @memberof CollectionPermissionParameter
+     */
+    'permission': CollectionPermissionEnum;
+}
+/**
+ * 
+ * @export
+ * @interface CollectionSumarryDTO
+ */
+export interface CollectionSumarryDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionSumarryDTO
+     */
+    'collectionId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionSumarryDTO
+     */
+    'collectionName': string;
+    /**
+     * 
+     * @type {CollectionPermissionEnum}
+     * @memberof CollectionSumarryDTO
      */
     'permission': CollectionPermissionEnum;
 }
@@ -207,6 +244,12 @@ export enum TokenTypeEnum {
  * @interface UserDTO
  */
 export interface UserDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserDTO
+     */
+    'userId': number;
     /**
      * 
      * @type {string}
@@ -687,6 +730,36 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Get all user collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCollections: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/collection`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -706,6 +779,16 @@ export const CollectionApiFp = function(configuration?: Configuration) {
          */
         async createCollection(collectionParameter?: CollectionParameter, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDTO>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createCollection(collectionParameter, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get all user collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCollections(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CollectionSumarryDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCollections(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -728,6 +811,15 @@ export const CollectionApiFactory = function (configuration?: Configuration, bas
         createCollection(collectionParameter?: CollectionParameter, options?: any): AxiosPromise<CollectionDTO> {
             return localVarFp.createCollection(collectionParameter, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Get all user collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCollections(options?: any): AxiosPromise<Array<CollectionSumarryDTO>> {
+            return localVarFp.getCollections(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -748,6 +840,17 @@ export class CollectionApi extends BaseAPI {
      */
     public createCollection(collectionParameter?: CollectionParameter, options?: AxiosRequestConfig) {
         return CollectionApiFp(this.configuration).createCollection(collectionParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all user collection
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public getCollections(options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).getCollections(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -17,12 +17,36 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class CollectionDTO   {
+  @JsonProperty("collectionId")
+  private Integer collectionId;
+
   @JsonProperty("collectionName")
   private String collectionName;
 
   @JsonProperty("permissions")
   @Valid
   private List<CollectionPermissionDTO> permissions = new ArrayList<CollectionPermissionDTO>();
+
+  public CollectionDTO collectionId(Integer collectionId) {
+    this.collectionId = collectionId;
+    return this;
+  }
+
+  /**
+   * Get collectionId
+   * @return collectionId
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+
+  public Integer getCollectionId() {
+    return collectionId;
+  }
+
+  public void setCollectionId(Integer collectionId) {
+    this.collectionId = collectionId;
+  }
 
   public CollectionDTO collectionName(String collectionName) {
     this.collectionName = collectionName;
@@ -82,13 +106,14 @@ public class CollectionDTO   {
       return false;
     }
     CollectionDTO collectionDTO = (CollectionDTO) o;
-    return Objects.equals(this.collectionName, collectionDTO.collectionName) &&
+    return Objects.equals(this.collectionId, collectionDTO.collectionId) &&
+        Objects.equals(this.collectionName, collectionDTO.collectionName) &&
         Objects.equals(this.permissions, collectionDTO.permissions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(collectionName, permissions);
+    return Objects.hash(collectionId, collectionName, permissions);
   }
 
   @Override
@@ -96,6 +121,7 @@ public class CollectionDTO   {
     StringBuilder sb = new StringBuilder();
     sb.append("class CollectionDTO {\n");
     
+    sb.append("    collectionId: ").append(toIndentedString(collectionId)).append("\n");
     sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
     sb.append("    permissions: ").append(toIndentedString(permissions)).append("\n");
     sb.append("}");

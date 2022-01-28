@@ -12,7 +12,8 @@ public class UserDTOBuilder extends Transformer<User, UserDTO> {
     @Override
     public UserDTO transform(final User input){
         final UserDTO userDTO = new UserDTO();
-
+        
+        userDTO.setUserId(input.getId());
         userDTO.setUsername(input.getUsername());
         userDTO.setEmail(input.getEmail());
         userDTO.setFirstName(input.getFirstName());

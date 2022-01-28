@@ -7,6 +7,7 @@ package fr.myhome.server.generated.api;
 
 import fr.myhome.server.generated.model.CollectionDTO;
 import fr.myhome.server.generated.model.CollectionParameter;
+import fr.myhome.server.generated.model.CollectionSumarryDTO;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,35 @@ public interface CollectionApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"permissions\" : [ { \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"email\" : \"email\", \"username\" : \"username\" } }, { \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"email\" : \"email\", \"username\" : \"username\" } } ], \"collectionName\" : \"collectionName\" }";
+                    String exampleString = "{ \"permissions\" : [ { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } }, { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } } ], \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /collection : Get all user collection
+     *
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "Get all user collection", nickname = "getCollections", notes = "", response = CollectionSumarryDTO.class, responseContainer = "List", tags={ "collection", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = CollectionSumarryDTO.class, responseContainer = "List") })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/collection",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<List<CollectionSumarryDTO>> getCollections() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
