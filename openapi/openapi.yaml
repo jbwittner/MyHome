@@ -86,7 +86,7 @@ paths:
 #  ----- AUTHENTICATION ------------------------------------
 #  ----- COLLECTION ----------------------------------------
   /collection:
-    post:
+    put:
       tags:
         - collection
       summary: Create Collection
@@ -141,6 +141,109 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionDTO'
+    delete:
+      tags:
+        - collection
+      summary : Delete collection
+      operationId: deleteCollection
+      security: []
+      parameters:
+      - name: "collectionId"
+        in: "path"
+        description: "ID of collection to delete"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        '200':
+          description: successful operation
+    post:
+      tags:
+        - collection
+      summary : update collection
+      operationId: updateCollection
+      security: []
+      parameters:
+      - name: "collectionId"
+        in: "path"
+        description: "ID of collection to update"
+        required: true
+        schema:
+          type: "integer"
+      requestBody:
+        description: Object that need to update a collection
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCollectionParameter'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionDTO'
+  /collection/{collectionId}/permission/{permissionId}:
+    post:
+      tags:
+        - collection
+      summary : update collection Permission
+      operationId: updateCollectionPermission
+      security: []
+      parameters:
+      - name: "collectionId"
+        in: "path"
+        description: "ID of collection to update the permissions"
+        required: true
+        schema:
+          type: "integer"
+      - name: "permissionId"
+        in: "path"
+        description: "ID of permission to update"
+        required: true
+        schema:
+          type: "integer"
+      requestBody:
+        description: Object that need to update a collection permission
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionPermissionEnum'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionDTO'
+
+    delete:
+      tags:
+        - collection
+      summary : delete collection Permission
+      operationId: deleteCollectionPermission
+      security: []
+      parameters:
+      - name: "collectionId"
+        in: "path"
+        description: "ID of collection to delete the permissions"
+        required: true
+        schema:
+          type: "integer"
+      - name: "permissionId"
+        in: "path"
+        description: "ID of permission to delete"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionDTO'
+      
 #  ----- COLLECTION ----------------------------------------
 components:
   securitySchemes:
@@ -227,6 +330,20 @@ components:
       required:
         - userName
         - permission
+    UpdateCollectionParameter:
+      type: object
+      properties:
+        collectionName:
+          type: string
+      required:
+        - collectionName
+    DeleteCollectionPermissionParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+      required:
+        - userName
 #  ----- PARAMETERS  ----------------------------------------
 #  ----- DTO  -----------------------------------------------
     UserDTO:

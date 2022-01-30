@@ -149,6 +149,19 @@ export interface CollectionSumarryDTO {
 /**
  * 
  * @export
+ * @interface DeleteCollectionPermissionParameter
+ */
+export interface DeleteCollectionPermissionParameter {
+    /**
+     * 
+     * @type {string}
+     * @memberof DeleteCollectionPermissionParameter
+     */
+    'userName': string;
+}
+/**
+ * 
+ * @export
  * @interface ExceptionDTO
  */
 export interface ExceptionDTO {
@@ -238,6 +251,19 @@ export enum TokenTypeEnum {
     RememberMeToken = 'REMEMBER_ME_TOKEN'
 }
 
+/**
+ * 
+ * @export
+ * @interface UpdateCollectionParameter
+ */
+export interface UpdateCollectionParameter {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCollectionParameter
+     */
+    'collectionName': string;
+}
 /**
  * 
  * @export
@@ -712,7 +738,7 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -724,6 +750,78 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(collectionParameter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete collection
+         * @param {number} collectionId ID of collection to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCollection: async (collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'collectionId' is not null or undefined
+            assertParamExists('deleteCollection', 'collectionId', collectionId)
+            const localVarPath = `/collection/{collectionId}`
+                .replace(`{${"collectionId"}}`, encodeURIComponent(String(collectionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary delete collection Permission
+         * @param {number} collectionId ID of collection to delete the permissions
+         * @param {number} permissionId ID of permission to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCollectionPermission: async (collectionId: number, permissionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'collectionId' is not null or undefined
+            assertParamExists('deleteCollectionPermission', 'collectionId', collectionId)
+            // verify required parameter 'permissionId' is not null or undefined
+            assertParamExists('deleteCollectionPermission', 'permissionId', permissionId)
+            const localVarPath = `/collection/{collectionId}/permission/{permissionId}`
+                .replace(`{${"collectionId"}}`, encodeURIComponent(String(collectionId)))
+                .replace(`{${"permissionId"}}`, encodeURIComponent(String(permissionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -794,6 +892,86 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary update collection
+         * @param {number} collectionId ID of collection to update
+         * @param {UpdateCollectionParameter} [updateCollectionParameter] Object that need to update a collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCollection: async (collectionId: number, updateCollectionParameter?: UpdateCollectionParameter, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'collectionId' is not null or undefined
+            assertParamExists('updateCollection', 'collectionId', collectionId)
+            const localVarPath = `/collection/{collectionId}`
+                .replace(`{${"collectionId"}}`, encodeURIComponent(String(collectionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCollectionParameter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary update collection Permission
+         * @param {number} collectionId ID of collection to update the permissions
+         * @param {number} permissionId ID of permission to update
+         * @param {string} [body] Object that need to update a collection permission
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCollectionPermission: async (collectionId: number, permissionId: number, body?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'collectionId' is not null or undefined
+            assertParamExists('updateCollectionPermission', 'collectionId', collectionId)
+            // verify required parameter 'permissionId' is not null or undefined
+            assertParamExists('updateCollectionPermission', 'permissionId', permissionId)
+            const localVarPath = `/collection/{collectionId}/permission/{permissionId}`
+                .replace(`{${"collectionId"}}`, encodeURIComponent(String(collectionId)))
+                .replace(`{${"permissionId"}}`, encodeURIComponent(String(permissionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -817,6 +995,29 @@ export const CollectionApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Delete collection
+         * @param {number} collectionId ID of collection to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCollection(collectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCollection(collectionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary delete collection Permission
+         * @param {number} collectionId ID of collection to delete the permissions
+         * @param {number} permissionId ID of permission to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCollectionPermission(collectionId: number, permissionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCollectionPermission(collectionId, permissionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get collection
          * @param {number} collectionId ID of collection to return
          * @param {*} [options] Override http request option.
@@ -834,6 +1035,31 @@ export const CollectionApiFp = function(configuration?: Configuration) {
          */
         async getCollections(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CollectionSumarryDTO>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCollections(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary update collection
+         * @param {number} collectionId ID of collection to update
+         * @param {UpdateCollectionParameter} [updateCollectionParameter] Object that need to update a collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCollection(collectionId: number, updateCollectionParameter?: UpdateCollectionParameter, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCollection(collectionId, updateCollectionParameter, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary update collection Permission
+         * @param {number} collectionId ID of collection to update the permissions
+         * @param {number} permissionId ID of permission to update
+         * @param {string} [body] Object that need to update a collection permission
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCollectionPermission(collectionId: number, permissionId: number, body?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCollectionPermission(collectionId, permissionId, body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -858,6 +1084,27 @@ export const CollectionApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
+         * @summary Delete collection
+         * @param {number} collectionId ID of collection to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCollection(collectionId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteCollection(collectionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary delete collection Permission
+         * @param {number} collectionId ID of collection to delete the permissions
+         * @param {number} permissionId ID of permission to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCollectionPermission(collectionId: number, permissionId: number, options?: any): AxiosPromise<CollectionDTO> {
+            return localVarFp.deleteCollectionPermission(collectionId, permissionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get collection
          * @param {number} collectionId ID of collection to return
          * @param {*} [options] Override http request option.
@@ -874,6 +1121,29 @@ export const CollectionApiFactory = function (configuration?: Configuration, bas
          */
         getCollections(options?: any): AxiosPromise<Array<CollectionSumarryDTO>> {
             return localVarFp.getCollections(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary update collection
+         * @param {number} collectionId ID of collection to update
+         * @param {UpdateCollectionParameter} [updateCollectionParameter] Object that need to update a collection
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCollection(collectionId: number, updateCollectionParameter?: UpdateCollectionParameter, options?: any): AxiosPromise<CollectionDTO> {
+            return localVarFp.updateCollection(collectionId, updateCollectionParameter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary update collection Permission
+         * @param {number} collectionId ID of collection to update the permissions
+         * @param {number} permissionId ID of permission to update
+         * @param {string} [body] Object that need to update a collection permission
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCollectionPermission(collectionId: number, permissionId: number, body?: string, options?: any): AxiosPromise<CollectionDTO> {
+            return localVarFp.updateCollectionPermission(collectionId, permissionId, body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -899,6 +1169,31 @@ export class CollectionApi extends BaseAPI {
 
     /**
      * 
+     * @summary Delete collection
+     * @param {number} collectionId ID of collection to delete
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public deleteCollection(collectionId: number, options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).deleteCollection(collectionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary delete collection Permission
+     * @param {number} collectionId ID of collection to delete the permissions
+     * @param {number} permissionId ID of permission to delete
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public deleteCollectionPermission(collectionId: number, permissionId: number, options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).deleteCollectionPermission(collectionId, permissionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get collection
      * @param {number} collectionId ID of collection to return
      * @param {*} [options] Override http request option.
@@ -918,6 +1213,33 @@ export class CollectionApi extends BaseAPI {
      */
     public getCollections(options?: AxiosRequestConfig) {
         return CollectionApiFp(this.configuration).getCollections(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary update collection
+     * @param {number} collectionId ID of collection to update
+     * @param {UpdateCollectionParameter} [updateCollectionParameter] Object that need to update a collection
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public updateCollection(collectionId: number, updateCollectionParameter?: UpdateCollectionParameter, options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).updateCollection(collectionId, updateCollectionParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary update collection Permission
+     * @param {number} collectionId ID of collection to update the permissions
+     * @param {number} permissionId ID of permission to update
+     * @param {string} [body] Object that need to update a collection permission
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionApi
+     */
+    public updateCollectionPermission(collectionId: number, permissionId: number, body?: string, options?: AxiosRequestConfig) {
+        return CollectionApiFp(this.configuration).updateCollectionPermission(collectionId, permissionId, body, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

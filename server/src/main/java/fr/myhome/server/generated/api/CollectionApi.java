@@ -8,6 +8,7 @@ package fr.myhome.server.generated.api;
 import fr.myhome.server.generated.model.CollectionDTO;
 import fr.myhome.server.generated.model.CollectionParameter;
 import fr.myhome.server.generated.model.CollectionSumarryDTO;
+import fr.myhome.server.generated.model.UpdateCollectionParameter;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +33,7 @@ public interface CollectionApi {
     }
 
     /**
-     * POST /collection : Create Collection
+     * PUT /collection : Create Collection
      *
      * @param collectionParameter Object that need to create a collection (optional)
      * @return successful operation (status code 200)
@@ -41,12 +42,61 @@ public interface CollectionApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = CollectionDTO.class) })
     @RequestMapping(
-        method = RequestMethod.POST,
+        method = RequestMethod.PUT,
         value = "/collection",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
     default ResponseEntity<CollectionDTO> createCollection(@ApiParam(value = "Object that need to create a collection") @Valid @RequestBody(required = false) CollectionParameter collectionParameter) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"permissions\" : [ { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } }, { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } } ], \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * DELETE /collection/{collectionId} : Delete collection
+     *
+     * @param collectionId ID of collection to delete (required)
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "Delete collection", nickname = "deleteCollection", notes = "", tags={ "collection", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation") })
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/collection/{collectionId}"
+    )
+    default ResponseEntity<Void> deleteCollection(@ApiParam(value = "ID of collection to delete", required = true) @PathVariable("collectionId") Integer collectionId) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * DELETE /collection/{collectionId}/permission/{permissionId} : delete collection Permission
+     *
+     * @param collectionId ID of collection to delete the permissions (required)
+     * @param permissionId ID of permission to delete (required)
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "delete collection Permission", nickname = "deleteCollectionPermission", notes = "", response = CollectionDTO.class, tags={ "collection", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = CollectionDTO.class) })
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/collection/{collectionId}/permission/{permissionId}",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<CollectionDTO> deleteCollectionPermission(@ApiParam(value = "ID of collection to delete the permissions", required = true) @PathVariable("collectionId") Integer collectionId,@ApiParam(value = "ID of permission to delete", required = true) @PathVariable("permissionId") Integer permissionId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -108,6 +158,69 @@ public interface CollectionApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /collection/{collectionId} : update collection
+     *
+     * @param collectionId ID of collection to update (required)
+     * @param updateCollectionParameter Object that need to update a collection (optional)
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "update collection", nickname = "updateCollection", notes = "", response = CollectionDTO.class, tags={ "collection", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = CollectionDTO.class) })
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/collection/{collectionId}",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<CollectionDTO> updateCollection(@ApiParam(value = "ID of collection to update", required = true) @PathVariable("collectionId") Integer collectionId,@ApiParam(value = "Object that need to update a collection") @Valid @RequestBody(required = false) UpdateCollectionParameter updateCollectionParameter) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"permissions\" : [ { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } }, { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } } ], \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /collection/{collectionId}/permission/{permissionId} : update collection Permission
+     *
+     * @param collectionId ID of collection to update the permissions (required)
+     * @param permissionId ID of permission to update (required)
+     * @param body Object that need to update a collection permission (optional)
+     * @return successful operation (status code 200)
+     */
+    @ApiOperation(value = "update collection Permission", nickname = "updateCollectionPermission", notes = "", response = CollectionDTO.class, tags={ "collection", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = CollectionDTO.class) })
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/collection/{collectionId}/permission/{permissionId}",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<CollectionDTO> updateCollectionPermission(@ApiParam(value = "ID of collection to update the permissions", required = true) @PathVariable("collectionId") Integer collectionId,@ApiParam(value = "ID of permission to update", required = true) @PathVariable("permissionId") Integer permissionId,@ApiParam(value = "Object that need to update a collection permission") @Valid @RequestBody(required = false) String body) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"permissions\" : [ { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } }, { \"collectionPermissionId\" : 6, \"userDTO\" : { \"firstName\" : \"firstName\", \"lastName\" : \"lastName\", \"roles\" : [ null, null ], \"userId\" : 1, \"email\" : \"email\", \"username\" : \"username\" } } ], \"collectionId\" : 0, \"collectionName\" : \"collectionName\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
