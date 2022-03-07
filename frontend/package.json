@@ -2,7 +2,7 @@
   "name": "myhome",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.7.1",
+    "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.6.0",
     "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "^5.3.1",
