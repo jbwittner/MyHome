@@ -6,7 +6,7 @@
     "@emotion/styled": "^11.6.0",
     "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "^5.4.4",
-    "@mui/lab": "^5.0.0-alpha.67",
+    "@mui/lab": "^5.0.0-alpha.84",
     "@mui/material": "^5.4.0",
     "axios": "^0.25.0",
     "react": "^17.0.2",
